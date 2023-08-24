@@ -7,6 +7,6 @@
 		vimAlias = true;
 	};
 
-	environment.variables.EDITOR = "neovim";
+	home.sessionVariables.EDITOR = "nvim";
 }
 

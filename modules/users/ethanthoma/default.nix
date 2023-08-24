@@ -2,10 +2,13 @@
 
 {
 	imports = [
-		../../modules/apps/neovim
+#		../../modules/apps/neovim
 	];
 
-	config.home = {
+	home = 
+	let
+		username = "ethanthoma";
+	in {
 		inherit username;
 
 		homeDirectory = "/home/${username}";
@@ -17,6 +20,6 @@
 		];
 	};
 
-	config.programs.home-manager.enable = true;
+	programs.home-manager.enable = true;
 }
 

@@ -83,19 +83,14 @@
 			};
 		};
 
-		homeConfigurations = {
-			"ethanthoma" = home-manager.lib.homeManagerConfigurations {
+		homeManagerConfigurations = {
+			"ethanthoma" = home-manager.lib.homeManagerConfiguration {
 				inherit pkgs;
 
-				username = "ethanthoma";
-
-				configurations = { pkgs, username, ... }: {
-					imports = [ ./modules/users/ethanthoma ];
-				};
-
-#				modules = [
-#					./modules/users/ethanthoma
-#				];
+				modules = [
+					./modules/users/ethanthoma
+					./modules/apps/neovim
+				];
 			};
 		};
 	};
