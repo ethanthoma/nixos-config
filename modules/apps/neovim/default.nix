@@ -1,4 +1,4 @@
-{ ... }:
+{ home, ... }:
 
 {
 	programs.neovim = {
