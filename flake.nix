@@ -55,12 +55,6 @@
                             cargo
 						];
 					}
-
-                    {
-                        fonts.packages = with pkgs; [
-                            (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
-                        ];
-                    }
 				];
 			};
 		};
@@ -68,6 +62,8 @@
 		homeConfigurations = {
 			"ethanthoma" = home-manager.lib.homeManagerConfiguration {
 				inherit pkgs;
+
+                lib = nixpkgs.lib // home-manager.lib;
 
 				modules = [
 					./modules/users/ethanthoma
