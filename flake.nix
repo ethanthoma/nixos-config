@@ -28,15 +28,16 @@
 			"desktop" = lib.nixosSystem {
 				inherit system pkgs;
 
-				specialArgs = inputs;
+				specialArgs = { inherit inputs; };
 
 				modules = [
 					./modules/system/apps
+					./modules/system/bluetooth
 					./modules/system/boot
 					./modules/system/desktop
 					./modules/system/networking
 					./modules/system/sound
-						
+
 					./modules/hosts/desktop
 
 					{

@@ -32,9 +32,13 @@
             # browser
             firefox-wayland
 
-            # comm
-            discord
+            # rice
+            neofetch
+            grim
+            slurp
+            imagemagick
         ];
+
 
         activation = activationScripts [
             {
@@ -48,6 +52,21 @@
                 dependencies = { inherit pkgs homeDirectory; };
             }
         ];
+    };
+
+    gtk.enable = true;
+
+    programs.bash = {
+        enable = true;
+        bashrcExtra = ''
+            if command -v tmux &>/dev/null && [ -z "$TMUX" ]; then
+                if tmux has-session &>/dev/null; then
+                    tmux attach-session
+                else
+                    tmux new-session
+                fi
+            fi
+        '';
     };
 
     programs.home-manager.enable = true;

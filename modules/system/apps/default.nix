@@ -12,6 +12,8 @@
 		fuzzel
 		cliphist
 		wl-clipboard
+
+        pavucontrol
 	];
 }
 

@@ -1,9 +1,8 @@
-{ config, hyprland, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, hyprland, ... }:
 
 {
 	imports = [
 		./environment.nix
-		hyprland.nixosModules.default
 	];
 
 	nix.settings = {
@@ -20,16 +19,39 @@
 
 	services.xserver.enable = false;
 
+    services.greetd = {
+        enable = true;
+        settings = rec {
+            initial_session = {
+                command = "${pkgs.hyprland}/bin/Hyprland";
+                user = "ethanthoma";
+            };
+            default_session = initial_session;
+        };
+    };
+
+	programs.zsh = {
+		enable = true;
+		oh-my-zsh.enable = true;
+	};
+
+	
+
+
+
 	programs.hyprland = {
 		enable = true;
 		enableNvidiaPatches = true;
-		xwayland.enable = true;
+        package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+        xwayland.enable = true;
 	};
 
 	services.dbus.enable = true;
 	xdg.portal = {
 		enable = true;
-		extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+#		extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
 	};
+
+    programs.dconf.enable = true;
 }
 
