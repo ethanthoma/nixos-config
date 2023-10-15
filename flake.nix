@@ -33,8 +33,8 @@
 				modules = [
 					./modules/system/apps
 					./modules/system/bluetooth
-					./modules/system/boot
-					./modules/system/desktop
+					./modules/system/boot/systemd
+					./modules/system/desktop/hyprland
 					./modules/system/networking
 					./modules/system/sound
 

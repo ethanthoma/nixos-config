@@ -1,10 +1,10 @@
 { config, lib, pkgs, username, ... }:
 
-{
+let 
+    username = "ethanthoma";
+    homeDirectory = "/home/${username}";
+in {
     home = let
-        username = "ethanthoma";
-        homeDirectory = "/home/${username}";
-
         activationScripts = scripts: builtins.listToAttrs ( 
             map 
                 ( { name, path, dependencies }: { 
@@ -25,12 +25,12 @@
             # CLI tools
             fzf
             gh
-            tree
+            tre
             wget
             zip
-
-            # browser
-            firefox-wayland
+            zoxide
+            entr
+            rm-improved
 
             # rice
             neofetch
@@ -59,6 +59,7 @@
     programs.bash = {
         enable = true;
         bashrcExtra = ''
+            # tmux autostart
             if command -v tmux &>/dev/null && [ -z "$TMUX" ]; then
                 if tmux has-session &>/dev/null; then
                     tmux attach-session
@@ -66,6 +67,15 @@
                     tmux new-session
                 fi
             fi
+
+            # zoxide
+            export _ZO_DATA_DIR=${homeDirectory}/.config/zoxide
+            export _ZO_RESOLVE_SYMLINKS=1
+
+            eval "$(zoxide init bash --cmd cd)"
+
+            # rip (rm improved)
+            export GRAVEYARD=${homeDirectory}/.config/rip/graveyard
         '';
     };
 

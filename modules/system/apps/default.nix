@@ -13,6 +13,7 @@
 		cliphist
 		wl-clipboard
 
+        firefox-wayland
         pavucontrol
 	];
 }

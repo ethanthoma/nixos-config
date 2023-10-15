@@ -30,15 +30,6 @@
         };
     };
 
-	programs.zsh = {
-		enable = true;
-		oh-my-zsh.enable = true;
-	};
-
-	
-
-
-
 	programs.hyprland = {
 		enable = true;
 		enableNvidiaPatches = true;
@@ -49,7 +40,7 @@
 	services.dbus.enable = true;
 	xdg.portal = {
 		enable = true;
-#		extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
+		extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
 	};
 
     programs.dconf.enable = true;
