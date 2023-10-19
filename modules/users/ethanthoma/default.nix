@@ -5,17 +5,7 @@ let
     homeDirectory = "/home/${username}";
 in {
     home = let
-        activationScripts = scripts: builtins.listToAttrs ( 
-            map 
-                ( { name, path, dependencies }: { 
-                    name = name;
-                    value = let
-                        scriptText = '' ${ ( import path dependencies ).outPath }/bin/${ name } '';
-                    in
-                        lib.hm.dag.entryAfter [ "writeBoundary" ] scriptText;
-                } ) 
-                scripts
-        );
+        mkMutableConfig = import ./mutable-config.nix { inherit pkgs lib homeDirectory; };
     in {
         inherit username homeDirectory;
 
@@ -37,24 +27,34 @@ in {
             grim
             slurp
             imagemagick
+
+            # browser
+            (callPackage ./thorium.nix { })
         ];
 
-
-        activation = activationScripts [
-            {
-                name = "tmux-config";
-                path = ./tmux-config.nix;
-                dependencies = { inherit pkgs homeDirectory; };
-            }
-            {
+        activation = {
+            nvim-config = mkMutableConfig {
                 name = "nvim-config";
-                path = ./nvim-config.nix;
-                dependencies = { inherit pkgs homeDirectory; };
-            }
-        ];
+                repoUrl = "https://github.com/ethanthoma/neovim-config.git";
+                configPath = ".config/nvim";
+            };
+
+            tmux-config = mkMutableConfig {
+                name = "tmux-config";
+                repoUrl = "https://github.com/ethanthoma/tmux-config.git";
+                configPath = ".config/tmux";
+                submodules = true;
+            };
+        };
     };
 
-    gtk.enable = true;
+    gtk = {
+        enable = true;
+        theme = {
+            name = "rose-pine";
+            package = pkgs.rose-pine-gtk-theme;
+        };
+    };
 
     programs.bash = {
         enable = true;
