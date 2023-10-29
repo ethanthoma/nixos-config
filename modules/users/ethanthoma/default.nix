@@ -4,6 +4,10 @@ let
     username = "ethanthoma";
     homeDirectory = "/home/${username}";
 in {
+    imports = [
+        ./starship.nix
+    ];
+
     home = let
         mkMutableConfig = import ./mutable-config.nix { inherit pkgs lib homeDirectory; };
     in {
@@ -21,6 +25,7 @@ in {
             zoxide
             entr
             rm-improved
+            eza
 
             # rice
             neofetch
@@ -76,6 +81,13 @@ in {
 
             # rip (rm improved)
             export GRAVEYARD=${homeDirectory}/.config/rip/graveyard
+
+            alias ls='exa --icons -F -H --group-directories-first --git -1'
+            alias ll='ls -alF'
+            alias lt="exa --tree --level=2 --long --icons --git"
+
+            # launch starship prompt
+            eval "$(starship init bash)"
         '';
     };
 
