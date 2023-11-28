@@ -52,9 +52,7 @@
             };
             c = {
                 format = "\\[[$symbol($version(-$name))]($style)\\]"; 
-            };
-            deno = { 
-                format = "\\[[$symbol($version)]($style)\\]"; 
+                symbol = " ";
             };
             docker_context = { 
                 format = "\\[[$symbol$context]($style)\\]"; 
