@@ -1,12 +1,9 @@
 { config, pkgs, ... }:
 
 {
-	networking.hostName = "desktop";
+	networking.hostName = "laptop";
 
-	imports = [
-		./hardware.nix
-        ../../apps/moonlander
-	];
+	imports = [ ];
 
 	time.timeZone = "America/Vancouver";
 

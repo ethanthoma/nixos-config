@@ -26,6 +26,12 @@ in {
             entr
             rm-improved
             eza
+            yq-go
+            bat
+            ripgrep
+            trash-cli
+            fd
+            sd
 
             # rice
             neofetch
@@ -76,7 +82,6 @@ in {
             # zoxide
             export _ZO_DATA_DIR=${homeDirectory}/.config/zoxide
             export _ZO_RESOLVE_SYMLINKS=1
-
             eval "$(zoxide init bash --cmd cd)"
 
             # rip (rm improved)
@@ -86,8 +91,9 @@ in {
             alias ll='ls -alF'
             alias lt="exa --tree --level=2 --long --icons --git"
 
-            # launch starship prompt
-            eval "$(starship init bash)"
+            alias cat='bat'
+            alias grep='rg'
+            alias find='fd'
         '';
     };
 

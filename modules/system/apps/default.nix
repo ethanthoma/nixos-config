@@ -12,8 +12,8 @@
 		fuzzel
 		cliphist
 		wl-clipboard
+        bottom
 
-        firefox-wayland
         pavucontrol
 	];
 }
