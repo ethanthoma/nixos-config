@@ -48,7 +48,7 @@
 
             aws = { 
                 format = "\\[[$symbol($profile)(\\($region\\))(\\[$duration\\])]($style)\\]"; 
-                symbol = "a ";
+                symbol = "󰸏 ";
             };
             c = {
                 format = "\\[[$symbol($version(-$name))]($style)\\]"; 
@@ -58,25 +58,30 @@
             };
             docker_context = { 
                 format = "\\[[$symbol$context]($style)\\]"; 
+                symbol = "󰡨 ";
             };
             gcloud = { 
                 format = "\\[[$symbol$account(\\($region\\))]($style)\\]"; 
-                symbol = "g ";
+                symbol = "󱇶 ";
             };
             golang = { 
                 format = "\\[[$symbol($version)]($style)\\]"; 
+                symbol = "󰟓 ";
             };
             guix_shell = { 
                 format = "\\[[$symbol]($style)\\]"; 
             };
             julia = { 
                 format = "\\[[$symbol($version)]($style)\\]"; 
+                symbol = " ";
             };
             kubernetes = { 
                 format = "\\[[$symbol$context( \\($namespace\\))]($style)\\]"; 
+                symbol = "󱃾 ";
             };
             lua = { 
                 format = "\\[[$symbol($version)]($style)\\]"; 
+                symbol = " ";
             };
             nix_shell = { 
                 format = "\\[[$symbol$state( \\($name\\))]($style)\\]"; 
@@ -84,13 +89,14 @@
             };
             ocaml = { 
                 format = "\\[[$symbol($version)(\\($switch_indicator$switch_name\\))]($style)\\]"; 
+                symbol = " ";
             };
             pulumi = { 
                 format = "\\[[$symbol$stack]($style)\\]"; 
             };
             python = { 
                 format = "\\[[$symbol$pyenv_prefix($version)(\\($virtualenv\\))]($style)\\]"; 
-                symbol = "󱔎 ";
+                symbol = " ";
             };
             rlang = {
                 format = "\\[[$symbol($version)]($style)\\]"; 
@@ -98,13 +104,15 @@
             };
             rust = { 
                 format = "\\[[$symbol($version)]($style)\\]"; 
-                symbol = " ";
+                symbol = " ";
             };
             scala = { 
                 format = "\\[[$symbol($version)]($style)\\]"; 
+                symbol = " ";
             };
             zig = { 
                 format = "\\[[$symbol($version)]($style)\\]"; 
+                symbol = " ";
             };
         };
     };
