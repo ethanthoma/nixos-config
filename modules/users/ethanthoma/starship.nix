@@ -85,7 +85,7 @@
             };
             nix_shell = { 
                 format = "\\[[$symbol$state( \\($name\\))]($style)\\]"; 
-                symbol = "󰜗 ";
+                symbol = "󱄅 ";
             };
             ocaml = { 
                 format = "\\[[$symbol($version)(\\($switch_indicator$switch_name\\))]($style)\\]"; 
