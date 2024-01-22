@@ -17,8 +17,6 @@
 		];
 	};
 
-	services.xserver.enable = false;
-
     services.greetd = {
         enable = true;
         settings = rec {
@@ -32,7 +30,6 @@
 
 	programs.hyprland = {
 		enable = true;
-		enableNvidiaPatches = true;
         package = inputs.hyprland.packages.${pkgs.system}.hyprland;
         xwayland.enable = true;
 	};

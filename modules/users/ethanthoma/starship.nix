@@ -42,12 +42,12 @@
                 format = "\\[[$symbol$branch]($style)\\]"; 
             };
             git_status = { 
-                format = "\\[[$all_status$ahead_behind]($style)\\]"; 
+                format = "\\[[ $all_status$ahead_behind]($style)\\]"; 
             };
 
 
             aws = { 
-                format = "\\[[$symbol($profile)(\\($region\\))(\\[$duration\\])]($style)\\]"; 
+                format = "\\[[$symbol$active(\\($domain\\))]($style)\\]"; 
                 symbol = "󰸏 ";
             };
             c = {
@@ -59,7 +59,7 @@
                 symbol = "󰡨 ";
             };
             gcloud = { 
-                format = "\\[[$symbol$account(\\($region\\))]($style)\\]"; 
+                format = "\\[[$symbol$active(\\($domain\\))]($style)\\]"; 
                 symbol = "󱇶 ";
             };
             golang = { 

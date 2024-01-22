@@ -10,6 +10,9 @@
 		};
 
 		hyprland.url = "github:hyprwm/Hyprland";
+
+        nixpkgs-coolercontrol.url = "https://github.com/codifryed/nixpkgs/archive/ed254575f639bc89d2b7856c603d46121f01bbc9.tar.gz";
+        nixpkgs-coolercontrol.flake = false;
 	};
 
 	outputs = { self, nixpkgs, home-manager, hyprland, ... } @ inputs : 
@@ -19,7 +22,9 @@
 		pkgs = import nixpkgs {
 			inherit system;
 			config.allowUnfree = true;
-			overlays = []; config.nvidia.acceptLicense = true; };
+			overlays = [];
+            config.nvidia.acceptLicense = true; 
+        };
 
 		inherit (nixpkgs) lib;
 	in {
@@ -56,6 +61,10 @@
 					./modules/system/gpu
 
 					./modules/hosts/desktop
+
+                    {
+                        services.fwupd.enable = true;
+                    }
 
 					{
                         services.udev.extraRules = ''
@@ -101,21 +110,41 @@
 					}
 
                     {
-                        nixpkgs.overlays = [
-                            (self: super: {
-                                 ollama = super.ollama.override {
-                                     llama-cpp = super.llama-cpp.override { 
-                                         cudaSupport = true;
-                                         openblasSupport = false; 
-                                         cudaVersion = "12";
-                                     };
-                                 };
-                             })
-                        ];
                         environment.systemPackages = with pkgs; [ ollama ];
                     }
 
+                    ({ pkgs, lib, ... }: {
+                         nixpkgs.overlays = [
+                             (self: super: {
+                                  ollama = super.ollama.override {
+                                      llama-cpp = super.llama-cpp.override { 
+                                          cudaSupport = true;
+                                          openblasSupport = false; 
+                                          cudaVersion = "12";
+                                      };
+                                  };
+                              })
+
+                             (final: prev: {
+                                  liquidctl = prev.liquidctl.overrideAttrs (old: {
+                                      src = builtins.trace "Using liquidctl source:" (prev.fetchFromGitHub {
+                                              owner = "liquidctl";
+                                              repo = "liquidctl";
+                                              rev = "bfb200b38d54f54d1434d5076f54a2b939c57c5e";
+                                              hash = "sha256-LGyF9u+ZXn/mZh1cNnD/ELbFXxBl7RV9Emz7xdCdPDs=";
+                                      });
+                                  });
+                              })
+                         ];
+                    })
+
                     (import ./modules/apps/steam)
+
+                    ({ pkgs, ... }: {
+                         environment.systemPackages = with pkgs; [
+                         liquidctl
+                         ];
+                     })
 				];
 			};
 		};
