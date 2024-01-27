@@ -28,11 +28,9 @@ in {
     };
 
     config = with cfg; {
+        hm-neovim = { inherit username homeDirectory; };
+        hm-tmux = { inherit username homeDirectory; };
         hm-zoxide.homeDirectory = homeDirectory;
-
-        hm-tmux = {
-            inherit username homeDirectory;   
-        };
 
         home.packages = with pkgs; [
             gh
@@ -51,5 +49,18 @@ in {
             unzip
             neofetch
         ];
+
+        programs.bash = {
+            enable = true;
+            bashrcExtra = ''
+                mkdir -p ${homeDirectory}/.config
+
+                # rip (rm improved)
+                export GRAVEYARD=${homeDirectory}/.config/rip/graveyard
+
+                alias cat='bat'
+                alias find='fd'
+            '';
+        };
     };
 }
