@@ -37,7 +37,7 @@ in {
                 inherit pkgs lib;
                 homeDirectory = cfg.homeDirectory;
             };
-            mkMutableConfig = import ../mutable-config.nix args;
+            mkMutableConfig = import ../utils/mutable-config.nix args;
         in {
 			nvim-config = mkMutableConfig {
 				name = "nvim-config";
