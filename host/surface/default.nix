@@ -11,6 +11,8 @@
 
 	networking.hostName = "surface";
 
+    services.openssh.enable = true;
+
 	nix.package = pkgs.nixFlakes;
 	nix.extraOptions = ''
 		experimental-features = nix-command flakes

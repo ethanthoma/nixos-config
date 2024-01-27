@@ -1,4 +1,4 @@
-{ home, ... }:
+{ ... }:
 
 {
     programs.starship = {
@@ -30,7 +30,7 @@
                 format = "\\[[$time]($style)\\]"; 
             };
             cmd_duration = { 
-                format = "\\[[⏱ $duration]($style)\\]"; 
+                format = "\\[[ $duration]($style)\\]"; 
                 min_time = 10000;
             };
 

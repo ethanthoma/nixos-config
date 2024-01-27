@@ -6,9 +6,17 @@
 			url = "github:nix-community/home-manager";
 			inputs.nixpkgs.follows = "nixpkgs";
 		};
+
+        agenix = {
+            url = "github:ryantm/agenix";
+            inputs = {
+                nixpkgs.follows = "nixpkgs";
+                darwin.follows = "";
+            };
+        };
 	};
 
-	outputs = { nixpkgs, home-manager, ... }: 
+	outputs = { nixpkgs, home-manager, agenix, ... }: 
 	let
 		system = "x86_64-linux";
 		
@@ -26,15 +34,20 @@
 			};
 		};
 
-		homeConfigurations = {
+		homeConfigurations = let
+            agenix-module = [
+                agenix.homeManagerModules.default
+                {
+                    home.packages = [ agenix.packages.${system}.default ];
+                }
+            ];
+        in {
 			"ethanthoma" = home-manager.lib.homeManagerConfiguration {
 				inherit pkgs;
 
 				lib = nixpkgs.lib // home-manager.lib;
 
-				modules = [
-					./ethanthoma
-				];
+				modules = agenix-module ++ [ ./ethanthoma ];
 			};
 		};
 	};

@@ -1,9 +1,10 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
-	programs.git = {
+    programs.git = {
         enable = true;
-        userName  = "Ethan Thoma";
+        package = pkgs.gitFull;
+        userName = "Ethan Thoma";
         userEmail = "ethanthoma@gmail.com";
         aliases = {
             ci = "commit";
@@ -11,10 +12,10 @@
             s = "status";
         };
         extraConfig = {
-            push = { autoSetupRemote = true; };
-            init = { defaultBranch = "main"; };
-            safe = { directory = "/etc/nixos"; };
+            push.autoSetupRemote = true;
+            init.defaultBranch = "main";
+            safe.directory = "/etc/nixos";
         };
-	};
+    };
 }
 

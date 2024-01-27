@@ -9,7 +9,9 @@ in {
 		./rice
 	];
 
-    hm-apps = { inherit username homeDirectory; };
+    hm-apps = { 
+        inherit username homeDirectory;
+    };
 
 	home = let
 		mkMutableConfig = import ./mutable-config.nix { inherit pkgs lib homeDirectory; };

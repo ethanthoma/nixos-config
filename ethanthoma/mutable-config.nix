@@ -22,6 +22,6 @@ let
         buildInputs = [ pkgs.makeWrapper ];
         postBuild = "wrapProgram $out/bin/${ name } --prefix PATH : $out/bin";
     };
-    data = '' ${ build.outPath }/bin/${ name }'';
+    data = ''${ build.outPath }/bin/${ name }'';
 in lib.hm.dag.entryAfter [ "writeBoundary" ] data
 

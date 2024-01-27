@@ -2,8 +2,7 @@
 
 let
     cfg = config.hm-apps;
-in
-{
+in {
     imports = [
         ./direnv.nix
         ./eza.nix
