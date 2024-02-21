@@ -21,29 +21,36 @@ in {
             viAlias = true;
             vimAlias = true;
 
+            withNodeJs = true;
             withPython3 = true;
             extraPackages = with pkgs; [
                 cargo
                 clang
                 lua-language-server
+                pkg-config 
+                openssl
             ];
         };
 
-        home.sessionVariables.EDITOR = "nvim";
-        programs.bash.sessionVariables.EDITOR = "nvim";
+        programs.bash = {
+            bashrcExtra = ''
+                export EDITOR="nvim"
+                export PKG_CONFIG_PATH="${pkgs.openssl.dev}/lib/pkgconfig"
+            '';
+        };
 
         home.activation = let
             args = {
                 inherit pkgs lib;
                 homeDirectory = cfg.homeDirectory;
             };
-            mkMutableConfig = import ../utils/mutable-config.nix args;
+        mkMutableConfig = import ../utils/mutable-config.nix args;
         in {
-			nvim-config = mkMutableConfig {
-				name = "nvim-config";
-				repoUrl = "https://github.com/ethanthoma/neovim-config.git";
-				configPath = ".config/nvim";
-			};
+            nvim-config = mkMutableConfig {
+                name = "nvim-config";
+                repoUrl = "git@github.com:ethanthoma/neovim-config.git";
+                configPath = ".config/nvim";
+            };
         };
     };
 }

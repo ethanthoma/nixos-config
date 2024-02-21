@@ -10,7 +10,6 @@ in {
         ./git.nix
         ./neovim.nix
         ./starship.nix
-        ./thefuck.nix
         ./tmux.nix
         ./zoxide.nix
     ];
@@ -52,6 +51,7 @@ in {
 
         programs.bash = {
             enable = true;
+            enableCompletion = true;
             bashrcExtra = ''
                 mkdir -p ${homeDirectory}/.config
 

@@ -7,11 +7,11 @@ let
         if [ ! -d "${homeDirectory}/${configPath}" ]; then
             git clone ${if submodules then "--recurse-submodules " else ""}${repoUrl} ${homeDirectory}/${configPath}
         elif cd ${homeDirectory}/${configPath} && git rev-parse --is-inside-work-tree > /dev/null; then
-            if [[ $(git ls-files --other --exclude-standard --directory --no-empty-directory -o) ]] ||
+            if [[ $(git ls-files --modified --other --exclude-standard --directory --no-empty-directory -o) ]] ||
                [[ $(! git diff-index --quiet HEAD --) ]]; then
                 echo -e "\033[31mThere are uncommitted changes in your ${name}, please commit them.\033[0m"
             else
-                git pull
+                echo "Up to date"
             fi
         fi
     '';
