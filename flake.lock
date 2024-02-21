@@ -83,19 +83,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-coolercontrol": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1697300812,
-        "narHash": "sha256-bHJxvDBiQKaT1uDSj9yFDHAdlx++7vvrjTN6opKuUyY=",
-        "type": "tarball",
-        "url": "https://github.com/codifryed/nixpkgs/archive/ed254575f639bc89d2b7856c603d46121f01bbc9.tar.gz"
-      },
-      "original": {
-        "type": "tarball",
-        "url": "https://github.com/codifryed/nixpkgs/archive/ed254575f639bc89d2b7856c603d46121f01bbc9.tar.gz"
-      }
-    },
     "nixpkgs_2": {
       "locked": {
         "lastModified": 1703255338,
@@ -116,8 +103,7 @@
       "inputs": {
         "home-manager": "home-manager",
         "hyprland": "hyprland",
-        "nixpkgs": "nixpkgs_2",
-        "nixpkgs-coolercontrol": "nixpkgs-coolercontrol"
+        "nixpkgs": "nixpkgs_2"
       }
     },
     "systems": {
