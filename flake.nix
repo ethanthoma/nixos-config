@@ -1,5 +1,5 @@
 {
-	description = "A very basic flake";
+	description = "ethanthoma's nixos config";
 
 	inputs = {
 		nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -10,16 +10,23 @@
 		};
 
 		hyprland.url = "github:hyprwm/Hyprland";
+
+        agenix = {
+            url = "github:ryantm/agenix";
+            inputs = {
+                nixpkgs.follows = "nixpkgs";
+                darwin.follows = "";
+            };
+        };
 	};
 
-	outputs = { self, nixpkgs, home-manager, hyprland, ... } @ inputs : 
+	outputs = { self, nixpkgs, home-manager, hyprland, agenix, ... } @ inputs : 
 	let
 		system = "x86_64-linux";
 
 		pkgs = import nixpkgs {
 			inherit system;
 			config.allowUnfree = true;
-			overlays = [];
             config.nvidia.acceptLicense = true; 
         };
 
@@ -42,15 +49,28 @@
 					}
 				];
 			};
+            "surface" = nixpkgs.lib.nixosSystem {
+                inherit system pkgs;
+                modules = [
+                    ./host/surface
+                ];
+            };
 		};
 
-		homeConfigurations = {
+		homeConfigurations = let
+            agenix-module = [
+                agenix.homeManagerModules.default
+                {
+                    home.packages = [ agenix.packages.${system}.default ];
+                }
+            ];
+        in {
 			"ethanthoma" = home-manager.lib.homeManagerConfiguration {
 				inherit pkgs;
 
-                lib = nixpkgs.lib // home-manager.lib;
+				lib = nixpkgs.lib // home-manager.lib;
 
-				modules = [ ./ethanthoma ];
+				modules = agenix-module ++ [ ./ethanthoma ];
 			};
 		};
 	};
