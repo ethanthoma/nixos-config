@@ -27,5 +27,12 @@
 
 	time.timeZone = "America/Vancouver";
 
+    systemd.services.myservice = {
+        enable = true;
+        serviceConfig = {
+            ExecStart = ''sh -c "ln -fs /mnt/wslg/runtime-dir/* /run/user/"%i'';
+        };
+    };
+
 	system.stateVersion = "23.11";
 }
