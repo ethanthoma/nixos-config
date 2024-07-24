@@ -1,17 +1,11 @@
-{ pkgs, inputs, ... }:
+{ pkgs, ... }:
 
 {
-	nix.settings = {
-		experimental-features = [ "nix-command" "flakes" ];
-
-		substituters = [
-			"https://hyprland.cachix.org"
-		];
-
-		trusted-public-keys = [
-			"hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
-		];
-	};
+    environment.systemPackages = with pkgs; [
+        grim
+        slurp
+        imagemagick
+    ];
 
     services.greetd = {
         enable = true;
@@ -24,10 +18,13 @@
         };
     };
 
-	programs.hyprland = {
-		enable = true;
-        package = inputs.hyprland.packages.${pkgs.system}.hyprland;
-        xwayland.enable = true;
+	programs = {
+        hyprland = {
+            enable = true;
+            xwayland.enable = true;
+        };
+
+        dconf.enable = true;
 	};
 
 	services.dbus.enable = true;
@@ -35,8 +32,6 @@
 		enable = true;
 		extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
 	};
-
-    programs.dconf.enable = true;
 
 	environment.sessionVariables = {
 		WLR_NO_HARDWARE_CURSORS = "1";

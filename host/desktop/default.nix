@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, username, ... }:
 
 {
 	networking.hostName = "desktop";
@@ -12,6 +12,12 @@
 
     boot.loader.systemd-boot.enable = true;
     boot.loader.efi.canTouchEfiVariables = true;
+
+    users.users.ethanthoma = {
+        isNormalUser = true;
+        extraGroups = [ "networkmanager" "wheel" ];
+    };
+    services.getty.autologinUser = username;
 
 	environment.systemPackages = with pkgs; 
     let

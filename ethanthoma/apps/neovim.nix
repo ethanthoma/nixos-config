@@ -29,6 +29,10 @@ in {
                 lua-language-server
                 pkg-config 
                 openssl
+                cmake
+                gcc
+                python3
+                gnumake
             ];
         };
 
