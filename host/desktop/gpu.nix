@@ -1,43 +1,40 @@
 { config, pkgs, ... }:
 {
-
-    # Enable OpenGL
-    hardware.opengl = {
+    hardware.graphics = {
         enable = true;
-        driSupport = true;
-        driSupport32Bit = true;
+        enable32Bit = true;
         extraPackages = with pkgs; [
+            intel-ocl
+            intel-media-driver
+            intel-vaapi-driver
             vaapiVdpau
             libvdpau-va-gl
+            rocmPackages.clr.icd
+            clinfo
+            #      amdvlk
         ];
-        extraPackages32 = with pkgs.pkgsi686Linux; [ libva ];
-        setLdLibraryPath = true;
+        extraPackages32 = with pkgs.pkgsi686Linux; [
+            libva
+            amdvlk
+        ];
     };
 
-    environment.sessionVariables = {
-        LIBVA_DRIVER_NAME = "nvidia";
-        GBM_BACKEND = "nvidia-drm";
-        __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-    };
-
-    # Load nvidia driver for Xorg and Wayland
-    services.xserver.videoDrivers = ["nvidia"];
+    services.xserver.videoDrivers = [ "nvidia" ];
 
     hardware.nvidia = {
         modesetting.enable = true;
-
-        powerManagement.enable = true;
+        powerManagement.enable = false;
         powerManagement.finegrained = false;
-
-        open = false;
-
+        open = true;
         nvidiaSettings = true;
-
-        package = config.boot.kernelPackages.nvidiaPackages.latest;
+        package = config.boot.kernelPackages.nvidiaPackages.stable;
     };
-    
-    boot.kernelParams = [ 
-        "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
-    ];
-}
 
+    boot = {
+        kernelParams = [
+            "video=DP-1:2560x1440@60"
+            "video=DP-2:2560x1440@60"
+            "module_blacklist=amdgpu"
+        ];
+    };
+}

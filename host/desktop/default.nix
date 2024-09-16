@@ -1,53 +1,61 @@
 { pkgs, username, ... }:
 
 {
-	networking.hostName = "desktop";
+  networking.hostName = "desktop";
 
-	imports = [
-		./hardware.nix
-        ./hyprland.nix
-        ./gpu.nix
-        ./sound.nix
-	];
+  imports = [
+    ./hardware.nix
+    ./hyprland.nix
+    ./gpu.nix
+    ./sound.nix
+    ./ssh.nix
+  ];
 
-    boot.loader.systemd-boot.enable = true;
-    boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
 
-    users.users.ethanthoma = {
-        isNormalUser = true;
-        extraGroups = [ "networkmanager" "wheel" ];
-    };
-    services.getty.autologinUser = username;
+  nix.settings.trusted-users = [ "root" "ethanthoma" ];
 
-	environment.systemPackages = with pkgs; 
+  users.users.ethanthoma = {
+    isNormalUser = true;
+    extraGroups = [ "networkmanager" "wheel" ];
+    openssh.authorizedKeys.keys = [
+      "AAAAC3NzaC1lZDI1NTE5AAAAIMrmuBWb5KI1R0XN1b/R8uFxL9Bc2oILiU7xtJpBoOpz"
+    ];
+  };
+  services.getty.autologinUser = username;
+
+  environment.systemPackages = with pkgs;
     let
-        thorium = callPackage ./thorium.nix { };
-    in [
-		networkmanagerapplet
-		git
-		kitty
-		tmux 
-		mako
-		libnotify
-		swww
-		fuzzel
-		cliphist
-		wl-clipboard
-        bottom
-        pavucontrol
-        thorium
-	];
+      thorium = callPackage ./thorium.nix { };
+    in
+    [
+      networkmanagerapplet
+      git
+      kitty
+      tmux
+      mako
+      libnotify
+      swww
+      fuzzel
+      cliphist
+      wl-clipboard
+      bottom
+      lxqt.pavucontrol-qt
+      thorium
+      amdgpu_top
+    ];
 
-    networking.firewall.enable = false;
+  services.fwupd.enable = true;
 
-    hardware.bluetooth = {
-        enable = true;
-        powerOnBoot = true;
-    };
-    services.blueman.enable = true;
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+  };
+  services.blueman.enable = true;
 
-	time.timeZone = "America/Vancouver";
+  time.timeZone = "America/Vancouver";
 
-	system.stateVersion = "23.05";
+  system.stateVersion = "23.05";
 }
 

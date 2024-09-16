@@ -1,63 +1,72 @@
 {
-	description = "ethanthoma's nixos config";
+  description = "ethanthoma's nixos config";
 
-	inputs = {
-		nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+  nixConfig = {
+    extra-substituters = [
+      "https://nix-community.cachix.org"
+    ];
+    extra-trusted-public-keys = [
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+    ];
+  };
 
-		home-manager = {
-			url = "github:nix-community/home-manager";
-			inputs.nixpkgs.follows = "nixpkgs";
-		};
-	};
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-	outputs = { self, nixpkgs, home-manager, ... } @ inputs : 
-	let
-		system = "x86_64-linux";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+  };
 
-        username = "ethanthoma";
+  outputs = { self, nixpkgs, home-manager, ... } @ inputs:
+    let
+      system = "x86_64-linux";
 
-		pkgs = import nixpkgs {
-			inherit system;
-			config.allowUnfree = true;
-            config.nvidia.acceptLicense = true; 
+      username = "ethanthoma";
+
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
+
+      inherit (nixpkgs) lib;
+    in
+    {
+      nixosConfigurations = {
+        "desktop" = lib.nixosSystem {
+          inherit system pkgs;
+
+          specialArgs = { inherit inputs username; };
+
+          modules = [
+            ./host/desktop
+            {
+              nix.settings = {
+                experimental-features = [ "nix-command" "flakes" ];
+              };
+            }
+          ];
         };
+        "surface" = nixpkgs.lib.nixosSystem {
+          inherit system pkgs;
+          modules = [
+            ./host/surface
+          ];
+        };
+      };
 
-		inherit (nixpkgs) lib;
-	in {
-		nixosConfigurations = {
-			"desktop" = lib.nixosSystem {
-				inherit system pkgs;
+      homeConfigurations = {
+        "${username}" = home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
 
-				specialArgs = { inherit inputs username; };
+          lib = nixpkgs.lib // home-manager.lib;
 
-				modules = [
-                    ./host/desktop
-                    {
-                        nix.settings = {
-                            experimental-features = [ "nix-command" "flakes" ];
-                        };
-                    }
-				];
-			};
-            "surface" = nixpkgs.lib.nixosSystem {
-                inherit system pkgs;
-                modules = [
-                    ./host/surface
-                ];
-            };
-		};
-
-		homeConfigurations = {
-			"${username}" = home-manager.lib.homeManagerConfiguration {
-				inherit pkgs;
-
-				lib = nixpkgs.lib // home-manager.lib;
-
-				modules = [ 
-                    ./ethanthoma 
-                ];
-			};
-		};
-	};
+          modules = [
+            ./ethanthoma
+          ];
+        };
+      };
+    };
 }
 
