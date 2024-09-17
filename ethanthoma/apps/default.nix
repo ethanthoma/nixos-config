@@ -7,8 +7,11 @@ in
   imports = [
     ./direnv.nix
     ./eza.nix
+    ./fuzzel.nix
     ./fzf.nix
     ./git.nix
+    ./kitty.nix
+    ./mako.nix
     ./neovim.nix
     ./starship.nix
     ./tmux.nix
