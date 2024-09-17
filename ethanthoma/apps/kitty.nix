@@ -7,6 +7,7 @@
       italic_font = "auto";
       bold_italic_font = "auto";
       window_padding_width = 5;
+      background_opacity = "0.75";
     };
     theme = "Rosé Pine";
     keybindings = {

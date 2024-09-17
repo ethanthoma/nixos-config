@@ -21,12 +21,13 @@
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
+    portalPackage = pkgs.xdg-desktop-portal-hyprland;
   };
 
   services.dbus.enable = true;
   xdg.portal = {
     enable = true;
-    extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
+    extraPortals = with pkgs; [ xdg-desktop-portal-hyprland xdg-desktop-portal-gtk ];
   };
 
   programs.dconf.enable = true;
