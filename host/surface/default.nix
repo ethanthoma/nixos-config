@@ -1,31 +1,54 @@
 { pkgs, ... }:
 
 {
+  networking.hostName = "desktop";
+
   imports = [
-    <nixos-wsl/modules>
+    ./hardware.nix
+    ./swap.nix
+    ./networking.nix
+    ./hyprland.nix
+    ./sound.nix
   ];
 
-  wsl.enable = true;
-  wsl.defaultUser = "ethanthoma";
-  wsl.wslConf.network.hostname = "surface";
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "surface";
+  environment.systemPackages = with pkgs;
+    let
+      thorium = callPackage ./thorium.nix { };
+    in
+    [
+      networkmanagerapplet
+      git
+      tmux
+      libnotify
+      swww
+      cliphist
+      wl-clipboard
+      bottom
+      pavucontrol
+      thorium
+      bluetuith
+    ];
 
-  services.openssh.enable = true;
-
-  nix.package = pkgs.nixFlakes;
-  nix.extraOptions = ''
-    		experimental-features = nix-command flakes
-    	'';
-
-  programs.dconf.enable = true;
-
-  hardware.opengl.enable = true;
-
-  virtualisation.docker.enable = true;
-  users.extraGroups.docker.members = [ "ethanthoma" ];
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+  };
+  services.blueman.enable = true;
 
   time.timeZone = "America/Vancouver";
 
-  system.stateVersion = "23.11";
+  virtualisation.docker = {
+    enable = true;
+    enableOnBoot = true;
+    rootless = {
+      enable = true;
+      setSocketVariable = true;
+    };
+  };
+
+  system.stateVersion = "23.05";
 }
+
