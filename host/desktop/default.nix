@@ -1,4 +1,4 @@
-{ pkgs, username, ... }:
+{ pkgs, ... }:
 
 {
   networking.hostName = "desktop";
@@ -13,17 +13,6 @@
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-
-  nix.settings.trusted-users = [ "root" "ethanthoma" ];
-
-  users.users.ethanthoma = {
-    isNormalUser = true;
-    extraGroups = [ "networkmanager" "wheel" ];
-    openssh.authorizedKeys.keys = [
-      "AAAAC3NzaC1lZDI1NTE5AAAAIMrmuBWb5KI1R0XN1b/R8uFxL9Bc2oILiU7xtJpBoOpz"
-    ];
-  };
-  services.getty.autologinUser = username;
 
   environment.systemPackages = with pkgs;
     let
