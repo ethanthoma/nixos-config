@@ -1,9 +1,7 @@
 { pkgs, ... }:
 
 {
-  imports = [
-    ./font.nix
-  ];
+  imports = [ ./font.nix ];
 
   dconf.settings = {
     "org/gnome/desktop/interface" = {

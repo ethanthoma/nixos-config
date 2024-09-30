@@ -1,9 +1,7 @@
 { pkgs, ... }:
 
 {
-  home.packages = with pkgs; [
-    fzf
-  ];
+  home.packages = with pkgs; [ fzf ];
 
   programs.bash = {
     bashrcExtra = ''
@@ -18,4 +16,3 @@
     '';
   };
 }
-

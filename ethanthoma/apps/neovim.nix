@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   cfg = config.hm-neovim;
 in
@@ -34,6 +39,7 @@ in
         gcc
         python3
         gnumake
+        nixfmt-rfc-style
       ];
     };
 

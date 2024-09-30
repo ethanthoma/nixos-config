@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   cfg = config.hm-apps;
@@ -31,8 +36,12 @@ in
   };
 
   config = with cfg; {
-    hm-neovim = { inherit username homeDirectory; };
-    hm-tmux = { inherit username homeDirectory; };
+    hm-neovim = {
+      inherit username homeDirectory;
+    };
+    hm-tmux = {
+      inherit username homeDirectory;
+    };
     hm-zoxide.homeDirectory = homeDirectory;
 
     home.packages = with pkgs; [

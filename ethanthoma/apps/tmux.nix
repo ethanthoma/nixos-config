@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   cfg = config.hm-tmux;
 in
@@ -16,9 +21,7 @@ in
   };
 
   config = lib.mkIf (cfg.username != null && cfg.homeDirectory != null) {
-    home.packages = with pkgs; [
-      tmux
-    ];
+    home.packages = with pkgs; [ tmux ];
 
     home.activation =
       let
@@ -51,4 +54,3 @@ in
     };
   };
 }
-

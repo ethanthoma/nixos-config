@@ -14,7 +14,8 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  environment.systemPackages = with pkgs;
+  environment.systemPackages =
+    with pkgs;
     let
       thorium = callPackage ./thorium.nix { };
     in
@@ -51,4 +52,3 @@
 
   system.stateVersion = "23.05";
 }
-

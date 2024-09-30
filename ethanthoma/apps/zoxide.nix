@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   cfg = config.hm-zoxide;
 in
@@ -9,9 +14,7 @@ in
   };
 
   config = lib.mkIf (cfg.homeDirectory != null) {
-    home.packages = with pkgs; [
-      zoxide
-    ];
+    home.packages = with pkgs; [ zoxide ];
 
     programs.bash.bashrcExtra = ''
       export _ZO_DATA_DIR=${cfg.homeDirectory}/.config/zoxide
@@ -20,4 +23,3 @@ in
     '';
   };
 }
-
