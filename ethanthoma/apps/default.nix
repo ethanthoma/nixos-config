@@ -61,6 +61,7 @@ in
       unzip
       neofetch
       nix-index
+      brightnessctl
 
       # recording
       obs-studio

@@ -68,6 +68,10 @@
       guix_shell = {
         format = "\\[[$symbol]($style)\\]";
       };
+      haskell = {
+        format = "\\[[$symbol($version)]($style)\\]";
+        symbol = " ";
+      };
       julia = {
         format = "\\[[$symbol($version)]($style)\\]";
         symbol = " ";
