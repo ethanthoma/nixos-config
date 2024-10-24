@@ -62,6 +62,7 @@ in
       neofetch
       nix-index
       brightnessctl
+      jq
 
       # recording
       obs-studio
