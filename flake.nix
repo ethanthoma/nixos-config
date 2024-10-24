@@ -50,6 +50,8 @@
                 "ethanthoma"
               ];
 
+              users.extraGroups.docker.members = [ "username-with-access-to-socket" ];
+
               users.users.${username} = {
                 isNormalUser = true;
                 extraGroups = [

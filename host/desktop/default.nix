@@ -4,6 +4,7 @@
   networking.hostName = "desktop";
 
   imports = [
+    ./docker.nix
     ./hardware.nix
     ./hyprland.nix
     ./gpu.nix
