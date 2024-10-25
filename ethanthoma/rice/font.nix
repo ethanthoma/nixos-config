@@ -1,4 +1,4 @@
-{ home, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   fonts.fontconfig = {

@@ -28,7 +28,7 @@
       cliphist
       wl-clipboard
       bottom
-      pavucontrol
+      lxqt.pavucontrol-qt
       thorium
       bluetuith
     ];

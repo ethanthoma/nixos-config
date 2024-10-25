@@ -5,14 +5,14 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    rose-pine-hyprcursor.url = "github:ndom91/rose-pine-hyprcursor";
   };
 
   outputs =
-    inputs@{
-      self,
-      nixpkgs,
-      home-manager,
-      ...
+    inputs@{ self
+    , nixpkgs
+    , home-manager
+    , ...
     }:
     let
       system = "x86_64-linux";
@@ -21,89 +21,82 @@
 
       pkgs = import nixpkgs {
         inherit system;
-        config.allowUnfree = true;
-        config.nvidia.acceptLicense = true;
+        config = {
+          allowUnfree = true;
+          nvidia.acceptLicense = true;
+        };
       };
 
       inherit (nixpkgs) lib;
     in
     {
-      nixosConfigurations = {
-        desktop = lib.nixosSystem {
-          inherit system pkgs;
+      nixosConfigurations =
+        let
+          hosts = [ "desktop" "surface" ];
 
-          specialArgs = {
-            inherit inputs;
-          };
+          base = {
+            environment.systemPackages = [
+              inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
+            ];
 
-          modules = [
-            ./host/desktop
-            {
-              nix.settings.experimental-features = [
+            nix.settings = {
+              experimental-features = [
                 "nix-command"
                 "flakes"
               ];
-            }
-            {
-              nix.settings.trusted-users = [
+              trusted-users = [
                 "root"
-                "ethanthoma"
+                username
               ];
+            };
 
-              users.extraGroups.docker.members = [ "username-with-access-to-socket" ];
+            users.extraGroups.docker.members = [ "username-with-access-to-socket" ];
 
-              users.users.${username} = {
-                isNormalUser = true;
-                extraGroups = [
-                  "networkmanager"
-                  "wheel"
-                ];
-              };
-              services.getty.autologinUser = username;
-            }
-          ];
-        };
-        surface = lib.nixosSystem {
-          inherit system pkgs;
-
-          specialArgs = {
-            inherit inputs;
+            users.users.${username} = {
+              isNormalUser = true;
+              extraGroups = [
+                "networkmanager"
+                "wheel"
+                "audio"
+              ];
+            };
+            services.getty.autologinUser = username;
           };
 
-          modules = [
-            ./host/surface
-            {
-              nix.settings.experimental-features = [
-                "nix-command"
-                "flakes"
-              ];
-            }
-            {
-              nix.settings.trusted-users = [
-                "root"
-                "ethanthoma"
-              ];
+          createHost = name: {
+            inherit name;
+            value = lib.nixosSystem {
+              inherit system pkgs;
 
-              users.users.${username} = {
-                isNormalUser = true;
-                extraGroups = [
-                  "networkmanager"
-                  "wheel"
-                ];
+              specialArgs = {
+                inherit inputs;
               };
-              services.getty.autologinUser = username;
-            }
-          ];
-        };
-      };
+
+              modules = [
+                base
+                ./host/${name}
+              ];
+            };
+
+          };
+        in
+        builtins.listToAttrs (builtins.map createHost hosts);
 
       homeConfigurations = {
         ${username} = home-manager.lib.homeManagerConfiguration {
+
           inherit pkgs;
 
           lib = nixpkgs.lib // home-manager.lib;
 
-          modules = [ ./${username} ];
+          modules = [
+            ./${username}
+            {
+              home.packages = [
+                inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
+              ];
+            }
+          ];
         };
       };
 
