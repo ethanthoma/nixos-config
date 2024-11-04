@@ -10,7 +10,7 @@
       background_opacity = "0.75";
       confirm_os_window_close = 0;
     };
-    theme = "Rosé Pine";
+    themeFile = "rose-pine";
     keybindings = {
       "ctrl+c" = "copy_and_clear_or_interrupt";
       "ctrl+v" = "paste_from_clipboard";
