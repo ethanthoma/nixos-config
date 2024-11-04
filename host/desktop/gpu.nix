@@ -11,7 +11,7 @@
       libvdpau-va-gl
       rocmPackages.clr.icd
       clinfo
-      #      amdvlk
+      amdvlk
     ];
     extraPackages32 = with pkgs.pkgsi686Linux; [
       libva
@@ -34,7 +34,6 @@
     kernelParams = [
       "video=DP-1:2560x1440@60"
       "video=DP-2:2560x1440@60"
-      "module_blacklist=amdgpu"
     ];
   };
 }
