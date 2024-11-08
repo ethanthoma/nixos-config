@@ -49,6 +49,10 @@
         format = "\\[[$symbol($profile)(\\($region\\))(\\[$duration\\])]($style)\\]";
         symbol = "󰸏 ";
       };
+      bun = {
+        format = "\\[[$symbol($version)]($style)\\]";
+        symbol = "󰚅 ";
+      };
       c = {
         format = "\\[[$symbol($version(-$name))]($style)\\]";
         symbol = " ";
@@ -60,6 +64,10 @@
       gcloud = {
         format = "\\[[$symbol$account(\\($region\\))]($style)\\]";
         symbol = "󱇶 ";
+      };
+      gleam = {
+        format = "\\[[$symbol($version)]($style)\\]";
+        symbol = "󰦥 ";
       };
       golang = {
         format = "\\[[$symbol($version)]($style)\\]";
@@ -87,6 +95,14 @@
       nix_shell = {
         format = "\\[[$symbol$state( \\($name\\))]($style)\\]";
         symbol = "󱄅 ";
+      };
+      nodejs = {
+        detect_files = [
+          "package.json"
+          ".node-version"
+          "!bunfig.toml"
+          "!bun.lockb"
+        ];
       };
       ocaml = {
         format = "\\[[$symbol($version)(\\($switch_indicator$switch_name\\))]($style)\\]";
