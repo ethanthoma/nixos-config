@@ -63,6 +63,7 @@ in
       nix-index
       brightnessctl
       jq
+      nil
 
       # recording
       obs-studio
