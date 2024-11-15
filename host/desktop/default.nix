@@ -16,27 +16,21 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
-  environment.systemPackages =
-    with pkgs;
-    let
-      thorium = callPackage ./thorium.nix { };
-    in
-    [
-      networkmanagerapplet
-      git
-      kitty
-      tmux
-      mako
-      libnotify
-      swww
-      fuzzel
-      cliphist
-      wl-clipboard
-      bottom
-      lxqt.pavucontrol-qt
-      thorium
-      amdgpu_top
-    ];
+  environment.systemPackages = with pkgs; [
+    networkmanagerapplet
+    git
+    kitty
+    tmux
+    mako
+    libnotify
+    swww
+    fuzzel
+    cliphist
+    wl-clipboard
+    bottom
+    lxqt.pavucontrol-qt
+    amdgpu_top
+  ];
 
   services.fwupd.enable = true;
 

@@ -2,11 +2,11 @@
 
 pkgs.stdenv.mkDerivation rec {
   pname = "thorium-browser";
-  version = "117.0.5938.157";
+  version = "128.0.6613.189";
 
   src = pkgs.fetchurl {
-    url = "https://github.com/Alex313031/thorium/releases/download/M${version}/thorium-browser_${version}_amd64.deb";
-    hash = "sha256-muNBYP6832PmP0et9ESaRpd/BIwYZmwdkHhsMNBLQE4=";
+    url = "https://github.com/Alex313031/thorium/releases/download/M${version}/thorium-browser_${version}_AVX2.deb";
+    hash = "sha256-oid72E4n9jAQsCUrztlyj56Gd0+pz735y6b5COMA4tg=";
   };
 
   nativeBuildInputs = with pkgs; [

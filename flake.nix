@@ -9,10 +9,11 @@
   };
 
   outputs =
-    inputs@{ self
-    , nixpkgs
-    , home-manager
-    , ...
+    inputs@{
+      self,
+      nixpkgs,
+      home-manager,
+      ...
     }:
     let
       system = "x86_64-linux";
@@ -32,9 +33,16 @@
     {
       nixosConfigurations =
         let
-          hosts = [ "desktop" "surface" ];
+          hosts = [
+            "desktop"
+            "surface"
+          ];
 
           base = {
+            imports = [
+              ./host/common
+            ];
+
             environment.systemPackages = [
               inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
             ];

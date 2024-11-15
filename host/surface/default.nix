@@ -14,24 +14,18 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  environment.systemPackages =
-    with pkgs;
-    let
-      thorium = callPackage ./thorium.nix { };
-    in
-    [
-      networkmanagerapplet
-      git
-      tmux
-      libnotify
-      swww
-      cliphist
-      wl-clipboard
-      bottom
-      lxqt.pavucontrol-qt
-      thorium
-      bluetuith
-    ];
+  environment.systemPackages = with pkgs; [
+    networkmanagerapplet
+    git
+    tmux
+    libnotify
+    swww
+    cliphist
+    wl-clipboard
+    bottom
+    lxqt.pavucontrol-qt
+    bluetuith
+  ];
 
   hardware.bluetooth = {
     enable = true;
