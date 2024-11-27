@@ -22,7 +22,7 @@
       "sd_mod"
     ];
     initrd.kernelModules = [ ];
-    kernelModules = [ "hp-wmi" ];
+    kernelModules = [ "kvm-amd" ];
     extraModulePackages = [ ];
     kernelPackages = pkgs.linuxPackages_latest;
   };
@@ -35,6 +35,10 @@
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/C711-E14B";
     fsType = "vfat";
+    options = [
+      "fmask=0022"
+      "dmask=0022"
+    ];
   };
 
   swapDevices = [ ];

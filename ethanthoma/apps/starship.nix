@@ -57,6 +57,10 @@
         format = "\\[[$symbol($version(-$name))]($style)\\]";
         symbol = " ";
       };
+      deno = {
+        format = "\\[[$symbol($version)]($style)\\]";
+        symbol = " ";
+      };
       docker_context = {
         format = "\\[[$symbol$context]($style)\\]";
         symbol = "󰡨 ";
@@ -126,6 +130,10 @@
       scala = {
         format = "\\[[$symbol($version)]($style)\\]";
         symbol = " ";
+      };
+      terraform = {
+        format = "\\[[$symbol($version)]($style)\\]";
+        symbol = "󱁢 ";
       };
       zig = {
         format = "\\[[$symbol($version)]($style)\\]";
