@@ -58,8 +58,6 @@
               ];
             };
 
-            users.extraGroups.docker.members = [ "username-with-access-to-socket" ];
-
             users.users.${username} = {
               isNormalUser = true;
               extraGroups = [
@@ -73,6 +71,7 @@
 
           createHost = name: {
             inherit name;
+
             value = lib.nixosSystem {
               inherit system pkgs;
 
@@ -83,6 +82,9 @@
               modules = [
                 base
                 ./host/${name}
+                {
+                  networking.hostName = name;
+                }
               ];
             };
 
@@ -92,7 +94,6 @@
 
       homeConfigurations = {
         ${username} = home-manager.lib.homeManagerConfiguration {
-
           inherit pkgs;
 
           lib = nixpkgs.lib // home-manager.lib;
@@ -107,6 +108,5 @@
           ];
         };
       };
-
     };
 }

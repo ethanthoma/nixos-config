@@ -1,12 +1,6 @@
 { pkgs, ... }:
 
 {
-  environment.systemPackages = with pkgs; [
-    grim
-    slurp
-    imagemagick
-  ];
-
   services.greetd = {
     enable = true;
     settings = rec {
@@ -18,20 +12,35 @@
     };
   };
 
-  programs = {
-    hyprland = {
-      enable = true;
-      xwayland.enable = true;
-    };
+  environment.systemPackages = [
+    pkgs.grim
+    pkgs.slurp
+    pkgs.imagemagick
 
-    dconf.enable = true;
+    pkgs.mako
+    pkgs.libnotify
+    pkgs.swww
+    pkgs.fuzzel
+    pkgs.cliphist
+    pkgs.wl-clipboard
+  ];
+
+  programs.hyprland = {
+    enable = true;
+    xwayland.enable = true;
+    portalPackage = pkgs.xdg-desktop-portal-hyprland;
   };
 
   services.dbus.enable = true;
   xdg.portal = {
     enable = true;
-    extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-hyprland
+      xdg-desktop-portal-gtk
+    ];
   };
+
+  programs.dconf.enable = true;
 
   environment.sessionVariables = {
     WLR_NO_HARDWARE_CURSORS = "1";

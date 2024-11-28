@@ -1,6 +1,10 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
+  environment.systemPackages = [
+    pkgs.lxqt.pavucontrol-qt
+  ];
+
   services.pipewire = {
     enable = true;
     alsa.enable = true;
