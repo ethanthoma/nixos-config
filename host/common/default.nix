@@ -4,6 +4,7 @@
   imports = [
     ./bluetooth.nix
     ./hyprland.nix
+    ./ssh.nix
     ./sound.nix
   ];
 
