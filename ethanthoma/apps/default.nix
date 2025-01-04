@@ -14,12 +14,13 @@ in
     ./eza.nix
     ./fuzzel.nix
     ./fzf.nix
+    ./ghostty.nix
     ./git.nix
-    ./kitty.nix
     ./mako.nix
     ./neovim.nix
     ./starship.nix
     ./tmux.nix
+    ./waybar.nix
     ./zoxide.nix
   ];
 
@@ -64,6 +65,7 @@ in
       brightnessctl
       jq
       nil
+      dust
 
       # recording
       obs-studio

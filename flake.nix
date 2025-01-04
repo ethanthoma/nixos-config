@@ -47,15 +47,31 @@
               inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
             ];
 
-            nix.settings = {
-              experimental-features = [
-                "nix-command"
-                "flakes"
-              ];
-              trusted-users = [
-                "root"
-                username
-              ];
+            nix = {
+              gc = {
+                automatic = true;
+                dates = "daily";
+                options = "--delete-older-than 7d";
+              };
+
+              optimise.automatic = true;
+
+              settings = {
+                auto-optimise-store = true;
+                experimental-features = [
+                  "nix-command"
+                  "flakes"
+                ];
+                trusted-users = [
+                  "root"
+                  username
+                ];
+              };
+
+              extraOptions = ''
+                min-free = ${toString (1024 * 1024 * 1024)}
+                max-free = ${toString (1024 * 1024 * 1024)}
+              '';
             };
 
             users.users.${username} = {

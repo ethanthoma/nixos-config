@@ -14,7 +14,7 @@
     [
       thorium
 
-      pkgs.kitty
+      pkgs.ghostty
       pkgs.bottom
     ];
 }
