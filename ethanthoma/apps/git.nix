@@ -1,8 +1,13 @@
 { pkgs, ... }:
 
 {
+  home.packages = [
+    pkgs.git-lfs
+  ];
+
   programs.git = {
     enable = true;
+    lfs.enable = true;
     package = pkgs.gitFull;
     userName = "Ethan Thoma";
     userEmail = "ethanthoma@gmail.com";

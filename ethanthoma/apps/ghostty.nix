@@ -6,6 +6,8 @@
 
   home.file.".config/ghostty/config" = {
     source = pkgs.writeText "config" ''
+      keybind = clear
+
       theme = rose-pine
 
       background-opacity = 0.75

@@ -6,6 +6,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     rose-pine-hyprcursor.url = "github:ndom91/rose-pine-hyprcursor";
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
   };
 
   outputs =
@@ -13,6 +14,7 @@
       self,
       nixpkgs,
       home-manager,
+      nixos-hardware,
       ...
     }:
     let
@@ -101,6 +103,7 @@
                 {
                   networking.hostName = name;
                 }
+                (if name == "surface" then nixos-hardware.nixosModules.microsoft-surface-pro-9 else { })
               ];
             };
 
