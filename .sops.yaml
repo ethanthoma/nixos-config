@@ -1,0 +1,9 @@
+keys:
+  - &user_ethanthoma age17mlzh35sw9n0eehe3z3m6ftfl5wh4jckplnqpcm5gtwk3ky0v9gq3hhdd6
+  - &host_surface    age1lxlxl5kcureat9mrefdc63atpaeg5k3ggs4wa3yfhgrt0sft44jsgnanlp
+creation_rules:
+  - path_regex: keys/[^/]+_secrets\.(yaml|json|env|ini)$
+    key_groups:
+      - age:
+          - *user_ethanthoma
+          - *host_surface

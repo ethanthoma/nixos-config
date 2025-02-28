@@ -1,2 +1,19 @@
-cachix*
-result
+*
+
+!.gitignore
+!flake.nix
+!flake.lock
+
+# hosts
+!host/
+!host/**/*
+
+# users
+!ethanthoma/
+!ethanthoma/**/*
+
+# secrets
+!sops.nix
+!.sops.yaml
+!keys/
+!keys/*.enc.*

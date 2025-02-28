@@ -65,6 +65,10 @@
         format = "\\[[$symbol$context]($style)\\]";
         symbol = "󰡨 ";
       };
+      elixir = {
+        format = "\\[[$symbol($version \(OTP $otp_version\))]($style)\\]";
+        symbol = " ";
+      };
       gcloud = {
         format = "\\[[$symbol$account(\\($region\\))]($style)\\]";
         symbol = "󱇶 ";

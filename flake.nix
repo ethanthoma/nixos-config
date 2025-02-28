@@ -7,6 +7,7 @@
     };
     rose-pine-hyprcursor.url = "github:ndom91/rose-pine-hyprcursor";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    sops-nix.url = "github:Mic92/sops-nix";
   };
 
   outputs =
@@ -15,6 +16,7 @@
       nixpkgs,
       home-manager,
       nixos-hardware,
+      sops-nix,
       ...
     }:
     let
@@ -99,7 +101,9 @@
 
               modules = [
                 base
+                sops-nix.nixosModules.sops
                 ./host/${name}
+                ./sops.nix
                 {
                   networking.hostName = name;
                 }
@@ -123,7 +127,9 @@
               home.packages = [
                 inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
               ];
+
             }
+            sops-nix.homeManagerModules.sops
           ];
         };
       };
