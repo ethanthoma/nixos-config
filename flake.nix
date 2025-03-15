@@ -49,6 +49,7 @@
 
             environment.systemPackages = [
               inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
+              pkgs.uutils-coreutils-noprefix
             ];
 
             nix = {

@@ -105,6 +105,7 @@
         symbol = "󱄅 ";
       };
       nodejs = {
+        format = "\\[[$symbol($version)]($style)\\]";
         detect_files = [
           "package.json"
           ".node-version"
