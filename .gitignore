@@ -11,9 +11,3 @@
 # users
 !ethanthoma/
 !ethanthoma/**/*
-
-# secrets
-!sops.nix
-!.sops.yaml
-!keys/
-!keys/*.enc.*
