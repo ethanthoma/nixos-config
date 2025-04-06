@@ -4,7 +4,6 @@
   imports = [
     ./docker.nix
     ./hardware.nix
-    ./networking.nix
     ./power.nix
     ./steam.nix
   ];

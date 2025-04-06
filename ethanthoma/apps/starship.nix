@@ -81,6 +81,10 @@
         format = "\\[[$symbol($version)]($style)\\]";
         symbol = "󰟓 ";
       };
+      gradle = {
+        format = "\\[[$symbol($version)]($style)\\]";
+        symbol = " ";
+      };
       guix_shell = {
         format = "\\[[$symbol]($style)\\]";
       };
