@@ -20,6 +20,8 @@
       "usbhid"
       "usb_storage"
       "sd_mod"
+      "iwlmvm"
+      "iwlwifi"
     ];
     initrd.kernelModules = [ ];
     kernelModules = [ "kvm-amd" ];

@@ -92,6 +92,10 @@
         format = "\\[[$symbol($version)]($style)\\]";
         symbol = " ";
       };
+      java = {
+        format = "\\[[$symbol($version)]($style)\\]";
+        symbol = " ";
+      };
       julia = {
         format = "\\[[$symbol($version)]($style)\\]";
         symbol = " ";
