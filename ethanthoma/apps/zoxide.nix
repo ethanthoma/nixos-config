@@ -14,12 +14,12 @@ in
   };
 
   config = lib.mkIf (cfg.homeDirectory != null) {
-    home.packages = with pkgs; [ zoxide ];
+    home.packages = [ pkgs.zoxide ];
 
-    programs.bash.bashrcExtra = ''
-      export _ZO_DATA_DIR=${cfg.homeDirectory}/.config/zoxide
-      export _ZO_RESOLVE_SYMLINKS=1
-      eval "$(zoxide init bash --cmd cd)"
-    '';
+    programs.zoxide = {
+      enable = true;
+      enableBashIntegration = true;
+      options = [ "--cmd cd" ];
+    };
   };
 }
