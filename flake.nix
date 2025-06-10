@@ -15,6 +15,9 @@
       self,
       ...
     }:
+    let
+      username = "ethanthoma";
+    in
     inputs.flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [ "x86_64-linux" ];
 
@@ -30,26 +33,52 @@
           };
         };
 
-      cfg.hosts =
-        let
-          username = "ethanthoma";
-        in
-        {
-          "desktop" = {
-            system = "x86_64-linux";
-            inherit username;
-          };
-
-          "surface" = {
-            system = "x86_64-linux";
-            inherit username;
-          };
+      cfg.hosts = {
+        "desktop" = {
+          system = "x86_64-linux";
+          inherit username;
         };
+
+        "surface" = {
+          system = "x86_64-linux";
+          inherit username;
+        };
+      };
 
       imports =
         let
           modules = builtins.attrNames (builtins.readDir ./flake-parts);
         in
         builtins.map (filename: ./flake-parts/${filename}) modules;
+
+      flake = {
+        homeConfigurations =
+          let
+            pkgs = import inputs.nixpkgs {
+              system = "x86_64-linux";
+              config = {
+                allowUnfree = true;
+                nvidia.acceptLicense = true;
+              };
+            };
+          in
+          {
+            ${username} = inputs.home-manager.lib.homeManagerConfiguration {
+              inherit pkgs;
+
+              lib = inputs.nixpkgs.lib // inputs.home-manager.lib;
+
+              modules = [
+                ./${username}
+                {
+                  home.packages = [
+                    inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
+                  ];
+
+                }
+              ];
+            };
+          };
+      };
     };
 }
