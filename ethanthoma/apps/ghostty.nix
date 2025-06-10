@@ -10,7 +10,7 @@
 
       theme = rose-pine
 
-      background-opacity = 0.75
+      background-opacity = 0.95
 
       confirm-close-surface = false
 

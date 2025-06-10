@@ -1,6 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    flake-parts.url = "github:hercules-ci/flake-parts";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -12,122 +13,43 @@
   outputs =
     inputs@{
       self,
-      nixpkgs,
-      home-manager,
-      nixos-hardware,
-      rose-pine-hyprcursor,
+      ...
     }:
-    let
-      system = "x86_64-linux";
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = [ "x86_64-linux" ];
 
-      username = "ethanthoma";
-
-      pkgs = import nixpkgs {
-        inherit system;
-        config = {
-          allowUnfree = true;
-          nvidia.acceptLicense = true;
+      perSystem =
+        { lib, system, ... }:
+        {
+          _module.args.pkgs = import inputs.nixpkgs {
+            inherit system;
+            config = {
+              allowUnfree = true;
+              nvidia.acceptLicense = true;
+            };
+          };
         };
-      };
 
-      inherit (nixpkgs) lib;
-    in
-    {
-      nixosConfigurations =
+      cfg.hosts =
         let
-          hosts = [
-            "desktop"
-            "surface"
-          ];
-
-          base = {
-            imports = [
-              ./host/common
-            ];
-
-            environment.systemPackages = [
-              inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
-              pkgs.uutils-coreutils-noprefix
-            ];
-
-            nix = {
-              gc = {
-                automatic = true;
-                dates = "daily";
-                options = "--delete-older-than 7d";
-              };
-
-              optimise.automatic = true;
-
-              settings = {
-                auto-optimise-store = true;
-                experimental-features = [
-                  "nix-command"
-                  "flakes"
-                ];
-                trusted-users = [
-                  "root"
-                  username
-                ];
-              };
-
-              extraOptions = ''
-                min-free = ${toString (1024 * 1024 * 1024)}
-                max-free = ${toString (1024 * 1024 * 1024)}
-              '';
-            };
-
-            users.users.${username} = {
-              isNormalUser = true;
-              extraGroups = [
-                "networkmanager"
-                "wheel"
-                "audio"
-              ];
-            };
-            services.getty.autologinUser = username;
-          };
-
-          createHost = name: {
-            inherit name;
-
-            value = lib.nixosSystem {
-              inherit system pkgs;
-
-              specialArgs = {
-                inherit inputs;
-              };
-
-              modules = [
-                base
-                ./host/${name}
-                {
-                  networking.hostName = name;
-                }
-                (if name == "surface" then nixos-hardware.nixosModules.microsoft-surface-pro-9 else { })
-              ];
-            };
-
-          };
+          username = "ethanthoma";
         in
-        builtins.listToAttrs (builtins.map createHost hosts);
+        {
+          "desktop" = {
+            system = "x86_64-linux";
+            inherit username;
+          };
 
-      homeConfigurations = {
-        ${username} = home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-
-          lib = nixpkgs.lib // home-manager.lib;
-
-          modules = [
-            ./${username}
-            {
-              home.packages = [
-                inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
-              ];
-
-            }
-          ];
+          "surface" = {
+            system = "x86_64-linux";
+            inherit username;
+          };
         };
-      };
+
+      imports =
+        let
+          modules = builtins.attrNames (builtins.readDir ./flake-parts);
+        in
+        builtins.map (filename: ./flake-parts/${filename}) modules;
     };
 }

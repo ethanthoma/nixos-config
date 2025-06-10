@@ -11,3 +11,7 @@
 # users
 !ethanthoma/
 !ethanthoma/**/*
+
+# flake-parts
+!flake-parts/
+!flake-parts/**/*
