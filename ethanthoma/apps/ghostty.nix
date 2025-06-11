@@ -10,8 +10,6 @@
 
       theme = rose-pine
 
-      background-opacity = 0.95
-
       confirm-close-surface = false
 
       window-padding-balance = true
