@@ -9,6 +9,8 @@
     ./sound.nix
   ];
 
+  environment.variables.QT_BEARER_POLL_TIMEOUT = "-1";
+
   environment.systemPackages =
     let
       thorium = pkgs.callPackage ./thorium.nix { };
