@@ -45,31 +45,32 @@ in
     };
     hm-zoxide.homeDirectory = homeDirectory;
 
-    home.packages = with pkgs; [
-      gh
-      tre
-      wget
-      zip
-      entr
-      rm-improved
-      yq-go
-      bat
-      ripgrep
-      trash-cli
-      fd
-      sd
-      wl-clipboard
-      unzip
-      neofetch
-      nix-index
-      brightnessctl
-      jq
-      nil
-      dust
+    home.packages = [
+      pkgs.gh
+      pkgs.tre
+      pkgs.wget
+      pkgs.zip
+      pkgs.entr
+      pkgs.rm-improved
+      pkgs.yq-go
+      pkgs.bat
+      pkgs.ripgrep
+      pkgs.trash-cli
+      pkgs.fd
+      pkgs.sd
+      pkgs.wl-clipboard
+      pkgs.unzip
+      pkgs.neofetch
+      pkgs.nix-index
+      pkgs.brightnessctl
+      pkgs.jq
+      pkgs.nil
+      pkgs.dust
 
       # recording
-      obs-studio
-      vlc
+      pkgs.obs-studio
+      pkgs.vlc
+      pkgs.mdformat
     ];
 
     programs.bash = {

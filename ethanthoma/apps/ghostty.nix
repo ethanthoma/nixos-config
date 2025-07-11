@@ -21,8 +21,10 @@
 
       keybind = unconsumed:ctrl+shift+c=copy_to_clipboard
       keybind = unconsumed:ctrl+v=paste_from_clipboard
+      keybind = ctrl+shift+r=reload_config
 
-      font-family = JetBrains Mono
+      font-family = MonaspiceNe Nerd Font Mono
+      font-size = 12
       minimum-contrast = 3
     '';
   };

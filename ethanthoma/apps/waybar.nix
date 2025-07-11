@@ -115,7 +115,7 @@
           background: @base;
           border-bottom: 2px solid @gold;
           color: @text;
-          font-family: JetBrainsMono Nerd Font Mono;
+          font-family: Monaspace Neon;
       }
 
       window#waybar > * {
