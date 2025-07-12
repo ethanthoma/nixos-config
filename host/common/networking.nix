@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 {
   networking = {
     networkmanager = {
@@ -6,6 +6,9 @@
       wifi.backend = "iwd";
       unmanaged = [
         "wlan1"
+      ];
+      plugins = [
+        pkgs.networkmanager-openconnect
       ];
     };
     wireless = {
