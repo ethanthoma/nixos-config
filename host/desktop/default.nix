@@ -6,6 +6,7 @@
     ./hardware.nix
     ./gpu.nix
     ./moonlander.nix
+    ./steam.nix
   ];
 
   boot.loader.systemd-boot.enable = true;

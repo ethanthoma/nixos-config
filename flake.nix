@@ -11,10 +11,7 @@
   };
 
   outputs =
-    inputs@{
-      self,
-      ...
-    }:
+    inputs@{ self, ... }:
     let
       username = "ethanthoma";
     in

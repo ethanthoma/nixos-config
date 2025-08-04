@@ -70,7 +70,10 @@ in
       # recording
       pkgs.obs-studio
       pkgs.vlc
+
+      # docs
       pkgs.mdformat
+      pkgs.python313Packages.mdformat-tables
     ];
 
     programs.bash = {

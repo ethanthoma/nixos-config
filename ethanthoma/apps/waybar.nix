@@ -28,7 +28,7 @@
         };
         "pulseaudio" = {
           tooltip = false;
-          format = "{icon} {volume}%  {format_source}";
+          format = "{icon}  {volume}%  {format_source}";
           format-bluetooth = "{icon} {volume}%  {format_source}";
           format-bluetooth-muted = "{icon} 󰝟 0%  {format_source}";
           format-icons = {
@@ -37,9 +37,9 @@
             headset = "";
             portable = "";
             default = [
-              ""
-              ""
-              ""
+              " "
+              " "
+              " "
             ];
           };
           format-muted = "󰝟 0%  {format_source}";

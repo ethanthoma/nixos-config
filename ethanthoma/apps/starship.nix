@@ -17,7 +17,7 @@
       };
       directory = {
         format = "\\[[$read_only]($read_only_style)[$path]($style)\\]";
-        read_only = " ";
+        read_only = "";
       };
 
       os = {
@@ -36,7 +36,7 @@
 
       package = {
         format = "\\[[$symbol$version]($style)\\]";
-        symbol = " ";
+        symbol = "";
       };
       git_branch = {
         format = "\\[[$symbol$branch]($style)\\]";
@@ -47,70 +47,70 @@
 
       aws = {
         format = "\\[[$symbol($profile)(\\($region\\))(\\[$duration\\])]($style)\\]";
-        symbol = "󰸏 ";
+        symbol = "󰸏";
       };
       bun = {
         format = "\\[[$symbol($version)]($style)\\]";
-        symbol = "󰚅 ";
+        symbol = "󰚅";
       };
       c = {
         format = "\\[[$symbol($version(-$name))]($style)\\]";
-        symbol = " ";
+        symbol = "";
       };
       deno = {
         format = "\\[[$symbol($version)]($style)\\]";
-        symbol = " ";
+        symbol = "";
       };
       docker_context = {
         format = "\\[[$symbol$context]($style)\\]";
-        symbol = "󰡨 ";
+        symbol = "󰡨";
       };
       elixir = {
         format = "\\[[$symbol($version \(OTP $otp_version\))]($style)\\]";
-        symbol = " ";
+        symbol = "";
       };
       gcloud = {
         format = "\\[[$symbol$account(\\($region\\))]($style)\\]";
-        symbol = "󱇶 ";
+        symbol = "󱇶";
       };
       gleam = {
         format = "\\[[$symbol($version)]($style)\\]";
-        symbol = "󰦥 ";
+        symbol = "󰦥";
       };
       golang = {
         format = "\\[[$symbol($version)]($style)\\]";
-        symbol = "󰟓 ";
+        symbol = "󰟓";
       };
       gradle = {
         format = "\\[[$symbol($version)]($style)\\]";
-        symbol = " ";
+        symbol = "";
       };
       guix_shell = {
         format = "\\[[$symbol]($style)\\]";
       };
       haskell = {
         format = "\\[[$symbol($version)]($style)\\]";
-        symbol = " ";
+        symbol = "";
       };
       java = {
         format = "\\[[$symbol($version)]($style)\\]";
-        symbol = " ";
+        symbol = "";
       };
       julia = {
         format = "\\[[$symbol($version)]($style)\\]";
-        symbol = " ";
+        symbol = "";
       };
       kubernetes = {
         format = "\\[[$symbol$context( \\($namespace\\))]($style)\\]";
-        symbol = "󱃾 ";
+        symbol = "󱃾";
       };
       lua = {
         format = "\\[[$symbol($version)]($style)\\]";
-        symbol = " ";
+        symbol = "";
       };
       nix_shell = {
         format = "\\[[$symbol$state( \\($name\\))]($style)\\]";
-        symbol = "󱄅 ";
+        symbol = "󱄅";
       };
       nodejs = {
         format = "\\[[$symbol($version)]($style)\\]";
@@ -123,34 +123,34 @@
       };
       ocaml = {
         format = "\\[[$symbol($version)(\\($switch_indicator$switch_name\\))]($style)\\]";
-        symbol = " ";
+        symbol = "";
       };
       pulumi = {
         format = "\\[[$symbol$stack]($style)\\]";
       };
       python = {
         format = "\\[[$symbol$pyenv_prefix($version)(\\($virtualenv\\))]($style)\\]";
-        symbol = " ";
+        symbol = "";
       };
       rlang = {
         format = "\\[[$symbol($version)]($style)\\]";
-        symbol = " ";
+        symbol = "";
       };
       rust = {
         format = "\\[[$symbol($version)]($style)\\]";
-        symbol = " ";
+        symbol = "";
       };
       scala = {
         format = "\\[[$symbol($version)]($style)\\]";
-        symbol = " ";
+        symbol = "";
       };
       terraform = {
         format = "\\[[$symbol($version)]($style)\\]";
-        symbol = "󱁢 ";
+        symbol = "󱁢";
       };
       zig = {
         format = "\\[[$symbol($version)]($style)\\]";
-        symbol = " ";
+        symbol = "";
       };
 
     };
