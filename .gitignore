@@ -9,9 +9,9 @@
 !host/**/*
 
 # users
-!ethanthoma/
-!ethanthoma/**/*
+!users/
+!users/**/*
 
-# flake-parts
-!flake-parts/
-!flake-parts/**/*
+# modules
+!modules/
+!modules/**/*

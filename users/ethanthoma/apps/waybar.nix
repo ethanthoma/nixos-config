@@ -22,9 +22,9 @@
           "battery"
         ];
         "clock" = {
+          on-click = "";
           tooltip = false;
-          format-alt = "{:%Y-%m-%d}";
-          tooltip-format = "{:%Y-%m-%d | %H:%M}";
+          format = "{:%d %b %R}";
         };
         "pulseaudio" = {
           tooltip = false;
@@ -48,7 +48,7 @@
           on-click-right = "pactl set-source-mute @DEFAULT_SOURCE@ toggle";
         };
         "network" = {
-          format-wifi = "{icon} {essid}";
+          format-wifi = "{icon}  {essid}";
           tooltip = false;
           format-icons = [
             "󰤯"

@@ -12,70 +12,30 @@
 
   outputs =
     inputs@{ self, ... }:
-    let
-      username = "ethanthoma";
-    in
     inputs.flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [ "x86_64-linux" ];
 
-      perSystem =
-        { lib, system, ... }:
-        {
-          _module.args.pkgs = import inputs.nixpkgs {
-            inherit system;
-            config = {
-              allowUnfree = true;
-              nvidia.acceptLicense = true;
-            };
-          };
-        };
+      imports = builtins.map (filename: ./modules/${filename}) (
+        builtins.attrNames (builtins.readDir ./modules)
+      );
 
-      cfg.hosts = {
+      flake.users = {
+        "ethanthoma" = { };
+      };
+
+      flake.hosts = {
         "desktop" = {
           system = "x86_64-linux";
-          inherit username;
+          users = [ "ethanthoma" ];
         };
 
         "surface" = {
           system = "x86_64-linux";
-          inherit username;
+          users = [ "ethanthoma" ];
+          extraModules = [
+            inputs.nixos-hardware.nixosModules.microsoft-surface-pro-9
+          ];
         };
-      };
-
-      imports =
-        let
-          modules = builtins.attrNames (builtins.readDir ./flake-parts);
-        in
-        builtins.map (filename: ./flake-parts/${filename}) modules;
-
-      flake = {
-        homeConfigurations =
-          let
-            pkgs = import inputs.nixpkgs {
-              system = "x86_64-linux";
-              config = {
-                allowUnfree = true;
-                nvidia.acceptLicense = true;
-              };
-            };
-          in
-          {
-            ${username} = inputs.home-manager.lib.homeManagerConfiguration {
-              inherit pkgs;
-
-              lib = inputs.nixpkgs.lib // inputs.home-manager.lib;
-
-              modules = [
-                ./${username}
-                {
-                  home.packages = [
-                    inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
-                  ];
-
-                }
-              ];
-            };
-          };
       };
     };
 }
