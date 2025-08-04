@@ -25,24 +25,39 @@ in
     };
   };
 
-  config.flake.homeConfigurations = withSystem "x86_64-linux" (
-    { pkgs, ... }:
-    mapAttrs (
-      username: userConfig:
-      inputs.home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
+  config.flake.homeConfigurations =
+    let
+      systems = lib.unique (lib.attrValues (mapAttrs (_: host: host.system) config.flake.hosts));
 
-        lib = inputs.nixpkgs.lib // inputs.home-manager.lib;
+      systemConfigs = lib.genAttrs systems (
+        system:
+        withSystem system (
+          { pkgs, ... }:
+          mapAttrs (
+            username: userConfig:
+            inputs.home-manager.lib.homeManagerConfiguration {
+              inherit pkgs;
 
-        modules = [
-          ../users/${username}
-          {
-            home.packages = [
-              inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
-            ];
-          }
-        ];
-      }
-    ) config.flake.users
-  );
+              lib = inputs.nixpkgs.lib // inputs.home-manager.lib;
+
+              modules = [
+                ../users/${username}
+                {
+                  home.packages = [
+                    inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
+                  ];
+                }
+              ];
+            }
+          ) config.flake.users
+        )
+      );
+    in
+    lib.foldl' (
+      acc: system:
+      acc
+      // (lib.mapAttrs' (
+        username: config: lib.nameValuePair "${username}@${system}" config
+      ) systemConfigs.${system})
+    ) { } systems;
 }
