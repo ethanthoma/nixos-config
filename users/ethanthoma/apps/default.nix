@@ -85,6 +85,7 @@ in
         # rip (rm improved)
         export GRAVEYARD=${homeDirectory}/.config/rip/graveyard
 
+        alias rm='rip'
         alias cat='bat'
         alias find='fd'
       '';
