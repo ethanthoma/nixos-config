@@ -24,6 +24,8 @@
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
+  hardware.microsoft-surface.kernelVersion = "stable";
+
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/0d010186-6d12-4657-91bc-2ca3bc42c904";
     fsType = "ext4";
