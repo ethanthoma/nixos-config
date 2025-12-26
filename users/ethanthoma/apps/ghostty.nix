@@ -8,7 +8,7 @@
     source = pkgs.writeText "config" ''
       keybind = clear
 
-      theme = rose-pine
+      theme = Rose Pine
 
       confirm-close-surface = false
 

@@ -26,6 +26,17 @@
 
   hardware.microsoft-surface.kernelVersion = "stable";
 
+  # Disable Rust support in kernel to avoid build issues
+  boot.kernelPatches = [
+    {
+      name = "disable-rust";
+      patch = null;
+      structuredExtraConfig = with lib.kernel; {
+        RUST = lib.mkForce no;
+      };
+    }
+  ];
+
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/0d010186-6d12-4657-91bc-2ca3bc42c904";
     fsType = "ext4";

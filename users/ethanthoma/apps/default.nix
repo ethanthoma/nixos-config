@@ -10,6 +10,7 @@ let
 in
 {
   imports = [
+    ./claude.nix
     ./direnv.nix
     ./eza.nix
     ./fuzzel.nix
@@ -66,6 +67,7 @@ in
       pkgs.jq
       pkgs.nil
       pkgs.dust
+      pkgs.duf
 
       # recording
       pkgs.obs-studio
@@ -88,6 +90,8 @@ in
         alias rm='rip'
         alias cat='bat'
         alias find='fd'
+        alias du='dust'
+        alias df='duf'
       '';
     };
   };

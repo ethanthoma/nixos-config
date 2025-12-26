@@ -5,7 +5,6 @@
     ./docker.nix
     ./hardware.nix
     ./power.nix
-    ./steam.nix
   ];
 
   boot.loader = {
