@@ -7,6 +7,18 @@
 
 let
   cfg = config.hm-apps;
+  mdformatWithPlugins =
+    let
+      pythonEnv = pkgs.python313.withPackages (ps: [
+        ps.mdformat
+        ps.mdformat-tables
+        ps.mdformat-footnote
+        ps.mdformat-frontmatter
+      ]);
+    in
+    pkgs.writeShellScriptBin "mdformat" ''
+      exec ${pythonEnv}/bin/mdformat "$@"
+    '';
 in
 {
   imports = [
@@ -74,8 +86,7 @@ in
       pkgs.vlc
 
       # docs
-      pkgs.mdformat
-      pkgs.python313Packages.mdformat-tables
+      mdformatWithPlugins
     ];
 
     programs.bash = {
