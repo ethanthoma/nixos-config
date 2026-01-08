@@ -148,6 +148,10 @@
         format = "\\[[$symbol($version)]($style)\\]";
         symbol = "󱁢";
       };
+      typst = {
+        format = "\\[[$symbol($version)]($style)\\]";
+        symbol = "󰬁";
+      };
       zig = {
         format = "\\[[$symbol($version)]($style)\\]";
         symbol = "";

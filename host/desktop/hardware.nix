@@ -26,7 +26,7 @@
     initrd.kernelModules = [ ];
     kernelModules = [ "kvm-amd" ];
     extraModulePackages = [ ];
-    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.linuxPackages_6_12;
   };
 
   fileSystems."/" = {
@@ -44,7 +44,7 @@
   };
 
   fileSystems."/games" = {
-    device = "/dev/disk/by-uuid/726bad85-de1e-4752-a26a-6352b6ca3bdd";
+    device = "/dev/disk/by-uuid/053b4e5a-9c96-4f2b-add1-cd5fb21b1676";
     fsType = "ext4";
     options = [
       "nofail"
