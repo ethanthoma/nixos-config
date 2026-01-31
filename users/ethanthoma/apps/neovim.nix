@@ -39,7 +39,7 @@ in
         gcc
         python3
         gnumake
-        nixfmt-rfc-style
+        nixfmt
         harper
       ];
     };

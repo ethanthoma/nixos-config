@@ -2,6 +2,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
+    import-tree.url = "github:vic/import-tree";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -12,29 +13,5 @@
 
   outputs =
     inputs@{ self, ... }:
-    inputs.flake-parts.lib.mkFlake { inherit inputs; } {
-
-      imports = builtins.map (filename: ./modules/${filename}) (
-        builtins.attrNames (builtins.readDir ./modules)
-      );
-
-      flake.users = {
-        "ethanthoma" = { };
-      };
-
-      flake.hosts = {
-        "desktop" = {
-          system = "x86_64-linux";
-          users = [ "ethanthoma" ];
-        };
-
-        "surface" = {
-          system = "x86_64-linux";
-          users = [ "ethanthoma" ];
-          extraModules = [
-            inputs.nixos-hardware.nixosModules.microsoft-surface-pro-9
-          ];
-        };
-      };
-    };
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
 }
