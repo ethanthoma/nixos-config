@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, self, ... }:
 
 let
   system = "x86_64-linux";
@@ -12,13 +12,20 @@ in
     inherit system;
     specialArgs = { inherit hostname; };
     modules = [
-      ../../host/common
-      ../../host/${hostname}
+      self.nixosModules.common
+      self.nixosModules.bluetooth
+      self.nixosModules.hyprland
+      self.nixosModules.networking
+      self.nixosModules.ssh
+      self.nixosModules.sound
+      self.nixosModules.hardware-surface
+      self.nixosModules.power
       inputs.home-manager.nixosModules.home-manager
       inputs.nixos-hardware.nixosModules.microsoft-surface-pro-9
       {
         networking.hostName = hostname;
         nixpkgs.config.allowUnfree = true;
+        nixpkgs.overlays = [ (final: prev: { thorium = prev.callPackage ../_packages/thorium.nix { }; }) ];
 
         users.users.${username} = {
           isNormalUser = true;
@@ -32,7 +39,7 @@ in
           useGlobalPkgs = true;
           useUserPackages = true;
           users.${username} = {
-            imports = [ ../../users/${username} ];
+            imports = [ self.homeManagerModules.ethanthoma ];
             home.packages = [
               inputs.rose-pine-hyprcursor.packages.${system}.default
             ];

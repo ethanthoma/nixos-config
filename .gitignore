@@ -4,14 +4,6 @@
 !flake.nix
 !flake.lock
 
-# hosts
-!host/
-!host/**/*
-
-# users
-!users/
-!users/**/*
-
 # modules
 !modules/
 !modules/**/*

@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, self, ... }:
 
 let
   system = "x86_64-linux";
@@ -14,7 +14,7 @@ in
       inherit pkgs;
       lib = inputs.nixpkgs.lib // inputs.home-manager.lib;
       modules = [
-        ../../users/${username}
+        self.homeManagerModules.ethanthoma
         {
           home.packages = [
             inputs.rose-pine-hyprcursor.packages.${system}.default
