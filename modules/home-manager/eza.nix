@@ -3,7 +3,7 @@
   flake.homeManagerModules.eza =
     { pkgs, ... }:
     {
-      home.packages = with pkgs; [ eza ];
+      home.packages = [ pkgs.eza ];
 
       home.file.".config/eza/theme.yml" = {
         source = pkgs.writeText "theme.yml" ''

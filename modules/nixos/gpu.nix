@@ -3,9 +3,7 @@
   flake.nixosModules.gpu =
     { config, pkgs, ... }:
     {
-      environment.systemPackages = with pkgs; [
-        vulkan-tools
-      ];
+      environment.systemPackages = [ pkgs.vulkan-tools ];
 
       services.xserver.videoDrivers = [ "nvidia" ];
 

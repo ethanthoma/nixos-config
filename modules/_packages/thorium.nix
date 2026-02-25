@@ -21,7 +21,6 @@
   gnome,
   gsettings-desktop-schemas,
   gtk3,
-  xorg,
   libdrm,
   libkrb5,
   libuuid,
@@ -43,6 +42,19 @@
   curl,
   pkgs,
   libgbm,
+  libx11,
+  libxscrnsaver,
+  libxcomposite,
+  libxcursor,
+  libxdamage,
+  libxext,
+  libxfixes,
+  libxi,
+  libxrandr,
+  libxrender,
+  libxshmfence,
+  libxtst,
+  libxcb,
   # command line arguments which are always set e.g "--disable-gpu"
   commandLineArgs ? "",
   # Necessary for USB audio devices.
@@ -72,53 +84,50 @@ let
     escapeShellArg
     ;
 
-  deps =
-    with xorg;
-    [
-      alsa-lib
-      at-spi2-atk
-      at-spi2-core
-      atk
-      cairo
-      cups
-      dbus
-      expat
-      fontconfig
-      freetype
-      gdk-pixbuf
-      glib
-      gtk3
-      libdrm
-      libX11
-      libGL
-      libxkbcommon
-      libXScrnSaver
-      libXcomposite
-      libXcursor
-      libXdamage
-      libXext
-      libXfixes
-      libXi
-      libXrandr
-      libXrender
-      libxshmfence
-      libXtst
-      libuuid
-      mesa
-      nspr
-      nss
-      pango
-      pipewire
-      udev
-      wayland
-      xorg.libxcb
-      zlib
-      snappy
-      vivaldi-ffmpeg-codecs
-      libgbm
-
-      libkrb5
-    ]
+  deps = [
+    alsa-lib
+    at-spi2-atk
+    at-spi2-core
+    atk
+    cairo
+    cups
+    dbus
+    expat
+    fontconfig
+    freetype
+    gdk-pixbuf
+    glib
+    gtk3
+    libdrm
+    libx11
+    libGL
+    libxkbcommon
+    libxscrnsaver
+    libxcomposite
+    libxcursor
+    libxdamage
+    libxext
+    libxfixes
+    libxi
+    libxrandr
+    libxrender
+    libxshmfence
+    libxtst
+    libuuid
+    mesa
+    nspr
+    nss
+    pango
+    pipewire
+    udev
+    wayland
+    libxcb
+    zlib
+    snappy
+    vivaldi-ffmpeg-codecs
+    libgbm
+    libkrb5
+  ]
     ++ optional pulseSupport libpulseaudio
     ++ optional libvaSupport libva;
 
@@ -265,11 +274,11 @@ stdenv.mkDerivation rec {
     $out/opt/chromium.org/thorium/thorium --version
   '';
 
-  meta = with lib; {
+  meta = {
     description = "Compiler-optimized private Chromium fork";
     homepage = "https://thorium.rocks/index.html";
-    sourceProvenance = with sourceTypes; [ binaryNativeCode ];
-    license = licenses.unfree;
+    sourceProvenance = [ lib.sourceTypes.binaryNativeCode ];
+    license = lib.licenses.unfree;
     platforms = [ "x86_64-linux" ];
   };
 }

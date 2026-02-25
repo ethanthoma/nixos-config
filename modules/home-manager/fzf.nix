@@ -3,7 +3,7 @@
   flake.homeManagerModules.fzf =
     { pkgs, ... }:
     {
-      home.packages = with pkgs; [ fzf ];
+      home.packages = [ pkgs.fzf ];
 
       programs = {
         fzf.enable = true;

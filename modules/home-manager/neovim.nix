@@ -11,18 +11,18 @@
 
         withNodeJs = true;
         withPython3 = true;
-        extraPackages = with pkgs; [
-          cargo
-          clang
-          lua-language-server
-          pkg-config
-          openssl
-          cmake
-          gcc
-          python3
-          gnumake
-          nixfmt
-          harper
+        extraPackages = [
+          pkgs.cargo
+          pkgs.clang
+          pkgs.lua-language-server
+          pkgs.pkg-config
+          pkgs.openssl
+          pkgs.cmake
+          pkgs.gcc
+          pkgs.python3
+          pkgs.gnumake
+          pkgs.nixfmt
+          pkgs.harper
         ];
       };
 

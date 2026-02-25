@@ -3,7 +3,7 @@
   flake.homeManagerModules.tmux =
     { config, pkgs, lib, ... }:
     {
-      home.packages = with pkgs; [ tmux ];
+      home.packages = [ pkgs.tmux ];
 
       home.activation =
         let
