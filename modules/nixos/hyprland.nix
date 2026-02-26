@@ -30,7 +30,6 @@
       programs.hyprland = {
         enable = true;
         xwayland.enable = true;
-        portalPackage = pkgs.xdg-desktop-portal-hyprland;
       };
 
       services.dbus.enable = true;
@@ -42,8 +41,6 @@
         ];
         config.common = {
           default = [ "hyprland" "gtk" ];
-          "org.freedesktop.impl.portal.OpenURI" = [ "gtk" ];
-          "org.freedesktop.impl.portal.FileChooser" = [ "gtk" ];
           "org.freedesktop.impl.portal.AppChooser" = [ "gtk" ];
         };
       };

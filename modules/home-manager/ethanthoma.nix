@@ -30,6 +30,7 @@
 
       wayland.windowManager.hyprland = {
         enable = true;
+        portalPackage = null;
         extraConfig = builtins.readFile ../_files/hyprland.conf;
       };
 
