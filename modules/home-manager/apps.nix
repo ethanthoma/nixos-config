@@ -7,7 +7,7 @@
         let
           pythonEnv = pkgs.python313.withPackages (ps: [
             ps.mdformat
-            ps.mdformat-tables
+            ps.mdformat-gfm
             ps.mdformat-footnote
             ps.mdformat-frontmatter
           ]);
@@ -55,7 +55,7 @@
           mkdir -p ${config.home.homeDirectory}/.config
 
           # rip (rm improved)
-          export GRAVEYARD=${config.home.homeDirectory}/.config/rip/graveyard
+          export GRAVEYARD=${config.home.homeDirectory}/.local/share/Trash
 
           alias rm='rip'
           alias cat='bat'
