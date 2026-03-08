@@ -9,6 +9,7 @@
     };
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     rose-pine-hyprcursor.url = "github:ndom91/rose-pine-hyprcursor";
+    zen-browser.url = "github:youwen5/zen-browser-flake";
   };
 
   outputs =

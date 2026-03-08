@@ -19,7 +19,7 @@
       environment.variables.QT_BEARER_POLL_TIMEOUT = "-1";
 
       environment.systemPackages = [
-        pkgs.thorium
+        pkgs.zen-browser
         pkgs.ghostty
         pkgs.bottom
         pkgs.openconnect_openssl

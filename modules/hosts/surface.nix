@@ -25,7 +25,7 @@ in
       {
         networking.hostName = hostname;
         nixpkgs.config.allowUnfree = true;
-        nixpkgs.overlays = [ (final: prev: { thorium = prev.callPackage ../_packages/thorium.nix { }; }) ];
+        nixpkgs.overlays = [ (final: prev: { zen-browser = inputs.zen-browser.packages.${system}.default; }) ];
 
         users.users.${username} = {
           isNormalUser = true;

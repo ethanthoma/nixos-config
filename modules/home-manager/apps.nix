@@ -32,7 +32,7 @@
         pkgs.sd
         pkgs.wl-clipboard
         pkgs.unzip
-        pkgs.neofetch
+        pkgs.fastfetch
         pkgs.nix-index
         pkgs.brightnessctl
         pkgs.jq
