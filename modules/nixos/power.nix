@@ -49,18 +49,17 @@
         };
       };
 
-      systemd.sleep.extraConfig = ''
-        HibernateDelaySec=2h
-        AllowSuspend=yes
-        AllowHibernation=yes
-        AllowSuspendThenHibernate=yes
-        AllowHybridSleep=yes
-        SuspendState=mem
-        HibernateState=disk
-        HybridSleepState=disk
-        HibernateMode=platform shutdown
-        SuspendMode=
-      '';
+      systemd.sleep.settings.Sleep = {
+        HibernateDelaySec = "2h";
+        AllowSuspend = "yes";
+        AllowHibernation = "yes";
+        AllowSuspendThenHibernate = "yes";
+        AllowHybridSleep = "yes";
+        SuspendState = "mem";
+        HibernateState = "disk";
+        HybridSleepState = "disk";
+        HibernateMode = "shutdown";
+      };
 
       boot.resumeDevice = "/dev/disk/by-uuid/5f0d151e-2949-4ef3-af34-8d7cb0910d0b";
     };
