@@ -4,6 +4,7 @@
     {
       config,
       lib,
+      pkgs,
       modulesPath,
       ...
     }:
@@ -29,8 +30,13 @@
           "sd_mod"
         ];
         initrd.kernelModules = [ ];
-        kernelModules = [ "kvm-intel" ];
+        kernelModules = [
+          "kvm-intel"
+          "pinctrl_tigerlake"
+          "soc_button_array"
+        ];
         extraModulePackages = [ ];
+        blacklistedKernelModules = [ "surfacepro3_button" ];
 
         kernelPatches = [
           {
@@ -44,6 +50,20 @@
       };
 
       hardware.microsoft-surface.kernelVersion = "stable";
+
+      systemd.services.surface-buttons = {
+        description = "Rebind soc_button_array for Surface volume buttons";
+        wantedBy = [ "multi-user.target" ];
+        after = [ "systemd-modules-load.service" ];
+        serviceConfig = {
+          Type = "oneshot";
+          RemainAfterExit = true;
+        };
+        script = ''
+          ${pkgs.kmod}/bin/modprobe -r soc_button_array || true
+          ${pkgs.kmod}/bin/modprobe soc_button_array
+        '';
+      };
 
       fileSystems."/" = {
         device = "/dev/disk/by-uuid/0d010186-6d12-4657-91bc-2ca3bc42c904";
