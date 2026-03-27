@@ -25,7 +25,10 @@ in
       {
         networking.hostName = hostname;
         nixpkgs.config.allowUnfree = true;
-        nixpkgs.overlays = [ (final: prev: { zen-browser = inputs.zen-browser.packages.${system}.default; }) ];
+        nixpkgs.overlays = [
+          (final: prev: { zen-browser = inputs.zen-browser.packages.${system}.default; })
+          inputs.claude-code.overlays.default
+        ];
 
         users.users.${username} = {
           isNormalUser = true;
