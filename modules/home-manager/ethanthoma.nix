@@ -20,6 +20,7 @@
         self.homeManagerModules.zoxide
         self.homeManagerModules.theme
         self.homeManagerModules.font
+        self.homeManagerModules.xdg
       ];
 
       home = {
