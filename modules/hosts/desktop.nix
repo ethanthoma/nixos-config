@@ -33,7 +33,7 @@ in
 
         users.users.${username} = {
           isNormalUser = true;
-          extraGroups = [ "networkmanager" "wheel" "audio" ];
+          extraGroups = [ "networkmanager" "wheel" "audio" "video" "i2c" ];
           home = "/home/${username}";
         };
 

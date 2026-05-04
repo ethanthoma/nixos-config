@@ -27,10 +27,15 @@
           "iwlwifi"
         ];
         initrd.kernelModules = [ ];
-        kernelModules = [ "kvm-amd" ];
-        extraModulePackages = [ ];
+        kernelModules = [ "kvm-amd" "i2c-dev" "ddcci_backlight" ];
+        extraModulePackages = [ config.boot.kernelPackages.ddcci-driver ];
         kernelPackages = pkgs.linuxPackages_6_12;
       };
+
+      hardware.i2c.enable = true;
+      services.udev.extraRules = ''
+        SUBSYSTEM=="backlight", ACTION=="add", RUN+="${pkgs.coreutils}/bin/chgrp video /sys/class/backlight/%k/brightness", RUN+="${pkgs.coreutils}/bin/chmod g+w /sys/class/backlight/%k/brightness"
+      '';
 
       fileSystems."/" = {
         device = "/dev/disk/by-uuid/77e43ca6-0814-4850-944f-b76d0687f79f";
