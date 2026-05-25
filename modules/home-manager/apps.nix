@@ -46,6 +46,9 @@
 
         # docs
         mdformatWithPlugins
+
+        # security
+        pkgs.keepassxc
       ];
 
       programs.bash = {
