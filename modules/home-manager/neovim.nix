@@ -12,6 +12,10 @@
         withNodeJs = true;
         withPython3 = true;
         withRuby = false;
+
+        # nvim config is mutable (cloned repo owns init.lua); load HM's
+        # generated provider setup via wrapper args instead of writing the file
+        sideloadInitLua = true;
         extraPackages = [
           pkgs.cargo
           pkgs.clang
