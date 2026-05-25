@@ -1,7 +1,26 @@
 { ... }:
 {
   flake.homeManagerModules.neovim =
-    { config, pkgs, lib, ... }:
+    {
+      config,
+      pkgs,
+      lib,
+      ...
+    }:
+    let
+      mdformat =
+        let
+          pythonEnv = pkgs.python313.withPackages (ps: [
+            ps.mdformat
+            ps.mdformat-gfm
+            ps.mdformat-footnote
+            ps.mdformat-frontmatter
+          ]);
+        in
+        pkgs.writeShellScriptBin "mdformat" ''
+          exec ${pythonEnv}/bin/mdformat "$@"
+        '';
+    in
     {
       programs.neovim = {
         enable = true;
@@ -28,6 +47,8 @@
           pkgs.gnumake
           pkgs.nixfmt
           pkgs.harper
+          mdformat
+          pkgs.taplo
         ];
       };
 

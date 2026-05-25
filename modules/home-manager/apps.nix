@@ -2,20 +2,6 @@
 {
   flake.homeManagerModules.apps =
     { config, pkgs, ... }:
-    let
-      mdformatWithPlugins =
-        let
-          pythonEnv = pkgs.python313.withPackages (ps: [
-            ps.mdformat
-            ps.mdformat-gfm
-            ps.mdformat-footnote
-            ps.mdformat-frontmatter
-          ]);
-        in
-        pkgs.writeShellScriptBin "mdformat" ''
-          exec ${pythonEnv}/bin/mdformat "$@"
-        '';
-    in
     {
       home.packages = [
         pkgs.gh
@@ -43,9 +29,6 @@
         # recording
         pkgs.obs-studio
         pkgs.vlc
-
-        # docs
-        mdformatWithPlugins
 
         # security
         pkgs.keepassxc
