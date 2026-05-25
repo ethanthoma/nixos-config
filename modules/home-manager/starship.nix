@@ -159,6 +159,14 @@
             symbol = "";
           };
 
+          custom.claude = {
+            description = "Active Claude Code subscription override";
+            when = ''[ -n "$CLAUDE_CONFIG_DIR" ]'';
+            command = ''basename "$CLAUDE_CONFIG_DIR"'';
+            format = "\\[[󰚩 $output]($style)\\]";
+            shell = [ "bash" "--noprofile" "--norc" ];
+          };
+
         };
       };
 
