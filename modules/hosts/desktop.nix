@@ -23,6 +23,7 @@ in
       self.nixosModules.moonlander
       self.nixosModules.steam
       self.nixosModules.podman
+      self.nixosModules.yubikey
       inputs.home-manager.nixosModules.home-manager
       {
         networking.hostName = hostname;
