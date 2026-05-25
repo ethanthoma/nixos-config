@@ -12,6 +12,7 @@
         self.homeManagerModules.fzf
         self.homeManagerModules.ghostty
         self.homeManagerModules.git
+        self.homeManagerModules.helium
         self.homeManagerModules.mako
         self.homeManagerModules.neovim
         self.homeManagerModules.starship
