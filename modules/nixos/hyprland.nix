@@ -21,7 +21,7 @@
 
         pkgs.mako
         pkgs.libnotify
-        pkgs.swww
+        pkgs.awww
         pkgs.fuzzel
         pkgs.cliphist
         pkgs.wl-clipboard
