@@ -11,6 +11,7 @@
 
         withNodeJs = true;
         withPython3 = true;
+        withRuby = false;
         extraPackages = [
           pkgs.cargo
           pkgs.clang
