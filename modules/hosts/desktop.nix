@@ -22,6 +22,7 @@ in
       self.nixosModules.gpu
       self.nixosModules.moonlander
       self.nixosModules.steam
+      self.nixosModules.podman
       inputs.home-manager.nixosModules.home-manager
       {
         networking.hostName = hostname;
