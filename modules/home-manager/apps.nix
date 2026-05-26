@@ -32,6 +32,9 @@
 
         # security
         pkgs.keepassxc
+
+        # backup
+        pkgs.rclone
       ];
 
       programs.bash = {
