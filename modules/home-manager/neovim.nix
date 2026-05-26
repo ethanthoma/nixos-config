@@ -43,6 +43,7 @@
           pkgs.openssl
           pkgs.cmake
           pkgs.gcc
+          pkgs.tree-sitter # nvim-treesitter main branch builds parsers via the tree-sitter CLI
           pkgs.python3
           pkgs.gnumake
           pkgs.nixfmt
