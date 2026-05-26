@@ -19,10 +19,8 @@
         pkgs.slurp
         pkgs.imagemagick
 
-        pkgs.mako
         pkgs.libnotify
         pkgs.awww
-        pkgs.fuzzel
         pkgs.cliphist
         pkgs.wl-clipboard
       ];

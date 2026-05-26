@@ -16,7 +16,6 @@
         pkgs.trash-cli
         pkgs.fd
         pkgs.sd
-        pkgs.wl-clipboard
         pkgs.unzip
         pkgs.fastfetch
         pkgs.nix-index

@@ -20,7 +20,6 @@
 
       environment.systemPackages = [
         pkgs.zen-browser
-        pkgs.ghostty
         pkgs.bottom
         pkgs.openconnect_openssl
       ];
