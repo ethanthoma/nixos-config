@@ -21,6 +21,7 @@ in
       self.nixosModules.hardware-surface
       self.nixosModules.power
       self.nixosModules.yubikey
+      self.nixosModules.syncthing
       inputs.home-manager.nixosModules.home-manager
       inputs.nixos-hardware.nixosModules.microsoft-surface-pro-9
       {
