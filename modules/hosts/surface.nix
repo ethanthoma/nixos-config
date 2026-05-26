@@ -20,6 +20,7 @@ in
       self.nixosModules.sound
       self.nixosModules.hardware-surface
       self.nixosModules.power
+      self.nixosModules.yubikey
       inputs.home-manager.nixosModules.home-manager
       inputs.nixos-hardware.nixosModules.microsoft-surface-pro-9
       {
