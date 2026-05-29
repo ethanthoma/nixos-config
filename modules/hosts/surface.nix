@@ -29,7 +29,13 @@ in
         networking.hostName = hostname;
         nixpkgs.config.allowUnfree = true;
         nixpkgs.overlays = [
-          (final: prev: { zen-browser = inputs.zen-browser.packages.${system}.default; })
+          (final: prev: {
+            zen-browser = import ../_lib/zen-with-autoconfig.nix {
+              inherit (prev) runCommand;
+              zen = inputs.zen-browser.packages.${system}.default;
+              fx-autoconfig = inputs.fx-autoconfig;
+            };
+          })
           inputs.claude-code.overlays.default
         ];
 

@@ -10,6 +10,14 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     rose-pine-hyprcursor.url = "github:ndom91/rose-pine-hyprcursor";
     zen-browser.url = "github:youwen5/zen-browser-flake";
+    fx-autoconfig = {
+      url = "github:MrOtherGuy/fx-autoconfig";
+      flake = false;
+    };
+    advanced-tab-groups = {
+      url = "github:Vertex-Mods/Advanced-Tab-Groups";
+      flake = false;
+    };
     claude-code.url = "github:sadjow/claude-code-nix";
     helium-flake = {
       url = "github:oxcl/nix-flake-helium-browser";

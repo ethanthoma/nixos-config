@@ -14,6 +14,7 @@
         self.homeManagerModules.git
         self.homeManagerModules.helium
         self.homeManagerModules.mako
+        self.homeManagerModules.zen-mods
         self.homeManagerModules.neovim
         self.homeManagerModules.starship
         self.homeManagerModules.tmux

@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "advanced-tab-groups": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1772911383,
+        "narHash": "sha256-EuFpEX2u7PfEMCoceXp1OlykbKw3LEBDNXpLE8n/QlQ=",
+        "owner": "Vertex-Mods",
+        "repo": "Advanced-Tab-Groups",
+        "rev": "3c1e1c87ace2f98445e94626d1b33bb083e83d96",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Vertex-Mods",
+        "repo": "Advanced-Tab-Groups",
+        "type": "github"
+      }
+    },
     "claude-code": {
       "inputs": {
         "flake-utils": "flake-utils",
@@ -52,6 +68,22 @@
       "original": {
         "owner": "numtide",
         "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "fx-autoconfig": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1777913309,
+        "narHash": "sha256-czNgt62fofg3hXw7F4wXSv/+ZAsGtO6bg3sUOiUXcu4=",
+        "owner": "MrOtherGuy",
+        "repo": "fx-autoconfig",
+        "rev": "d469a80f12e286c0e937d8b93c01dfc2d55dca8f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "MrOtherGuy",
+        "repo": "fx-autoconfig",
         "type": "github"
       }
     },
@@ -229,8 +261,10 @@
     },
     "root": {
       "inputs": {
+        "advanced-tab-groups": "advanced-tab-groups",
         "claude-code": "claude-code",
         "flake-parts": "flake-parts",
+        "fx-autoconfig": "fx-autoconfig",
         "helium-flake": "helium-flake",
         "home-manager": "home-manager",
         "import-tree": "import-tree",
