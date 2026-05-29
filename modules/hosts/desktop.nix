@@ -24,6 +24,7 @@ in
       self.nixosModules.steam
       self.nixosModules.podman
       self.nixosModules.yubikey
+      self.nixosModules.yubikey-pam
       self.nixosModules.syncthing
       inputs.home-manager.nixosModules.home-manager
       {
