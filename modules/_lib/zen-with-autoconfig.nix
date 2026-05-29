@@ -8,7 +8,7 @@
 }:
 
 runCommand "zen-browser-autoconfig" { } ''
-  cp -r --no-preserve=mode,ownership ${zen} $out
+  cp -r --no-preserve=ownership ${zen} $out
   chmod -R u+w $out
 
   prog=$(echo $out/lib/zen-*)
