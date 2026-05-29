@@ -116,7 +116,6 @@
 
           window#waybar {
               background: @base;
-              border-bottom: 2px solid @gold;
               color: @text;
               font-family: Monaspace Neon;
           }
