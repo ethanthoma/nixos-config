@@ -47,6 +47,27 @@
 
         # wget
         WGETRC = "${configHome}/wget/wgetrc";
+
+        # JS / Bun
+        BUN_INSTALL = "${dataHome}/bun";
+
+        # Infra / cloud
+        PULUMI_HOME = "${dataHome}/pulumi";
+
+        # ML toolchains
+        KERAS_HOME = "${dataHome}/keras";
+        TRITON_HOME = "${cacheHome}/triton";
+        TRITON_CACHE_DIR = "${cacheHome}/triton/cache";
+
+        # NVIDIA shader/compute caches (~/.nv holds both)
+        CUDA_CACHE_PATH = "${cacheHome}/nv/ComputeCache";
+        __GL_SHADER_DISK_CACHE_PATH = "${cacheHome}/nv/GLCache";
+
+        # OpenAI Codex CLI
+        CODEX_HOME = "${configHome}/codex";
+
+        # PulseAudio auth cookie
+        PULSE_COOKIE = "${stateHome}/pulse/cookie";
       };
 
       programs.bash.historyFile = "${stateHome}/bash/history";
@@ -104,6 +125,14 @@
         move "${home}/.bash_history"      "${stateHome}/bash/history"
         move "${home}/.python_history"    "${stateHome}/python/history"
         move "${home}/.node_repl_history" "${stateHome}/node/repl_history"
+
+        move "${home}/.bun"               "${dataHome}/bun"
+        move "${home}/.pulumi"            "${dataHome}/pulumi"
+        move "${home}/.keras"             "${dataHome}/keras"
+        move "${home}/.codex"             "${configHome}/codex"
+        move "${home}/.triton"            "${cacheHome}/triton"
+        move "${home}/.nv"                "${cacheHome}/nv"
+        move "${home}/.pulse-cookie"      "${stateHome}/pulse/cookie"
       '';
     };
 }
