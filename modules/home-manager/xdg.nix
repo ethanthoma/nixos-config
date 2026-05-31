@@ -26,9 +26,6 @@
         # Python
         PYTHONSTARTUP = "${configHome}/python/startup.py";
 
-        # GnuPG
-        GNUPGHOME = "${dataHome}/gnupg";
-
         # Cloud CLIs
         AWS_CONFIG_FILE = "${configHome}/aws/config";
         AWS_SHARED_CREDENTIALS_FILE = "${configHome}/aws/credentials";
@@ -79,6 +76,14 @@
 
         # imageio downloaded plugin binaries
         IMAGEIO_USERDIR = "${dataHome}/imageio";
+      };
+
+      # systemd user services (and apps they launch) don't source the shell's
+      # session vars, so anything that runs cargo from a unit would recreate
+      # ~/.cargo. Mirror the rust paths into the systemd user environment too.
+      systemd.user.sessionVariables = {
+        CARGO_HOME = "${dataHome}/cargo";
+        RUSTUP_HOME = "${dataHome}/rustup";
       };
 
       programs.bash.historyFile = "${stateHome}/bash/history";
