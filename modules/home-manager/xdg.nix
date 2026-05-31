@@ -71,6 +71,14 @@
 
         # libX11 compiled-compose cache (default ~/.compose-cache)
         XCOMPOSECACHE = "${cacheHome}/compose";
+
+        # Terraform (CHECKPOINT_DISABLE stops the checkpoint client writing ~/.terraform.d)
+        CHECKPOINT_DISABLE = "1";
+        TF_CLI_CONFIG_FILE = "${configHome}/terraform/terraformrc";
+        TF_PLUGIN_CACHE_DIR = "${cacheHome}/terraform/plugins";
+
+        # imageio downloaded plugin binaries
+        IMAGEIO_USERDIR = "${dataHome}/imageio";
       };
 
       programs.bash.historyFile = "${stateHome}/bash/history";
@@ -136,6 +144,9 @@
         move "${home}/.triton"            "${cacheHome}/triton"
         move "${home}/.nv"                "${cacheHome}/nv"
         move "${home}/.pulse-cookie"      "${stateHome}/pulse/cookie"
+        move "${home}/.imageio"           "${dataHome}/imageio"
+
+        $DRY_RUN_CMD mkdir -p "${cacheHome}/terraform/plugins"
       '';
     };
 }
