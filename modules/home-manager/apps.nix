@@ -9,11 +9,10 @@
         pkgs.wget
         pkgs.zip
         pkgs.entr
-        pkgs.rm-improved
+        pkgs.trashy
         pkgs.yq-go
         pkgs.bat
         pkgs.ripgrep
-        pkgs.trash-cli
         pkgs.fd
         pkgs.sd
         pkgs.unzip
@@ -42,10 +41,17 @@
         bashrcExtra = ''
           mkdir -p ${config.home.homeDirectory}/.config
 
-          # rip (rm improved)
-          export GRAVEYARD=${config.home.homeDirectory}/.local/share/Trash
+          # trashy speaks the freedesktop trash spec, so `rm` and oil.nvim share
+          # one ~/.local/share/Trash and `trash list`/`trash restore` see both.
+          # trashy errors on rm-style flags, so drop them before handing it paths.
+          rm() {
+            local paths=()
+            for arg in "$@"; do
+              [[ $arg == -* ]] || paths+=("$arg")
+            done
+            trash put -- "''${paths[@]}"
+          }
 
-          alias rm='rip'
           alias cat='bat'
           alias find='fd'
           alias du='dust'
