@@ -1,5 +1,5 @@
 hl.on("hyprland.start", function()
-    hl.exec_cmd("mako & nm-applet --indicator")
+    hl.exec_cmd("mako & nm-applet --indicator & keepassxc")
 end)
 
 hl.env("XDG_SESSION_TYPE", "wayland")

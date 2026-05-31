@@ -28,9 +28,6 @@
         pkgs.obs-studio
         pkgs.vlc
 
-        # security
-        pkgs.keepassxc
-
         # backup
         pkgs.rclone
       ];
