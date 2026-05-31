@@ -42,6 +42,11 @@
         # Android
         ANDROID_USER_HOME = "${dataHome}/android";
 
+        # Claude Code — config, sessions, history and memory all live under here.
+        # Apply only with every `claude` process killed (it rewrites this tree at
+        # runtime); see the migrate moves below for .claude + .claude.json.
+        CLAUDE_CONFIG_DIR = "${configHome}/claude";
+
         # wget
         WGETRC = "${configHome}/wget/wgetrc";
 
@@ -150,6 +155,8 @@
         move "${home}/.nv"                "${cacheHome}/nv"
         move "${home}/.pulse-cookie"      "${stateHome}/pulse/cookie"
         move "${home}/.imageio"           "${dataHome}/imageio"
+        move "${home}/.claude"            "${configHome}/claude"
+        move "${home}/.claude.json"       "${configHome}/claude/.claude.json"
 
         $DRY_RUN_CMD mkdir -p "${cacheHome}/terraform/plugins"
       '';
