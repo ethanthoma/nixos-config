@@ -68,6 +68,9 @@
 
         # PulseAudio auth cookie
         PULSE_COOKIE = "${stateHome}/pulse/cookie";
+
+        # libX11 compiled-compose cache (default ~/.compose-cache)
+        XCOMPOSECACHE = "${cacheHome}/compose";
       };
 
       programs.bash.historyFile = "${stateHome}/bash/history";
