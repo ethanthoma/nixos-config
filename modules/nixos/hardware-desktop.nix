@@ -29,8 +29,6 @@
           "usbhid"
           "usb_storage"
           "sd_mod"
-          "iwlmvm"
-          "iwlwifi"
         ];
         initrd.kernelModules = [ ];
         kernelModules = [ "kvm-amd" "i2c-dev" "ddcci_backlight" ];
