@@ -18,6 +18,7 @@
         self.homeManagerModules.mako
         self.homeManagerModules.zen-mods
         self.homeManagerModules.neovim
+        self.homeManagerModules.secretspec
         self.homeManagerModules.starship
         self.homeManagerModules.tmux
         self.homeManagerModules.waybar
