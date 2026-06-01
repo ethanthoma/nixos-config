@@ -22,8 +22,13 @@
       grep = "${pkgs.gnugrep}/bin/grep";
     in
     {
+      # Zen (Firefox-based) hardcodes ~/.zen as its profile root. Symlink it to the
+      # XDG config location so profile data lives at ~/.config/zen while Zen still
+      # finds it at the expected path.
+      home.file.".zen".source = config.lib.file.mkOutOfStoreSymlink "${config.xdg.configHome}/zen";
+
       home.activation.zenMods = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        zendir="${config.home.homeDirectory}/.zen"
+        zendir="${config.xdg.configHome}/zen"
         ini="$zendir/profiles.ini"
 
         if [ ! -f "$ini" ]; then
