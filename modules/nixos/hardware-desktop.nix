@@ -12,7 +12,10 @@
       imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
       boot = {
-        loader.systemd-boot.enable = true;
+        loader.systemd-boot = {
+          enable = true;
+          configurationLimit = 3;
+        };
         loader.efi.canTouchEfiVariables = true;
         binfmt.emulatedSystems = [ "aarch64-linux" ];
 
