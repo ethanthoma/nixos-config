@@ -17,6 +17,9 @@
         CARGO_HOME = "${dataHome}/cargo";
         RUSTUP_HOME = "${dataHome}/rustup";
 
+        # Go
+        GOPATH = "${dataHome}/go";
+
         # Node / npm
         NPM_CONFIG_USERCONFIG = "${configHome}/npm/npmrc";
         npm_config_cache = "${cacheHome}/npm";
@@ -42,9 +45,7 @@
         # Android
         ANDROID_USER_HOME = "${dataHome}/android";
 
-        # Claude Code — config, sessions, history and memory all live under here.
-        # Apply only with every `claude` process killed (it rewrites this tree at
-        # runtime); see the migrate moves below for .claude + .claude.json.
+        # Claude Code home (config, sessions, memory)
         CLAUDE_CONFIG_DIR = "${configHome}/claude";
 
         # wget
@@ -130,6 +131,7 @@
 
         move "${home}/.cargo"             "${dataHome}/cargo"
         move "${home}/.rustup"            "${dataHome}/rustup"
+        move "${home}/go"                 "${dataHome}/go"
         move "${home}/.gnupg"             "${dataHome}/gnupg"
         move "${home}/.stack"             "${dataHome}/stack"
         move "${home}/.opam"              "${dataHome}/opam"
