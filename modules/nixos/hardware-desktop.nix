@@ -14,7 +14,7 @@
       boot = {
         loader.systemd-boot = {
           enable = true;
-          configurationLimit = 3;
+          configurationLimit = 10;
         };
         loader.efi.canTouchEfiVariables = true;
         binfmt.emulatedSystems = [ "aarch64-linux" ];
