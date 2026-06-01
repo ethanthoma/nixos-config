@@ -155,8 +155,19 @@
         move "${home}/.nv"                "${cacheHome}/nv"
         move "${home}/.pulse-cookie"      "${stateHome}/pulse/cookie"
         move "${home}/.imageio"           "${dataHome}/imageio"
-        move "${home}/.claude"            "${configHome}/claude"
-        move "${home}/.claude.json"       "${configHome}/claude/.claude.json"
+        # merge rather than move since claude pre-creates the dir
+        if [ -e "${home}/.claude" ]; then
+          $DRY_RUN_CMD mkdir -p "${configHome}/claude"
+          if $DRY_RUN_CMD cp -an "${home}/.claude/." "${configHome}/claude/"; then
+            $DRY_RUN_CMD rm -rf "${home}/.claude"
+          fi
+        fi
+        if [ -e "${home}/.claude.json" ]; then
+          $DRY_RUN_CMD mkdir -p "${configHome}/claude"
+          if $DRY_RUN_CMD cp -an "${home}/.claude.json" "${configHome}/claude/.claude.json"; then
+            $DRY_RUN_CMD rm -f "${home}/.claude.json"
+          fi
+        fi
 
         $DRY_RUN_CMD mkdir -p "${cacheHome}/terraform/plugins"
       '';
