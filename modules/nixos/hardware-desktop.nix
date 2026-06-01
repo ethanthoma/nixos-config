@@ -19,6 +19,9 @@
         loader.efi.canTouchEfiVariables = true;
         binfmt.emulatedSystems = [ "aarch64-linux" ];
 
+        # bcachefs needs a recent kernel (out-of-tree module is broken on 6.12)
+        supportedFilesystems = [ "bcachefs" ];
+
         initrd.availableKernelModules = [
           "xhci_pci"
           "ahci"
@@ -32,8 +35,13 @@
         initrd.kernelModules = [ ];
         kernelModules = [ "kvm-amd" "i2c-dev" "ddcci_backlight" ];
         extraModulePackages = [ config.boot.kernelPackages.ddcci-driver ];
-        kernelPackages = pkgs.linuxPackages_6_12;
+        kernelPackages = pkgs.linuxPackages;
       };
+
+      environment.systemPackages = [
+        pkgs.bcachefs-tools
+        pkgs.cryptsetup
+      ];
 
       hardware.i2c.enable = true;
       services.udev.extraRules = ''
