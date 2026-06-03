@@ -8,14 +8,9 @@
     {
       home.packages = [ pkgs.keepassxc ];
 
-      # KeePassXC is itself the freedesktop Secret Service provider (the daemon
-      # lives in the GUI process, not keepassxc-cli), so to keep the keyring
-      # available all session we run it backgrounded in the tray: open the last
-      # DB at startup (one master-password + YubiKey unlock), hide to tray after
-      # unlock, and minimize-on-close so closing the window never kills the
-      # service. HM's programs.keepassxc.settings would link the whole *mutable*
-      # ini read-only and KeePassXC would error on every save, so force just our
-      # required keys idempotently on activation instead.
+      # programs.keepassxc.settings links the ini read-only and KeePassXC errors
+      # on save, so force our keys via crudini. Tray keys keep the secret service
+      # (it lives in the GUI process) alive when the window is closed.
       home.activation.keepassxcSettings = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         $DRY_RUN_CMD mkdir -p "$(dirname "${ini}")"
         set_kp() { $DRY_RUN_CMD ${pkgs.crudini}/bin/crudini --set "${ini}" "$1" "$2" "$3"; }
