@@ -58,27 +58,27 @@
       '';
 
       fileSystems."/" = {
-        device = "UUID=837ccbfb-96c4-4366-b2a4-e21787b6b949";
+        device = "UUID=a10534f1-a973-413c-b771-4a62ec8ebc42";
         fsType = "bcachefs";
-        options = [ "subvol=root" ];
+        options = [ "X-mount.subdir=root" ];
       };
 
       fileSystems."/nix" = {
-        device = "UUID=837ccbfb-96c4-4366-b2a4-e21787b6b949";
+        device = "UUID=a10534f1-a973-413c-b771-4a62ec8ebc42";
         fsType = "bcachefs";
-        options = [ "subvol=nix" ];
+        options = [ "X-mount.subdir=nix" ];
       };
 
       fileSystems."/home" = {
-        device = "UUID=837ccbfb-96c4-4366-b2a4-e21787b6b949";
+        device = "UUID=a10534f1-a973-413c-b771-4a62ec8ebc42";
         fsType = "bcachefs";
-        options = [ "subvol=home" ];
+        options = [ "X-mount.subdir=home" ];
       };
 
       fileSystems."/persist" = {
-        device = "UUID=837ccbfb-96c4-4366-b2a4-e21787b6b949";
+        device = "UUID=a10534f1-a973-413c-b771-4a62ec8ebc42";
         fsType = "bcachefs";
-        options = [ "subvol=persist" ];
+        options = [ "X-mount.subdir=persist" ];
         neededForBoot = true;
       };
 
