@@ -13,7 +13,6 @@
         self.homeManagerModules.ghostty
         self.homeManagerModules.git
         self.homeManagerModules.gpg
-        self.homeManagerModules.helium
         self.homeManagerModules.keepassxc
         self.homeManagerModules.mako
         self.homeManagerModules.zen-mods

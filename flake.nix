@@ -20,10 +20,6 @@
       flake = false;
     };
     claude-code.url = "github:sadjow/claude-code-nix";
-    helium-flake = {
-      url = "github:oxcl/nix-flake-helium-browser";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs =
