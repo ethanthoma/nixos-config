@@ -37,7 +37,10 @@
           "usb_storage"
           "sd_mod"
         ];
-        initrd.kernelModules = [ ];
+        initrd.kernelModules = [
+          "usbhid"
+          "hid_generic"
+        ];
         kernelModules = [
           "kvm-amd"
           "i2c-dev"
