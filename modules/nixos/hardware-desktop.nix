@@ -85,6 +85,16 @@
         neededForBoot = true;
       };
 
+      fileSystems."/games" = {
+        device = "UUID=a10534f1-a973-413c-b771-4a62ec8ebc42";
+        fsType = "bcachefs";
+        options = [ "X-mount.subdir=games" ];
+      };
+
+      # the games subvol mounts root-owned; hand it to the user for the steam
+      # library. runs after mounts, so it chowns the mountpoint not the stub.
+      systemd.tmpfiles.rules = [ "d /games 0755 ethanthoma users - -" ];
+
       fileSystems."/boot" = {
         device = "UUID=E682-0770";
         fsType = "vfat";
