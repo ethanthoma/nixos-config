@@ -95,6 +95,16 @@
       # library. runs after mounts, so it chowns the mountpoint not the stub.
       systemd.tmpfiles.rules = [ "d /games 0755 ethanthoma users - -" ];
 
+      # The flake lives on /persist (root is empty, and will be wiped under
+      # impermanence). Bind it onto /etc/nixos so `nixos-rebuild` finds it
+      # without an explicit --flake path. Supersedes the /etc/nixos entry in
+      # impermanence.nix.
+      fileSystems."/etc/nixos" = {
+        device = "/persist/etc/nixos";
+        fsType = "none";
+        options = [ "bind" ];
+      };
+
       fileSystems."/boot" = {
         device = "UUID=E682-0770";
         fsType = "vfat";

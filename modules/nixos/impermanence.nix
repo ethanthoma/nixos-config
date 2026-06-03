@@ -34,7 +34,7 @@
           "/var/lib/fwupd" # firmware update state
           "/var/lib/containers" # rootful podman images/volumes (podman.nix, dockerCompat)
           "/etc/NetworkManager/system-connections" # NM connection profiles
-          "/etc/nixos" # this flake — lives on root, would be wiped otherwise
+          # /etc/nixos is bind-mounted from /persist in hardware-desktop.nix
         ];
 
         # Deliberately NOT persisted — these /var/lib dirs exist today but are stale
