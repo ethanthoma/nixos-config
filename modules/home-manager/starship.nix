@@ -1,7 +1,7 @@
 { ... }:
 {
   flake.homeManagerModules.starship =
-    { ... }:
+    { pkgs, ... }:
     {
       programs.starship = {
         enable = true;
@@ -159,13 +159,44 @@
             symbol = "";
           };
 
-          custom.claude = {
-            description = "Active Claude Code subscription override";
-            when = ''[ -n "$CLAUDE_CONFIG_DIR" ]'';
-            command = ''basename "$CLAUDE_CONFIG_DIR"'';
-            format = "\\[[󰚩 $output]($style)\\]";
-            shell = [ "bash" "--noprofile" "--norc" ];
-          };
+          custom.claude =
+            let
+              usage = pkgs.writeShellScript "claude-usage" ''
+                set -euo pipefail
+                cache="''${XDG_CACHE_HOME:-$HOME/.cache}/claude-usage"
+                creds="''${CLAUDE_CONFIG_DIR:-$HOME/.claude}/.credentials.json"
+                [ -f "$creds" ] || exit 0
+
+                if [ ! -f "$cache" ] || [ "$(( $(${pkgs.coreutils}/bin/date +%s) - $(${pkgs.coreutils}/bin/stat -c %Y "$cache") ))" -gt 300 ]; then
+                  ${pkgs.coreutils}/bin/touch "$cache"
+                  {
+                    token=$(${pkgs.jq}/bin/jq -r '.claudeAiOauth.accessToken' "$creds") || exit 0
+                    [ -n "$token" ] && [ "$token" != null ] || exit 0
+                    resp=$(${pkgs.curl}/bin/curl -sf --max-time 5 https://api.anthropic.com/api/oauth/usage \
+                      -H "Authorization: Bearer $token" \
+                      -H "anthropic-beta: oauth-2025-04-20" \
+                      -H "User-Agent: claude-code/2.1.162") || exit 0
+                    printf '%s' "$resp" \
+                      | ${pkgs.jq}/bin/jq -r '"5h \(.five_hour.utilization|floor)% 7d \(.seven_day.utilization|floor)%"' > "$cache.tmp" \
+                      && ${pkgs.coreutils}/bin/mv "$cache.tmp" "$cache"
+                  } &
+                fi
+
+                [ -s "$cache" ] && ${pkgs.coreutils}/bin/cat "$cache" || true
+              '';
+            in
+            {
+              description = "Claude Code 5h / 7d usage from /usage";
+              when = ''[ -f "''${CLAUDE_CONFIG_DIR:-$HOME/.claude}/.credentials.json" ]'';
+              command = "${usage}";
+              style = "bold #d97757";
+              format = "(\\[[󰚩 $output]($style)\\])";
+              shell = [
+                "bash"
+                "--noprofile"
+                "--norc"
+              ];
+            };
 
         };
       };
