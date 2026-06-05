@@ -19,6 +19,7 @@ in
       self.nixosModules.ssh
       self.nixosModules.sound
       self.nixosModules.hardware-desktop
+      self.nixosModules.impermanence
       self.nixosModules.gpu
       self.nixosModules.moonlander
       self.nixosModules.steam
@@ -49,7 +50,13 @@ in
 
         users.users.${username} = {
           isNormalUser = true;
-          extraGroups = [ "networkmanager" "wheel" "audio" "video" "i2c" ];
+          extraGroups = [
+            "networkmanager"
+            "wheel"
+            "audio"
+            "video"
+            "i2c"
+          ];
           home = "/home/${username}";
           hashedPasswordFile = "/persist/passwords/${username}";
         };
@@ -76,8 +83,14 @@ in
           optimise.automatic = true;
           settings = {
             auto-optimise-store = true;
-            experimental-features = [ "nix-command" "flakes" ];
-            trusted-users = [ "root" username ];
+            experimental-features = [
+              "nix-command"
+              "flakes"
+            ];
+            trusted-users = [
+              "root"
+              username
+            ];
             max-jobs = "auto";
             cores = 0;
             keep-derivations = true;

@@ -29,6 +29,32 @@
           allowDiscards = true;
         };
 
+        initrd.systemd.storePaths = [ "${pkgs.bcachefs-tools}/bin/bcachefs" ];
+        initrd.systemd.services.rollback = {
+          description = "Wipe bcachefs root back to the blank snapshot";
+          wantedBy = [ "initrd.target" ];
+          after = [
+            "systemd-cryptsetup@cryptpool1.service"
+            "unlock-bcachefs--.service"
+            "unlock-bcachefs-nix.service"
+            "unlock-bcachefs-persist.service"
+          ];
+          before = [ "sysroot.mount" ];
+          unitConfig.DefaultDependencies = false;
+          serviceConfig.Type = "oneshot";
+          script = ''
+            mkdir -p /tmp/rollback
+            mount -t bcachefs /dev/mapper/cryptpool1 /tmp/rollback
+            if [ -e /tmp/rollback/root-blank ]; then
+              ${pkgs.bcachefs-tools}/bin/bcachefs subvolume delete /tmp/rollback/root
+              ${pkgs.bcachefs-tools}/bin/bcachefs subvolume snapshot /tmp/rollback/root-blank /tmp/rollback/root
+            else
+              echo "rollback: root-blank missing, leaving root intact"
+            fi
+            umount /tmp/rollback
+          '';
+        };
+
         initrd.availableKernelModules = [
           "xhci_pci"
           "ahci"
