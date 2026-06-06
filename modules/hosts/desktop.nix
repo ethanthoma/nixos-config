@@ -27,6 +27,7 @@ in
       self.nixosModules.yubikey
       self.nixosModules.yubikey-pam
       self.nixosModules.syncthing
+      self.nixosModules.probe-rs
       inputs.home-manager.nixosModules.home-manager
       {
         networking.hostName = hostname;
@@ -56,6 +57,7 @@ in
             "audio"
             "video"
             "i2c"
+            "plugdev"
           ];
           home = "/home/${username}";
           hashedPasswordFile = "/persist/passwords/${username}";
