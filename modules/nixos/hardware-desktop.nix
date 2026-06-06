@@ -28,6 +28,14 @@
           crypttabExtraOpts = [ "fido2-device=auto" ];
           allowDiscards = true;
         };
+        initrd.luks.devices.cryptpool2 = {
+          device = "/dev/disk/by-uuid/0492d60a-cf05-473f-a514-3dcc06982cba";
+          crypttabExtraOpts = [
+            "tpm2-device=auto"
+            "fido2-device=auto"
+          ];
+          allowDiscards = true;
+        };
 
         initrd.systemd.storePaths = [ "${pkgs.bcachefs-tools}/bin/bcachefs" ];
         initrd.systemd.services.rollback = {
@@ -35,6 +43,7 @@
           wantedBy = [ "initrd.target" ];
           after = [
             "systemd-cryptsetup@cryptpool1.service"
+            "systemd-cryptsetup@cryptpool2.service"
             "unlock-bcachefs--.service"
             "unlock-bcachefs-nix.service"
             "unlock-bcachefs-persist.service"
@@ -44,7 +53,7 @@
           serviceConfig.Type = "oneshot";
           script = ''
             mkdir -p /tmp/rollback
-            mount -t bcachefs /dev/mapper/cryptpool1 /tmp/rollback
+            mount -t bcachefs /dev/mapper/cryptpool1:/dev/mapper/cryptpool2 /tmp/rollback
             if [ -e /tmp/rollback/root-blank ]; then
               ${pkgs.bcachefs-tools}/bin/bcachefs subvolume delete /tmp/rollback/root
               ${pkgs.bcachefs-tools}/bin/bcachefs subvolume snapshot /tmp/rollback/root-blank /tmp/rollback/root
