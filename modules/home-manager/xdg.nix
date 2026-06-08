@@ -93,6 +93,7 @@
       };
 
       programs.bash.historyFile = "${stateHome}/bash/history";
+      programs.bash.initExtra = lib.mkAfter "export HISTFILE";
 
       xdg.configFile."wget/wgetrc".text = ''
         hsts-file = ${cacheHome}/wget/hsts

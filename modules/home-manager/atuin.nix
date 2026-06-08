@@ -1,7 +1,12 @@
 { ... }:
 {
   flake.homeManagerModules.atuin =
-    { ... }:
+    {
+      pkgs,
+      config,
+      lib,
+      ...
+    }:
     {
       programs.atuin = {
         enable = true;
@@ -41,5 +46,14 @@
           };
         };
       };
+
+      home.activation.atuinImport = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        histfile="${config.programs.bash.historyFile}"
+        db="${config.home.homeDirectory}/.local/share/atuin/history.db"
+        if [ ! -e "$db" ] && [ -s "$histfile" ]; then
+          HISTFILE="$histfile" $DRY_RUN_CMD ${config.programs.atuin.package}/bin/atuin import bash
+          $DRY_RUN_CMD ${pkgs.sqlite}/bin/sqlite3 "$db" "UPDATE history SET command = trim(command);"
+        fi
+      '';
     };
 }
