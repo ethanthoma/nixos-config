@@ -5,6 +5,7 @@
     {
       imports = [
         self.homeManagerModules.apps
+        self.homeManagerModules.atuin
         self.homeManagerModules.claude
         self.homeManagerModules.direnv
         self.homeManagerModules.eza
