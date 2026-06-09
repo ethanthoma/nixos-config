@@ -10,6 +10,9 @@ in
       lib,
       ...
     }:
+    let
+      logDir = "${config.home.homeDirectory}/.local/state/atuin";
+    in
     {
       programs.atuin = {
         enable = true;
@@ -33,6 +36,12 @@ in
           update_check = false;
           sync_address = "";
           theme.name = "hypersubatomic";
+
+          logs = {
+            search.file = "${logDir}/search.log";
+            daemon.file = "${logDir}/daemon.log";
+            ai.file = "${logDir}/ai.log";
+          };
         };
 
         themes."hypersubatomic" = {
@@ -57,6 +66,10 @@ in
           HISTFILE="$histfile" $DRY_RUN_CMD ${config.programs.atuin.package}/bin/atuin import bash
           $DRY_RUN_CMD ${pkgs.sqlite}/bin/sqlite3 "$db" "UPDATE history SET command = trim(command);"
         fi
+      '';
+
+      home.activation.atuinLogDir = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        $DRY_RUN_CMD mkdir -p "${logDir}"
       '';
     };
 }
