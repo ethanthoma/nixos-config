@@ -6,7 +6,7 @@
 
   muted = "#4b526d";
   subtle = "#8f93a2";
-  text = "#bababa";
+  text = "#e0e0e0";
 
   love = "#f2283c";
   gold = "#ffc200";
