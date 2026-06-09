@@ -41,7 +41,11 @@ in
 
         users.users.${username} = {
           isNormalUser = true;
-          extraGroups = [ "networkmanager" "wheel" "audio" ];
+          extraGroups = [
+            "networkmanager"
+            "wheel"
+            "audio"
+          ];
           home = "/home/${username}";
         };
 
@@ -56,28 +60,6 @@ in
               inputs.rose-pine-hyprcursor.packages.${system}.default
             ];
           };
-        };
-
-        nix = {
-          gc = {
-            automatic = true;
-            dates = "daily";
-            options = "--delete-older-than 7d";
-          };
-          optimise.automatic = true;
-          settings = {
-            auto-optimise-store = true;
-            experimental-features = [ "nix-command" "flakes" ];
-            trusted-users = [ "root" username ];
-            max-jobs = "auto";
-            cores = 0;
-            keep-derivations = true;
-            keep-outputs = true;
-          };
-          extraOptions = ''
-            min-free = ${toString (1024 * 1024 * 1024)}
-            max-free = ${toString (1024 * 1024 * 1024)}
-          '';
         };
       }
     ];
