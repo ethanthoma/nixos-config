@@ -24,9 +24,22 @@
           };
           push.autoSetupRemote = true;
           init.defaultBranch = "main";
-          safe.directory = "/etc/nixos";
+          safe.directory = [
+            "/etc/nixos"
+            "*"
+          ];
           commit.gpgsign = true;
           gpg.format = "ssh";
+          credential = {
+            "https://github.com".helper = [
+              ""
+              "!${pkgs.gh}/bin/gh auth git-credential"
+            ];
+            "https://gist.github.com".helper = [
+              ""
+              "!${pkgs.gh}/bin/gh auth git-credential"
+            ];
+          };
         };
       };
     };
