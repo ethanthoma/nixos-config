@@ -1,13 +1,18 @@
 { ... }:
 {
   flake.homeManagerModules.starship =
-    { pkgs, ... }:
+    { pkgs, config, ... }:
+    let
+      bakeInit = import ../_lib/bake-init.nix { inherit (pkgs) runCommand; };
+    in
     {
       programs.starship = {
         enable = true;
+        enableBashIntegration = false;
 
         settings = {
           format = "$username$hostname$all";
+          add_newline = false;
 
           username = {
             format = "\\[[$user]($style)";
@@ -32,7 +37,7 @@
             format = "\\[[$time]($style)\\]";
           };
           cmd_duration = {
-            format = "\\[[ $duration]($style)\\]";
+            format = "\\[[$duration]($style)\\]";
             min_time = 10000;
           };
 
@@ -205,10 +210,8 @@
         };
       };
 
-      programs.bash = {
-        bashrcExtra = ''
-          eval "$(starship init bash)"
-        '';
-      };
+      programs.bash.initExtra = ''
+        [[ $- == *i* && $TERM != dumb ]] && source ${bakeInit "starship" "${config.programs.starship.package}/bin/starship init bash --print-full-init"}
+      '';
     };
 }

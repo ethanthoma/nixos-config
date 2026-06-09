@@ -9,7 +9,10 @@ in
       home.packages = [ pkgs.fzf ];
 
       programs = {
-        fzf.enable = true;
+        fzf = {
+          enable = true;
+          enableBashIntegration = false;
+        };
 
         bash.bashrcExtra = ''
           export FZF_DEFAULT_OPTS="
@@ -19,11 +22,6 @@ in
               --color=border:${palette.highlightMed},header:${palette.pine},gutter:${palette.base}
               --color=spinner:${palette.gold},info:${palette.foam}
               --color=pointer:${palette.iris},marker:${palette.love},prompt:${palette.subtle}"
-
-          if command -v fzf-share >/dev/null; then
-              source "$(fzf-share)/key-bindings.bash"
-              source "$(fzf-share)/completion.bash"
-          fi
         '';
       };
     };
