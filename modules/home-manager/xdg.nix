@@ -29,6 +29,9 @@
         # Python
         PYTHONSTARTUP = "${configHome}/python/startup.py";
 
+        # PostgreSQL (history -> XDG_STATE_HOME)
+        PSQL_HISTORY = "${stateHome}/psql/history";
+
         # Cloud CLIs
         AWS_CONFIG_FILE = "${configHome}/aws/config";
         AWS_SHARED_CREDENTIALS_FILE = "${configHome}/aws/credentials";
@@ -149,6 +152,7 @@
         move "${home}/.bash_history"      "${stateHome}/bash/history"
         move "${home}/.python_history"    "${stateHome}/python/history"
         move "${home}/.node_repl_history" "${stateHome}/node/repl_history"
+        move "${home}/.psql_history"      "${stateHome}/psql/history"
 
         move "${home}/.bun"               "${dataHome}/bun"
         move "${home}/.pulumi"            "${dataHome}/pulumi"
@@ -173,6 +177,7 @@
         fi
 
         $DRY_RUN_CMD mkdir -p "${cacheHome}/terraform/plugins"
+        $DRY_RUN_CMD mkdir -p "${stateHome}/psql"
       '';
     };
 }
