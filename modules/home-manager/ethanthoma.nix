@@ -1,7 +1,10 @@
 { self, ... }:
+let
+  palette = import ../_lib/palette.nix;
+in
 {
   flake.homeManagerModules.ethanthoma =
-    { ... }:
+    { lib, ... }:
     {
       imports = [
         self.homeManagerModules.apps
@@ -38,7 +41,9 @@
         enable = true;
         portalPackage = null;
         configType = "lua";
-        extraConfig = builtins.readFile ../_files/hyprland.lua;
+        extraConfig =
+          builtins.replaceStrings [ "@background_color@" ] [ "0xff${lib.removePrefix "#" palette.base}" ]
+            (builtins.readFile ../_files/hyprland.lua);
       };
 
       programs.home-manager.enable = true;

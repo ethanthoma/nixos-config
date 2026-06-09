@@ -1,4 +1,7 @@
 { ... }:
+let
+  palette = import ../_lib/palette.nix;
+in
 {
   flake.homeManagerModules.atuin =
     {
@@ -29,20 +32,20 @@
           enter_accept = true;
           update_check = false;
           sync_address = "";
-          theme.name = "rose-pine";
+          theme.name = "hypersubatomic";
         };
 
-        themes."rose-pine" = {
-          theme.name = "rose-pine";
+        themes."hypersubatomic" = {
+          theme.name = "hypersubatomic";
           colors = {
-            AlertInfo = "#9ccfd8"; # foam
-            AlertWarn = "#f6c177"; # gold
-            AlertError = "#eb6f92"; # love
-            Annotation = "#6e6a86"; # muted
-            Base = "#e0def4"; # text
-            Guidance = "#908caa"; # subtle
-            Important = "#f6c177"; # gold
-            Title = "#c4a7e7"; # iris
+            AlertInfo = palette.foam;
+            AlertWarn = palette.gold;
+            AlertError = palette.love;
+            Annotation = palette.muted;
+            Base = palette.text;
+            Guidance = palette.subtle;
+            Important = palette.gold;
+            Title = palette.iris;
           };
         };
       };

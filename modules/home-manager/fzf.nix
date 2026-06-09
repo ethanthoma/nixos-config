@@ -1,4 +1,7 @@
 { ... }:
+let
+  palette = import ../_lib/palette.nix;
+in
 {
   flake.homeManagerModules.fzf =
     { pkgs, ... }:
@@ -11,11 +14,11 @@
         bash.bashrcExtra = ''
           export FZF_DEFAULT_OPTS="
               --height 50% --layout=reverse --border
-              --color=fg:#908caa,bg:#191724,hl:#ebbcba
-              --color=fg+:#e0def4,bg+:#26233a,hl+:#ebbcba
-              --color=border:#403d52,header:#31748f,gutter:#191724
-              --color=spinner:#f6c177,info:#9ccfd8
-              --color=pointer:#c4a7e7,marker:#eb6f92,prompt:#908caa"
+              --color=fg:${palette.subtle},bg:${palette.base},hl:${palette.rose}
+              --color=fg+:${palette.text},bg+:${palette.overlay},hl+:${palette.rose}
+              --color=border:${palette.highlightMed},header:${palette.pine},gutter:${palette.base}
+              --color=spinner:${palette.gold},info:${palette.foam}
+              --color=pointer:${palette.iris},marker:${palette.love},prompt:${palette.subtle}"
 
           if command -v fzf-share >/dev/null; then
               source "$(fzf-share)/key-bindings.bash"

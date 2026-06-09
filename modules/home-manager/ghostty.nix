@@ -1,4 +1,7 @@
 { ... }:
+let
+  palette = import ../_lib/palette.nix;
+in
 {
   flake.homeManagerModules.ghostty =
     { pkgs, ... }:
@@ -11,7 +14,28 @@
         source = pkgs.writeText "config" ''
           keybind = clear
 
-          theme = Rose Pine
+          background = ${palette.base}
+          foreground = ${palette.text}
+          cursor-color = ${palette.gold}
+          selection-background = ${palette.overlay}
+          selection-foreground = #eeffff
+
+          palette = 0=#000000
+          palette = 1=${palette.love}
+          palette = 2=${palette.leaf}
+          palette = 3=${palette.gold}
+          palette = 4=${palette.pine}
+          palette = 5=${palette.iris}
+          palette = 6=${palette.foam}
+          palette = 7=#ffffff
+          palette = 8=#464b5d
+          palette = 9=${palette.love}
+          palette = 10=${palette.leaf}
+          palette = 11=${palette.gold}
+          palette = 12=${palette.pine}
+          palette = 13=${palette.iris}
+          palette = 14=${palette.foam}
+          palette = 15=#ffffff
 
           confirm-close-surface = false
 

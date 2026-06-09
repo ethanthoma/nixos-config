@@ -67,7 +67,7 @@ hl.config({
         disable_hyprland_logo   = true,
         disable_splash_rendering = true,
         font_family             = "MonaspiceNe Nerd Font",
-        background_color        = 0xff191724,
+        background_color        = @background_color@,
     },
 })
 

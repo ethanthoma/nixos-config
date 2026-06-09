@@ -8,7 +8,7 @@
       home.file.".config/eza/theme.yml" = {
         source = pkgs.writeText "theme.yml" ''
           extensions:
-              ncl: {icon: {glyph: 󰆧, style: {foreground: 38;2;224;195;252}}}
+              ncl: {icon: {glyph: 󰆧, style: {foreground: 38;2;186;186;186}}}
         '';
       };
 
