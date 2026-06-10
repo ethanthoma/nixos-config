@@ -71,5 +71,14 @@ in
       home.activation.atuinLogDir = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         $DRY_RUN_CMD mkdir -p "${logDir}"
       '';
+
+      home.file.".atuin".source = config.lib.file.mkOutOfStoreSymlink logDir;
+
+      home.activation.atuinLegacyDir = lib.hm.dag.entryBefore [ "checkLinkTargets" ] ''
+        legacy="${config.home.homeDirectory}/.atuin"
+        if [ -d "$legacy" ] && [ ! -L "$legacy" ]; then
+          $DRY_RUN_CMD rm -rf "$legacy"
+        fi
+      '';
     };
 }
