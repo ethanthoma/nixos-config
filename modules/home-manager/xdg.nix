@@ -72,9 +72,6 @@
         # OpenAI Codex CLI
         CODEX_HOME = "${configHome}/codex";
 
-        # PulseAudio auth cookie
-        PULSE_COOKIE = "${stateHome}/pulse/cookie";
-
         # libX11 compiled-compose cache (default ~/.compose-cache)
         XCOMPOSECACHE = "${cacheHome}/compose";
 
@@ -160,8 +157,8 @@
         move "${home}/.codex"             "${configHome}/codex"
         move "${home}/.triton"            "${cacheHome}/triton"
         move "${home}/.nv"                "${cacheHome}/nv"
-        move "${home}/.pulse-cookie"      "${stateHome}/pulse/cookie"
         move "${home}/.imageio"           "${dataHome}/imageio"
+
         # merge rather than move since claude pre-creates the dir
         if [ -e "${home}/.claude" ]; then
           $DRY_RUN_CMD mkdir -p "${configHome}/claude"
