@@ -80,6 +80,7 @@
           "kvm-amd"
           "i2c-dev"
           "ddcci_backlight"
+          "iwlwifi"
         ];
         extraModulePackages = [ config.boot.kernelPackages.ddcci-driver ];
         kernelPackages = pkgs.linuxPackages;
