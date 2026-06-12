@@ -15,7 +15,7 @@ in
           text-color = palette.text;
           border-color = palette.gold;
           progress-color = "over ${palette.surface}";
-          defaultTimeout = "4000";
+          default-timeout = "4000";
           "urgency=high" = {
             border-color = palette.love;
           };
