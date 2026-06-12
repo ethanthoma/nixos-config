@@ -20,6 +20,7 @@ in
       self.nixosModules.sound
       self.nixosModules.hardware-surface
       self.nixosModules.ccache
+      self.nixosModules.keyd
       self.nixosModules.power
       self.nixosModules.yubikey
       self.nixosModules.yubikey-pam
