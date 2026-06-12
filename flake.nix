@@ -9,8 +9,14 @@
     };
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     impermanence.url = "github:nix-community/impermanence";
-    rose-pine-hyprcursor.url = "github:ndom91/rose-pine-hyprcursor";
-    zen-browser.url = "github:youwen5/zen-browser-flake";
+    rose-pine-hyprcursor = {
+      url = "github:ndom91/rose-pine-hyprcursor";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    zen-browser = {
+      url = "github:youwen5/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     fx-autoconfig = {
       url = "github:MrOtherGuy/fx-autoconfig";
       flake = false;
@@ -19,7 +25,10 @@
       url = "github:Vertex-Mods/Advanced-Tab-Groups";
       flake = false;
     };
-    claude-code.url = "github:sadjow/claude-code-nix";
+    claude-code = {
+      url = "github:sadjow/claude-code-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

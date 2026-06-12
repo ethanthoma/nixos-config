@@ -1,6 +1,7 @@
 *
 
 !.gitignore
+!.gitattributes
 !flake.nix
 !flake.lock
 

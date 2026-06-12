@@ -37,16 +37,6 @@
         ];
         extraModulePackages = [ ];
         blacklistedKernelModules = [ "surfacepro3_button" ];
-
-        kernelPatches = [
-          {
-            name = "disable-rust";
-            patch = null;
-            structuredExtraConfig = {
-              RUST = lib.mkForce lib.kernel.no;
-            };
-          }
-        ];
       };
 
       hardware.microsoft-surface.kernelVersion = "stable";
