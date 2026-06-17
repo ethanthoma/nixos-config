@@ -28,6 +28,9 @@
         pkgs.obs-studio
         pkgs.vlc
 
+        # games
+        pkgs.prismlauncher
+
         # backup
         pkgs.rclone
       ];
