@@ -15,11 +15,26 @@
         loader.systemd-boot = {
           enable = true;
           configurationLimit = 10;
+
+          extraInstallCommands = ''
+            if [ -e /dev/disk/by-uuid/C711-E14B ]; then
+              win=$(${pkgs.coreutils}/bin/mktemp -d)
+              ${pkgs.util-linux}/bin/mount -o ro /dev/disk/by-uuid/C711-E14B "$win"
+              ${pkgs.coreutils}/bin/mkdir -p /boot/EFI/Microsoft
+              ${pkgs.coreutils}/bin/cp -rT "$win/EFI/Microsoft" /boot/EFI/Microsoft
+              ${pkgs.util-linux}/bin/umount "$win"
+            fi
+          '';
+
+          extraEntries."windows.conf" = ''
+            title Windows
+            efi /EFI/Microsoft/Boot/bootmgfw.efi
+            sort-key zz-windows
+          '';
         };
         loader.efi.canTouchEfiVariables = true;
         binfmt.emulatedSystems = [ "aarch64-linux" ];
 
-        # bcachefs needs a recent kernel (out-of-tree module is broken on 6.12)
         supportedFilesystems = [ "bcachefs" ];
 
         initrd.systemd.enable = true;
