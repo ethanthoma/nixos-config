@@ -16,6 +16,7 @@ in
       self.nixosModules.bluetooth
       self.nixosModules.hyprland
       self.nixosModules.networking
+      self.nixosModules.tailscale
       self.nixosModules.ssh
       self.nixosModules.sound
       self.nixosModules.hardware-desktop
@@ -44,10 +45,6 @@ in
           inputs.claude-code.overlays.default
         ];
 
-        # Declarative password: hash lives at /persist/passwords/${username} (outside
-        # this public repo), so it survives a future root wipe and never enters git.
-        # `mutableUsers = false` means `passwd` is replaced by editing that file, and
-        # root has no password (use `sudo -i`, not `su`).
         users.mutableUsers = false;
 
         users.users.${username} = {

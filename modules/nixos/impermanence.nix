@@ -28,6 +28,7 @@
           "/var/lib/iwd"
           "/var/lib/fwupd"
           "/var/lib/containers"
+          "/var/lib/tailscale"
           "/etc/NetworkManager/system-connections"
         ];
 
