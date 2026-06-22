@@ -4,7 +4,10 @@ let
 in
 {
   flake.homeManagerModules.waybar =
-    { pkgs, ... }:
+    { config, pkgs, ... }:
+    let
+      llm_state_file = "${config.xdg.stateHome}/server-monitor/llm.json";
+    in
     {
       home.packages = [
         pkgs.font-awesome
@@ -23,10 +26,18 @@ in
             ];
             modules-center = [ ];
             modules-right = [
+              "custom/llm"
               "pulseaudio"
               "network"
               "battery"
             ];
+            "custom/llm" = {
+              exec = "${pkgs.coreutils}/bin/cat ${llm_state_file} 2>/dev/null || echo '{\"text\":\"\",\"tooltip\":\"server monitor starting\"}'";
+              return-type = "json";
+              interval = 30;
+              signal = 8;
+              on-click = "${pkgs.systemd}/bin/systemctl --user start server-monitor.service";
+            };
             "clock" = {
               on-click = "";
               tooltip = false;
@@ -108,6 +119,8 @@ in
           @define-color foam            ${palette.foam};
           @define-color iris            ${palette.iris};
 
+          @define-color leaf            ${palette.leaf};
+
           @define-color highlightLow    ${palette.highlightLow};
           @define-color highlightMed    ${palette.highlightMed};
           @define-color highlightHigh   ${palette.highlightHigh};
@@ -124,6 +137,9 @@ in
           }
 
           #clock { margin: 0; }
+
+          #custom-llm.up   { color: @leaf; }
+          #custom-llm.down { color: @love; }
 
           *.module {
               margin-left: 20px;
