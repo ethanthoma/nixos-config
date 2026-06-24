@@ -14,6 +14,13 @@ hl.env("HYPRCURSOR_SIZE", "24")
 hl.env("XCURSOR_THEME", "rose-pine")
 hl.env("XCURSOR_SIZE", "24")
 
+hl.monitor({
+    output   = "DP-2",
+    mode     = "2560x1440@164.83",
+    position = "0x0",
+    scale    = 1,
+})
+
 hl.config({
     cursor = {
         no_hardware_cursors = true,

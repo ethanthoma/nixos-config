@@ -205,6 +205,9 @@ in
       inputs.home-manager.nixosModules.home-manager
       {
         networking.hostName = hostname;
+
+        powerManagement.cpuFreqGovernor = "performance";
+
         nixpkgs.config.allowUnfree = true;
         nixpkgs.overlays = [
           (final: prev: {
