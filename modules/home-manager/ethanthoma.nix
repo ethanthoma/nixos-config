@@ -27,6 +27,7 @@ in
         self.homeManagerModules.starship
         self.homeManagerModules.tmux
         self.homeManagerModules.waybar
+        self.homeManagerModules.yubikey-touch-detector
         self.homeManagerModules.zoxide
         self.homeManagerModules.theme
         self.homeManagerModules.font
