@@ -30,6 +30,7 @@
 
         # games
         pkgs.prismlauncher
+        pkgs.r2modman
 
         # backup
         pkgs.rclone
