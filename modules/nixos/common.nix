@@ -48,6 +48,12 @@
         '';
       };
 
+      services.speechd.enable = false;
+
+      documentation.nixos.enable = false;
+
+      environment.defaultPackages = [ ];
+
       environment.variables.QT_BEARER_POLL_TIMEOUT = "-1";
 
       environment.systemPackages = [
