@@ -1,7 +1,14 @@
-{ ... }:
+{ inputs, ... }:
 {
   flake.nixosModules.common =
     { pkgs, ... }:
+    let
+      zen-browser = import ../_lib/zen-with-autoconfig.nix {
+        inherit (pkgs) runCommand;
+        zen = inputs.zen-browser.packages.${pkgs.system}.default;
+        inherit (inputs) fx-autoconfig;
+      };
+    in
     {
       nix = {
         gc = {
@@ -44,7 +51,7 @@
       environment.variables.QT_BEARER_POLL_TIMEOUT = "-1";
 
       environment.systemPackages = [
-        pkgs.zen-browser
+        zen-browser
         pkgs.bottom
         pkgs.openconnect_openssl
       ];

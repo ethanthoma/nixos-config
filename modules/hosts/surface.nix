@@ -3,7 +3,6 @@
 let
   system = "x86_64-linux";
   hostname = "surface";
-  username = "ethanthoma";
 in
 {
   systems = [ system ];
@@ -106,44 +105,10 @@ in
       self.nixosModules.yubikey
       self.nixosModules.yubikey-pam
       self.nixosModules.syncthing
-      inputs.home-manager.nixosModules.home-manager
+      self.nixosModules.user
       inputs.nixos-hardware.nixosModules.microsoft-surface-pro-9
       {
         networking.hostName = hostname;
-        nixpkgs.config.allowUnfree = true;
-        nixpkgs.overlays = [
-          (final: prev: {
-            zen-browser = import ../_lib/zen-with-autoconfig.nix {
-              inherit (prev) runCommand;
-              zen = inputs.zen-browser.packages.${system}.default;
-              fx-autoconfig = inputs.fx-autoconfig;
-            };
-          })
-          inputs.claude-code.overlays.default
-        ];
-
-        users.users.${username} = {
-          isNormalUser = true;
-          extraGroups = [
-            "networkmanager"
-            "wheel"
-            "audio"
-          ];
-          home = "/home/${username}";
-        };
-
-        services.getty.autologinUser = username;
-
-        home-manager = {
-          useGlobalPkgs = true;
-          useUserPackages = true;
-          users.${username} = {
-            imports = [ self.homeManagerModules.ethanthoma ];
-            home.packages = [
-              inputs.rose-pine-hyprcursor.packages.${system}.default
-            ];
-          };
-        };
       }
     ];
   };

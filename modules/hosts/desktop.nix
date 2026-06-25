@@ -202,51 +202,21 @@ in
       self.nixosModules.yubikey-pam
       self.nixosModules.syncthing
       self.nixosModules.probe-rs
-      inputs.home-manager.nixosModules.home-manager
+      self.nixosModules.user
       {
         networking.hostName = hostname;
 
         powerManagement.cpuFreqGovernor = "performance";
 
-        nixpkgs.config.allowUnfree = true;
-        nixpkgs.overlays = [
-          (final: prev: {
-            zen-browser = import ../_lib/zen-with-autoconfig.nix {
-              inherit (prev) runCommand;
-              zen = inputs.zen-browser.packages.${system}.default;
-              fx-autoconfig = inputs.fx-autoconfig;
-            };
-          })
-          inputs.claude-code.overlays.default
-        ];
-
         users.mutableUsers = false;
 
         users.users.${username} = {
-          isNormalUser = true;
           extraGroups = [
-            "networkmanager"
-            "wheel"
-            "audio"
             "video"
             "i2c"
             "plugdev"
           ];
-          home = "/home/${username}";
           hashedPasswordFile = "/persist/passwords/${username}";
-        };
-
-        services.getty.autologinUser = username;
-
-        home-manager = {
-          useGlobalPkgs = true;
-          useUserPackages = true;
-          users.${username} = {
-            imports = [ self.homeManagerModules.ethanthoma ];
-            home.packages = [
-              inputs.rose-pine-hyprcursor.packages.${system}.default
-            ];
-          };
         };
       }
     ];
