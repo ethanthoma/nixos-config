@@ -16,6 +16,7 @@ in
       self.nixosModules.bluetooth
       self.nixosModules.hyprland
       self.nixosModules.networking
+      self.nixosModules.tailscale
       self.nixosModules.ssh
       self.nixosModules.sound
       (
