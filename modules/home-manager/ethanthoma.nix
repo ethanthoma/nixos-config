@@ -17,6 +17,7 @@ in
         self.homeManagerModules.ghostty
         self.homeManagerModules.git
         self.homeManagerModules.gpg
+        self.homeManagerModules.hypridle
         self.homeManagerModules.keepassxc
         self.homeManagerModules.mako
         self.homeManagerModules.zen-mods
