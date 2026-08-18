@@ -28,6 +28,14 @@
         set_kp General OpenPreviousDatabasesOnStartup true
         set_kp General RememberLastDatabases true
         set_kp General MinimizeAfterUnlock true
+        # KeePassXC 2.7.12 defaults to locking the database after 900s of GUI
+        # inactivity — with the window tray-minimized that means 15 minutes
+        # after every unlock, forcing password + YubiKey tap on the next
+        # secret-service request. It also relocks on session lock and lid
+        # close by default. The session is already gated by pam_u2f, so keep
+        # the db open.
+        set_kp Security LockDatabaseIdle false
+        set_kp Security LockDatabaseScreenLock false
       '';
     };
 }
