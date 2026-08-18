@@ -22,7 +22,7 @@
                 Enabled = true;
               };
               Settings = {
-                AutoConnect = true;
+                AutoConnect = false;
               };
             };
           };
