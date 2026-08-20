@@ -12,6 +12,7 @@ in
         self.homeManagerModules.claude
         self.homeManagerModules.direnv
         self.homeManagerModules.eza
+        self.homeManagerModules.fizzy
         self.homeManagerModules.fuzzel
         self.homeManagerModules.fzf
         self.homeManagerModules.ghostty
