@@ -38,7 +38,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     tether = {
-      url = "git+ssh://git@github.com/ethanthoma/tether";
+      url = "github:ethanthoma/tether";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
