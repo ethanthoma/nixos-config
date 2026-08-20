@@ -202,6 +202,7 @@ in
       self.nixosModules.yubikey-pam
       self.nixosModules.syncthing
       self.nixosModules.probe-rs
+      self.nixosModules.sigrok
       self.nixosModules.user
       {
         networking.hostName = hostname;

@@ -102,6 +102,7 @@ in
       self.nixosModules.ccache
       self.nixosModules.keyd
       self.nixosModules.power
+      self.nixosModules.sigrok
       self.nixosModules.yubikey
       self.nixosModules.yubikey-pam
       self.nixosModules.syncthing
