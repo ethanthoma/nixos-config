@@ -4,8 +4,8 @@
     { config, pkgs, ... }:
     let
       codex = inputs.codex-cli.packages.${pkgs.stdenv.hostPlatform.system}.default;
-      codex_atlas = pkgs.writeShellApplication {
-        name = "codex";
+      codex_wrapper = pkgs.writeShellApplication {
+        name = "codex-atlas-wrapper";
         runtimeInputs = [ pkgs.openssh ];
         text = ''
           atlas_llm_api_key="$(
@@ -22,6 +22,11 @@
           exec ${codex}/bin/codex "$@"
         '';
       };
+      codex_atlas = pkgs.runCommand "codex" { } ''
+        mkdir -p "$out/bin"
+        ln -s ${codex_wrapper}/bin/codex-atlas-wrapper "$out/bin/codex"
+        ln -s ${codex}/share "$out/share"
+      '';
     in
     {
       home.packages = [ codex_atlas ];
