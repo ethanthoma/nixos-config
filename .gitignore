@@ -8,3 +8,12 @@
 # modules
 !modules/
 !modules/**/*
+
+# out-of-tree package sources referenced by modules (import-tree must not scan them)
+!pkgs/
+!pkgs/**/*
+
+# sops: encrypted secrets + public-key policy are safe to publish
+!secrets/
+!secrets/**/*
+!.sops.yaml
