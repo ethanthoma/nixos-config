@@ -317,6 +317,8 @@
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_3",
         "rose-pine-hyprcursor": "rose-pine-hyprcursor",
+        "sops-nix": "sops-nix",
+        "tether": "tether",
         "zen-browser": "zen-browser"
       }
     },
@@ -339,6 +341,26 @@
       "original": {
         "owner": "ndom91",
         "repo": "rose-pine-hyprcursor",
+        "type": "github"
+      }
+    },
+    "sops-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1786629091,
+        "narHash": "sha256-gkig4nPi1CWc4Z50GBsjE4ygSE7hMpl/TwID2an2Cck=",
+        "owner": "Mic92",
+        "repo": "sops-nix",
+        "rev": "a8627b21b9107c5711c96b84f32a9a4b3d45295f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Mic92",
+        "repo": "sops-nix",
         "type": "github"
       }
     },
@@ -399,6 +421,26 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "tether": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1787258591,
+        "narHash": "sha256-QLvYRy2ooxF1a9WXZfE2eMJQ4MSYPMj4RhTorM5k31c=",
+        "owner": "ethanthoma",
+        "repo": "tether",
+        "rev": "798b05ec9c44e339249af1c32a621015a04736d8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ethanthoma",
+        "repo": "tether",
         "type": "github"
       }
     },
