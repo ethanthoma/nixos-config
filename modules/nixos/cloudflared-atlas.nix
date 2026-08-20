@@ -1,23 +1,17 @@
 { ... }:
 {
-  # The tunnel UUID, ingress hostname, and credentials are host secrets that must
-  # not enter this public repo, so cloudflared reads them from
-  # /var/lib/cloudflared/config.yml (+ the credentials json it references),
-  # provisioned out-of-band on the host. The service is a no-op until that file
-  # exists.
+  # Tunnel UUID and hostname are not secrets (a Cloudflare tunnel id is useless
+  # without the credentials json, which stays in /var/lib and never enters this
+  # repo). So the tunnel is declared normally here.
   flake.nixosModules.cloudflared-atlas =
-    { pkgs, ... }:
+    { ... }:
     {
-      systemd.services.cloudflared-atlas = {
-        description = "cloudflared tunnel (config in /var/lib/cloudflared/config.yml)";
-        wantedBy = [ "multi-user.target" ];
-        after = [ "network-online.target" ];
-        wants = [ "network-online.target" ];
-        unitConfig.ConditionPathExists = "/var/lib/cloudflared/config.yml";
-        serviceConfig = {
-          ExecStart = "${pkgs.cloudflared}/bin/cloudflared tunnel --no-autoupdate --config /var/lib/cloudflared/config.yml run";
-          Restart = "on-failure";
-          RestartSec = 5;
+      services.cloudflared = {
+        enable = true;
+        tunnels."93c151d8-b148-4fb8-b256-e1a67e45c601" = {
+          credentialsFile = "/var/lib/cloudflared/atlas-llm.json";
+          default = "http_status:404";
+          ingress."llm.gaugenumerics.com" = "http://localhost:8080";
         };
       };
     };
