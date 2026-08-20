@@ -1,14 +1,9 @@
-{ ... }:
+{ inputs, ... }:
 {
   flake.nixosModules.tether =
     { pkgs, ... }:
     let
-      tether-bin = pkgs.buildGoModule {
-        pname = "tether";
-        version = "0.1.0";
-        src = ../../pkgs/tether;
-        vendorHash = null;
-      };
+      tether-bin = inputs.tether.packages.${pkgs.stdenv.hostPlatform.system}.default;
       tether = pkgs.writeShellScriptBin "tether" ''
         set -a
         [ -f /var/lib/tether.env ] && . /var/lib/tether.env

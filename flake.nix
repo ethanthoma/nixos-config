@@ -37,6 +37,10 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    tether = {
+      url = "git+ssh://git@github.com/ethanthoma/tether";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
