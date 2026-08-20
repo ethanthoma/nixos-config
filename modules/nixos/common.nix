@@ -5,7 +5,7 @@
     let
       zen-browser = import ../_lib/zen-with-autoconfig.nix {
         inherit (pkgs) runCommand;
-        zen = inputs.zen-browser.packages.${pkgs.system}.default;
+        zen = inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default;
         inherit (inputs) fx-autoconfig;
       };
     in
