@@ -34,7 +34,7 @@ in
           keys.scroll_exits = false;
           enter_accept = true;
           update_check = false;
-          sync_address = "";
+          auto_sync = false;
           theme.name = "hypersubatomic";
 
           logs = {
