@@ -11,10 +11,6 @@
 
       gtk = {
         enable = true;
-        theme = {
-          name = "rose-pine";
-          package = pkgs.rose-pine-gtk-theme;
-        };
         cursorTheme = {
           name = "rose-pine-cursor";
           package = pkgs.rose-pine-cursor;
