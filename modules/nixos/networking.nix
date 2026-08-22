@@ -37,7 +37,7 @@
       # and regular queries go straight to the LAN resolver.
       services.resolved = {
         enable = true;
-        fallbackDns = [
+        settings.Resolve.FallbackDNS = [
           "1.1.1.1"
           "9.9.9.9"
         ];
