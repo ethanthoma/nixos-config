@@ -22,7 +22,7 @@ in
             layer = "top";
             position = "top";
             modules-left = [
-              "clock"
+              "custom/clock"
             ];
             modules-center = [ ];
             modules-right = [
@@ -38,10 +38,9 @@ in
               signal = 8;
               on-click = "${pkgs.systemd}/bin/systemctl --user start server-monitor.service";
             };
-            "clock" = {
-              on-click = "";
+            "custom/clock" = {
+              exec = "while :; do ${pkgs.coreutils}/bin/date '+%d %b %R'; ${pkgs.coreutils}/bin/sleep $((60 - $(${pkgs.coreutils}/bin/date +%-S))); done";
               tooltip = false;
-              format = "{:%d %b %R}";
             };
             "pulseaudio" = {
               tooltip = false;
@@ -136,7 +135,7 @@ in
               padding-right: 20px;
           }
 
-          #clock { margin: 0; }
+          #custom-clock { margin: 0; }
 
           #custom-llm.up   { color: @leaf; }
           #custom-llm.down { color: @love; }
