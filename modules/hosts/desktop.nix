@@ -197,6 +197,7 @@ in
       self.nixosModules.moonlander
       self.nixosModules.steam
       self.nixosModules.podman
+      self.nixosModules.crawl4ai
       self.nixosModules.k3s
       self.nixosModules.yubikey
       self.nixosModules.yubikey-pam
