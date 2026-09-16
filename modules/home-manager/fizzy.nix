@@ -66,6 +66,15 @@
               cp -r $src source
               chmod -R u+w source
               cd source
+              # Zig 0.16's fetch reuses stale keep-alive connections and dies
+              # with HttpConnectionClosing mid-tree. Fetched deps persist in
+              # the cache, so bounded retries converge; the final run outside
+              # the loop propagates the real error if all retries fail.
+              for attempt in 1 2 3 4 5 6 7; do
+                if zig build --help > /dev/null 2>&1; then break; fi
+                echo "dependency fetch attempt $attempt failed; retrying" >&2
+                sleep 2
+              done
               zig build --help > /dev/null
               mv zig-pkg $out
             '';
