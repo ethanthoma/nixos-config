@@ -56,8 +56,6 @@
         AllowSuspendThenHibernate = "yes";
         AllowHybridSleep = "yes";
         SuspendState = "mem";
-        HibernateState = "disk";
-        HybridSleepState = "disk";
         HibernateMode = "shutdown";
       };
 

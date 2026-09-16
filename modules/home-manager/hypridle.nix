@@ -12,14 +12,14 @@
         enable = true;
         settings = {
           general = {
-            after_sleep_cmd = "${lib.getExe' pkgs.hyprland "hyprctl"} dispatch dpms on";
+            after_sleep_cmd = "${lib.getExe' pkgs.hyprland "hyprctl"} dispatch 'hl.dsp.dpms(\"on\")'";
             ignore_dbus_inhibit = false;
           };
           listener = [
             {
               timeout = 300;
-              on-timeout = "${lib.getExe' pkgs.hyprland "hyprctl"} dispatch dpms off";
-              on-resume = "${lib.getExe' pkgs.hyprland "hyprctl"} dispatch dpms on";
+              on-timeout = "${lib.getExe' pkgs.hyprland "hyprctl"} dispatch 'hl.dsp.dpms(\"off\")'";
+              on-resume = "${lib.getExe' pkgs.hyprland "hyprctl"} dispatch 'hl.dsp.dpms(\"on\")'";
             }
             {
               timeout = 1800;
