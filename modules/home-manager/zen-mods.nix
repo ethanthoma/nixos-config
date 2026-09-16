@@ -77,6 +77,9 @@
           echo 'user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);'
           echo 'user_pref("browser.tabs.groups.enabled", true);'
           echo 'user_pref("browser.tabs.groups.arc-style", true);'
+          echo 'user_pref("network.trr.mode", 5);'
+          echo 'user_pref("media.peerconnection.ice.default_address_only", true);'
+          echo 'user_pref("media.peerconnection.ice.no_host", true);'
           echo "$e"
         } >> "$userjs.tmp"
         mv "$userjs.tmp" "$userjs"

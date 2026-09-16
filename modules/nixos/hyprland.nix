@@ -1,7 +1,7 @@
 { ... }:
 {
   flake.nixosModules.hyprland =
-    { pkgs, ... }:
+    { lib, pkgs, ... }:
     {
       services.greetd = {
         enable = true;
@@ -30,6 +30,15 @@
         xwayland.enable = true;
       };
 
+      # systemd ships `D /tmp/.X11-unix 1777 root root 1h`, and `D` plus
+      # `--remove` empties the directory. Every nixos-rebuild switch runs
+      # systemd-tmpfiles-resetup with `--remove`, which unlinks the running
+      # Xwayland's socket while it keeps listening, so every X11 client fails
+      # with "unable to open display" until the next login. Boot still sweeps
+      # via systemd-tmpfiles-setup.service, which keeps `--remove`.
+      systemd.services.systemd-tmpfiles-resetup.serviceConfig.ExecStart =
+        lib.mkForce "systemd-tmpfiles --create --exclude-prefix=/dev";
+
       services.dbus.enable = true;
       xdg.portal = {
         enable = true;
@@ -38,7 +47,10 @@
           pkgs.xdg-desktop-portal-gtk
         ];
         config.common = {
-          default = [ "hyprland" "gtk" ];
+          default = [
+            "hyprland"
+            "gtk"
+          ];
           "org.freedesktop.impl.portal.AppChooser" = [ "gtk" ];
         };
       };

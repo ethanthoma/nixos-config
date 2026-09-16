@@ -6,7 +6,10 @@
       codex = inputs.codex-cli.packages.${pkgs.stdenv.hostPlatform.system}.default;
       codex_wrapper = pkgs.writeShellApplication {
         name = "codex-atlas-wrapper";
-        runtimeInputs = [ pkgs.openssh ];
+        runtimeInputs = [
+          pkgs.openssh
+          pkgs.secretspec
+        ];
         text = ''
           atlas_llm_api_key="$(
             ssh -o BatchMode=yes -o ConnectTimeout=5 atlas \
@@ -19,7 +22,31 @@
           fi
 
           export ATLAS_LLM_API_KEY="$atlas_llm_api_key"
-          exec ${codex}/bin/codex "$@"
+
+          # Only the `glm` profile needs this, so a locked vault must not take
+          # down every codex launch; codex reports the missing env_key itself if
+          # that profile is actually selected.
+          openrouter_api_key="$(
+            secretspec get OPENROUTER_API_KEY \
+              -f "${config.xdg.configHome}/secretspec/secretspec.toml" \
+              --reason "codex launch: OpenRouter provider credential" 2>/dev/null
+          )" || openrouter_api_key=""
+
+          if [ -n "$openrouter_api_key" ]; then
+            export OPENROUTER_API_KEY="$openrouter_api_key"
+          else
+            echo "OpenRouter credential unavailable; the glm profile will not work." >&2
+          fi
+
+          codex_args=()
+          for var in WAYLAND_DISPLAY XDG_RUNTIME_DIR; do
+            value="''${!var:-}"
+            if [ -n "$value" ]; then
+              codex_args+=(-c "shell_environment_policy.set.$var=\"$value\"")
+            fi
+          done
+
+          exec ${codex}/bin/codex "''${codex_args[@]}" "$@"
         '';
       };
       codex_atlas = pkgs.runCommand "codex" { } ''

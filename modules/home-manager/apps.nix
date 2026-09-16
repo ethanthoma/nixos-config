@@ -1,4 +1,4 @@
-{ ... }:
+{ inputs, ... }:
 {
   flake.homeManagerModules.apps =
     { config, pkgs, ... }:
@@ -25,12 +25,25 @@
         pkgs.duf
 
         # recording
-        pkgs.obs-studio
+        # obs dlopens libnvidia-encode.so.1 by name; nixpkgs' wrapper doesn't put
+        # /run/opengl-driver/lib on the search path, so nvenc is invisible.
+        (pkgs.symlinkJoin {
+          name = "obs-studio-nvenc";
+          paths = [ pkgs.obs-studio ];
+          nativeBuildInputs = [ pkgs.makeWrapper ];
+          postBuild = ''
+            wrapProgram $out/bin/obs --prefix LD_LIBRARY_PATH : /run/opengl-driver/lib
+          '';
+        })
         pkgs.vlc
+
+        # audio
+        pkgs.ardour
+        pkgs.qpwgraph
 
         # games
         pkgs.prismlauncher
-        pkgs.r2modman
+        inputs.r2modman.legacyPackages.${pkgs.stdenv.hostPlatform.system}.r2modman
 
         # backup
         pkgs.rclone

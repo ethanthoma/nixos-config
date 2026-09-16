@@ -106,6 +106,39 @@ hl.bind("Print", hl.dsp.exec_cmd([[grim -o "$(hyprctl monitors -j | jq -r '.[] |
 hl.bind(mainMod .. " + T", hl.dsp.exec_cmd("zen"))
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ action = "toggle" }))
 
+-- Float the active window at a fixed pixel size for OBS capture.
+local function bind_capture_size(key, capture_window_width, capture_window_height)
+    hl.bind(key, function()
+        local active
+        for _, window in ipairs(hl.get_windows({})) do
+            if window.active then
+                active = window
+                break
+            end
+        end
+        if not active then
+            return
+        end
+
+        if active.floating and active.size.x == capture_window_width and active.size.y == capture_window_height then
+            hl.dispatch(hl.dsp.window.float({ action = "off" }))
+            return
+        end
+
+        hl.dispatch(hl.dsp.window.float({ action = "on" }))
+        hl.dispatch(hl.dsp.window.resize({ x = capture_window_width, y = capture_window_height, exact = true }))
+        hl.dispatch(hl.dsp.window.center())
+    end)
+end
+
+-- A browser sits past its 4:5 content area by the chrome, which the OBS crop filter takes back off.
+local browser_chrome_width = 16
+local browser_chrome_height = 52
+bind_capture_size(mainMod .. " + SHIFT + V", 1080 + browser_chrome_width, 1350 + browser_chrome_height)
+
+-- The game renders to the whole window, so the window itself is the capture area.
+bind_capture_size(mainMod .. " + SHIFT + B", 1400, 1400)
+
 -- Move focus with mainMod + hjkl
 hl.bind(mainMod .. " + H", hl.dsp.focus({ direction = "left" }))
 hl.bind(mainMod .. " + L", hl.dsp.focus({ direction = "right" }))
