@@ -11,7 +11,6 @@ in
         self.homeManagerModules.atuin
         self.homeManagerModules.claude
         self.homeManagerModules.codex
-        self.homeManagerModules.crawl4ai
         self.homeManagerModules.direnv
         self.homeManagerModules.eza
         self.homeManagerModules.fizzy
