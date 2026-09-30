@@ -34,6 +34,10 @@
       url = "github:sadjow/codex-cli-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    codex-web = {
+      url = "git+ssh://git@github.com/gauge-numerics/codex-web";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
