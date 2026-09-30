@@ -24,6 +24,7 @@ in
         self.homeManagerModules.mako
         self.homeManagerModules.zen-mods
         self.homeManagerModules.neovim
+        self.homeManagerModules.pi
         self.homeManagerModules.secretspec
         self.homeManagerModules.server-monitor
         self.homeManagerModules.starship
