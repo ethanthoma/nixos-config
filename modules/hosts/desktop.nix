@@ -205,8 +205,18 @@ in
       self.nixosModules.probe-rs
       self.nixosModules.sigrok
       self.nixosModules.user
+      self.nixosModules.codex-web
       {
         networking.hostName = hostname;
+
+        # Root is wiped every boot, so the backend tokens stay in /home, where
+        # atlas's copies of them were first created.
+        services.codex-web-host = {
+          address = "100.119.138.102";
+          keepAwake = true;
+          codex.tokenFile = "/home/${username}/.config/codex/app-server-web.env";
+          claude.tokenFile = "/home/${username}/.config/claude/shim-web.env";
+        };
 
         powerManagement.cpuFreqGovernor = "performance";
 
