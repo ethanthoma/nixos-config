@@ -58,6 +58,26 @@
         "type": "github"
       }
     },
+    "codex-web": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1790805002,
+        "narHash": "sha256-x25XwPZI2x5yvJwuLmTA23hbHjAUZmqi0EpuVYU+Z9U=",
+        "ref": "refs/heads/main",
+        "rev": "4be9ed2a483edb39943ce7de03e9c2619a734234",
+        "revCount": 38,
+        "type": "git",
+        "url": "ssh://git@github.com/gauge-numerics/codex-web"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/gauge-numerics/codex-web"
+      }
+    },
     "flake-parts": {
       "inputs": {
         "nixpkgs-lib": "nixpkgs-lib"
@@ -307,6 +327,7 @@
         "advanced-tab-groups": "advanced-tab-groups",
         "claude-code": "claude-code",
         "codex-cli": "codex-cli",
+        "codex-web": "codex-web",
         "flake-parts": "flake-parts",
         "fx-autoconfig": "fx-autoconfig",
         "home-manager": "home-manager",
