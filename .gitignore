@@ -4,6 +4,11 @@
 !.gitattributes
 !flake.nix
 !flake.lock
+!.sops.yaml
+
+# secrets
+!secrets/
+!secrets/**/*
 
 # modules
 !modules/

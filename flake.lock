@@ -65,17 +65,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1790821225,
-        "narHash": "sha256-EucAuqqC/I/UEKL20B2/4vDgSewiYe2E2VJO87w5Eow=",
-        "ref": "refs/heads/main",
-        "rev": "1b31dd7b7c5eaaddfb122ad7c9666163c32380e2",
-        "revCount": 47,
-        "type": "git",
-        "url": "ssh://git@github.com/gauge-numerics/codex-web"
+        "lastModified": 1790831956,
+        "narHash": "sha256-I7E037ZFpCNY66/bpFD/1CaSPuHs390TZ0+ynxuo2F8=",
+        "owner": "gauge-numerics",
+        "repo": "codex-web",
+        "rev": "da74897317cdd254b8cbd97d0c085022177bd1cc",
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "ssh://git@github.com/gauge-numerics/codex-web"
+        "owner": "gauge-numerics",
+        "repo": "codex-web",
+        "type": "github"
       }
     },
     "flake-parts": {
@@ -337,6 +337,7 @@
         "nixpkgs": "nixpkgs_3",
         "r2modman": "r2modman",
         "rose-pine-hyprcursor": "rose-pine-hyprcursor",
+        "sops-nix": "sops-nix",
         "zen-browser": "zen-browser"
       }
     },
@@ -359,6 +360,26 @@
       "original": {
         "owner": "ndom91",
         "repo": "rose-pine-hyprcursor",
+        "type": "github"
+      }
+    },
+    "sops-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1790498116,
+        "narHash": "sha256-rs9meAYxW3zzrh43yaW7htrqCD+X9+pupDPHN86fumI=",
+        "owner": "Mic92",
+        "repo": "sops-nix",
+        "rev": "5efb5a6f4f5ab192817d28557dd4d650fa14d866",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Mic92",
+        "repo": "sops-nix",
         "type": "github"
       }
     },

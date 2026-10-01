@@ -204,6 +204,7 @@ in
       self.nixosModules.syncthing
       self.nixosModules.probe-rs
       self.nixosModules.sigrok
+      self.nixosModules.sops
       self.nixosModules.user
       self.nixosModules.codex-web
       {
