@@ -38,6 +38,29 @@
       url = "git+ssh://git@github.com/gauge-numerics/codex-web";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # atlas (modules/hosts/atlas.nix) pins its own package set; update it with `nix flake update atlas-nixpkgs ...`.
+    atlas-nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    atlas-home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "atlas-nixpkgs";
+    };
+    atlas-claude-code = {
+      url = "github:sadjow/claude-code-nix";
+      inputs.nixpkgs.follows = "atlas-nixpkgs";
+    };
+    atlas-codex-cli = {
+      url = "github:sadjow/codex-cli-nix";
+      inputs.nixpkgs.follows = "atlas-nixpkgs";
+    };
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "atlas-nixpkgs";
+    };
+    tether = {
+      url = "git+ssh://git@github.com/ethanthoma/tether";
+      flake = false;
+    };
   };
 
   outputs =
