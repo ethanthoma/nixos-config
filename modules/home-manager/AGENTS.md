@@ -24,6 +24,46 @@ Nix system. Nothing is on `PATH` by default.
   ```
 - Never assume ambient installation.
 
+## Languages
+
+All code we write is in one of these:
+
+- **Bend 2**: logic whose rules must hold, and parallel CPU/GPU compute.
+- **Rust**: services, CLIs, anything long-running or close to the OS.
+- **Nix**: packaging, services, machines.
+- **CUE**: configuration and schemas.
+- **CEL**: policy and predicates evaluated at runtime.
+- **Python with tinygrad (master branch)**: ML only.
+
+No new JavaScript, TypeScript, Go, or bash beyond a throwaway script. A browser
+page is the one place JavaScript may stay. Port existing code in other
+languages, smallest and most stable piece first.
+
+### Bend 2
+
+A dependently typed, affine language with a proof checker; compiles to C,
+CUDA, Metal, and JavaScript. Source and docs: https://github.com/bendlang/bend
+(2.0.34 as of 2026-10-01; Bend 1 and HVM do not carry over).
+
+- Install from its flake: `inputs.bend.url = "github:bendlang/bend"`, then
+  `inputs.bend.packages.${system}.default`. It is not in nixpkgs yet.
+- Run `bend guide` before writing any; `bend base` prints the base library.
+- State rules that must never break in `LAWS.bend`, prove them in
+  `PROOF.bend`, and run `bend PROOF.bend` before committing. `--verdict`
+  checks with the formally verified kernel.
+- Parallelize with balanced divide-and-conquer calls; `f!(x)` runs on the GPU.
+- Know the limits before choosing it:
+  - Numbers are Nat, U32, and F32 only. Strings are linked lists, so text
+    processing is slow.
+  - Effects are print, env, time, sleep, spawn, channels, files, TCP, UDP.
+    No TLS, HTTP library, JSON, or regex; those need foreign C or JS.
+  - Everything is annotated, nothing inferred. Values are affine. Recursion
+    must terminate unless marked `@unsafe`.
+  - No test framework, debugger, or REPL. Native builds are slow; develop on
+    the JavaScript target.
+- So: put the law-bearing core (state machines, protocol rules, numerics) in
+  Bend, and keep IO, JSON, and process handling in a Rust shell around it.
+
 ## Formatting
 
 Run the project's formatter on changed code before finishing (gofmt, biome,
