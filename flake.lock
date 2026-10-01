@@ -65,11 +65,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1790842790,
-        "narHash": "sha256-/v6EzD6PU+iLj5YdcjoNm5s2eBIdLRsN9VnoWylztMg=",
+        "lastModified": 1790844489,
+        "narHash": "sha256-1G9eQIQEIRCv/AybqITJOcsKTyDd9i5WJWDEjUaS4zo=",
         "owner": "gauge-numerics",
         "repo": "codex-web",
-        "rev": "0fbf8affcb1387df4df156c31fac687064eef49b",
+        "rev": "47aa2548b8fcae5ed48ab56584427b4dce893ccc",
         "type": "github"
       },
       "original": {
