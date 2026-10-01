@@ -3,10 +3,13 @@
   flake.homeManagerModules.hypridle =
     { lib, pkgs, ... }:
     let
-      # Long agent runs must not be cut short by the idle suspend. Holding a
-      # logind idle inhibitor while any agent process exists makes hypridle skip
-      # its inhibit-respecting listeners, and the lock is released as soon as the
-      # last agent exits so the normal idle suspend applies again. Process names
+      # Long agent runs must not be cut short by the idle suspend. A logind
+      # sleep inhibitor (not idle) is held while any agent process exists, so
+      # hypridle's suspend is refused but its idle state stays untouched: the
+      # panel still blanks during agent runs while video players' idle
+      # inhibitors keep it on. logind's lid handling ignores inhibitors by
+      # default, so closing the lid still suspends. The lock is released as soon
+      # as the last agent exits. Process names
       # are matched rather than wrapping the binaries so every launch path
       # (terminal, headless, spawned by another agent) is covered.
       agent_idle_inhibit = pkgs.writeShellApplication {
@@ -25,7 +28,7 @@
               # The inner loop runs under systemd-inhibit and gets its values as arguments, so single quotes are intended.
               # shellcheck disable=SC2016
               systemd-inhibit \
-                --what=idle \
+                --what=sleep \
                 --who=agent-idle-inhibit \
                 --why="claude or codex is running" \
                 --mode=block \
@@ -61,10 +64,7 @@
             {
               timeout = 300;
               on-timeout = "${lib.getExe' pkgs.hyprland "hyprctl"} dispatch 'hl.dsp.dpms(\"off\")'";
-              on-resume = "${lib.getExe' pkgs.hyprland "hyprctl"} dispatch 'hl.dsp.dpms(\"on\")'";
-              # Blank the panel even while an agent holds the idle inhibitor.
-              ignore_inhibit = true;
-            }
+              on-resume = "${lib.getExe' pkgs.hyprland "hyprctl"} dispatch 'hl.dsp.dpms(\"on\")'";            }
             {
               timeout = 1800;
               on-timeout = "systemctl suspend-then-hibernate";
@@ -75,7 +75,7 @@
 
       systemd.user.services.agent-idle-inhibit = {
         Unit = {
-          Description = "Block idle suspend while claude or codex is running";
+          Description = "Block suspend while claude or codex is running";
           PartOf = [ "graphical-session.target" ];
           After = [ "graphical-session.target" ];
         };
