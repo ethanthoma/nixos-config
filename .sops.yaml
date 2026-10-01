@@ -2,6 +2,7 @@ keys:
   - &ethanthoma age175wftteswgd3hrakgspdy8p0wmnlyj3gktlr86zl23p7v3zhwfvq8s5h2v
   - &desktop age13e3sk2sj0p8386f6tx3v08r9y5ku7wvwrfjp8nszs2vxmrzczezqenme0a
   - &surface age1lxlxl5kcureat9mrefdc63atpaeg5k3ggs4wa3yfhgrt0sft44jsgnanlp
+  - &atlas age1v9hhdd2c0lukaqphllpdtwp0rlu79lpmerk2u2r3dp99easzuedq4qd2eg
 creation_rules:
   - path_regex: secrets/[^/]+\.yaml$
     key_groups:
@@ -9,3 +10,4 @@ creation_rules:
           - *ethanthoma
           - *desktop
           - *surface
+          - *atlas
