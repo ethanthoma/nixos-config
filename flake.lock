@@ -65,11 +65,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1790817714,
-        "narHash": "sha256-QMdcTsETrZ7l1R8MZS6t5fFfg9Ijge1ltYMkuRlH/w4=",
+        "lastModified": 1790821225,
+        "narHash": "sha256-EucAuqqC/I/UEKL20B2/4vDgSewiYe2E2VJO87w5Eow=",
         "ref": "refs/heads/main",
-        "rev": "932f5acc56645811e455abd02ca19d7a35e99c03",
-        "revCount": 45,
+        "rev": "1b31dd7b7c5eaaddfb122ad7c9666163c32380e2",
+        "revCount": 47,
         "type": "git",
         "url": "ssh://git@github.com/gauge-numerics/codex-web"
       },
