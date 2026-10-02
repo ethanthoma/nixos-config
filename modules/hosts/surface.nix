@@ -108,7 +108,6 @@ in
       self.nixosModules.yubikey
       self.nixosModules.yubikey-pam
       self.nixosModules.syncthing
-      self.nixosModules.sops
       self.nixosModules.user
       self.nixosModules.codex-web
       inputs.nixos-hardware.nixosModules.microsoft-surface-pro-9
