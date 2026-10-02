@@ -108,6 +108,8 @@ in
       Group = "users";
       StateDirectory = "pueue";
       RuntimeDirectory = "pueue";
+      # Jobs lock their memory (tinygrad_readout/host_memory.py); the limit is inherited from the daemon.
+      LimitMEMLOCK = "infinity";
       WorkingDirectory = home;
       ExecStart = "${pkgs.pueue}/bin/pueued -c ${config_file} -vv";
       ExecStartPost = pkgs.writeShellScript "pueue-groups" ''

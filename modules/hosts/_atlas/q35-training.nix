@@ -41,6 +41,7 @@ in
     environment.NIX_PATH = "nixpkgs=flake:nixpkgs";
     serviceConfig = {
       Type = "exec";
+      LimitMEMLOCK = "infinity";
       ExecStart = "${pkgs.bash}/bin/bash ${project_directory}/q35/synth/train_queue.sh";
       WorkingDirectory = project_directory;
       User = "ethoma";
@@ -52,4 +53,13 @@ in
       TimeoutStopSec = 30;
     };
   };
+
+  # The tinygrad trainer maps host memory into the GPU's address space. When the kernel swaps or migrates such a page
+  # it evicts the process's compute queues, and a GPU kernel preempted that way faults and wedges the card. The
+  # trainer locks its memory (tinygrad_readout/host_memory.py): compaction must then leave locked pages alone, and
+  # the user who starts it needs an unlimited locked-memory limit.
+  boot.kernel.sysctl."vm.compact_unevictable_allowed" = 0;
+  security.pam.loginLimits = [
+    { domain = "ethoma"; type = "-"; item = "memlock"; value = "unlimited"; }
+  ];
 }
