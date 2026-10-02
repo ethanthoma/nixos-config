@@ -67,6 +67,7 @@ in
       ./mlflow.nix
       ./q35-training.nix
       ./pueue.nix
+      ./runboard.nix
       ./nix-builder.nix
       ./home-alias.nix
     ];
