@@ -64,7 +64,6 @@ in
       ./minecraft-terra.nix
       "${inputs.tether}/tether.nix"
       ./codex-web.nix
-      ./mlflow.nix
       ./q35-training.nix
       ./pueue.nix
       ./runboard.nix
