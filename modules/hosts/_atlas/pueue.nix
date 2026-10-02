@@ -122,4 +122,9 @@ in
       RestartSec = 5;
     };
   };
+
+  # logind otherwise deletes the user's POSIX semaphores and shared memory in /dev/shm when their last session
+  # ends. Queued jobs outlive the login that started them: a Python worker pool then loses its semaphores mid-run
+  # and every replacement worker dies at start-up (tinygrad's compile pool hung a training run this way).
+  services.logind.settings.Login.RemoveIPC = false;
 }
