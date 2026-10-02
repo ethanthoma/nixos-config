@@ -16,8 +16,8 @@ let
   allowed_origins = map (host: "http://${host}:${toString port}") allowed_hosts;
 in
 {
-  # MLflow tracking server for typed-decisions. It binds to localhost so training jobs on atlas log to
-  # 127.0.0.1:5000, and mlflow-forward re-exposes it on the Tailscale address only (not the LAN).
+  # MLflow tracking server for typed-decisions, on localhost only: scoring scripts still log to 127.0.0.1:5000.
+  # runboard has the same port on the Tailscale address and replaces it; this unit goes once nothing logs to it.
   systemd.services.mlflow = {
     description = "MLflow tracking server";
     wantedBy = [ "multi-user.target" ];
@@ -57,28 +57,6 @@ in
       RestartSec = 5;
       NoNewPrivileges = true;
       PrivateTmp = true;
-    };
-  };
-
-  systemd.services.mlflow-forward = {
-    description = "Expose the MLflow server on the Tailscale address";
-    wantedBy = [ "multi-user.target" ];
-    after = [
-      "mlflow.service"
-      "tailscaled.service"
-    ];
-    bindsTo = [ "mlflow.service" ];
-    serviceConfig = {
-      # Restart covers the window after boot where tailscaled is up but the address is not yet assigned.
-      ExecStart = "${pkgs.socat}/bin/socat TCP-LISTEN:${toString port},bind=${tailscale_address},fork,reuseaddr TCP:127.0.0.1:${toString port}";
-      EnvironmentFile = config.sops.templates."tailnet.env".path;
-      DynamicUser = true;
-      Restart = "always";
-      RestartSec = 5;
-      NoNewPrivileges = true;
-      PrivateTmp = true;
-      ProtectHome = true;
-      ProtectSystem = "strict";
     };
   };
 }
