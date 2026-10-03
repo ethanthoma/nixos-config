@@ -4,9 +4,9 @@ let
   project_directory = "/home/ethoma/projects/typed-decisions-baseline";
 in
 {
-  # Runs q35/synth/train_queue.sh so Qwen training survives crashes and reboots: the trainer checkpoints every
+  # Runs scripts/train_queue.sh so Qwen training survives crashes and reboots: the trainer checkpoints every
   # 100 steps and a restart resumes from there. Starts at boot until the queue writes its ALLDONE marker.
-  systemd.services.q35-training = {
+  systemd.services.training-queue = {
     description = "Typed-decisions Qwen training queue";
     wantedBy = [ "multi-user.target" ];
     after = [
@@ -21,7 +21,7 @@ in
     restartIfChanged = false;
     unitConfig = {
       ConditionPathExists = [
-        "${project_directory}/q35/synth/train_queue.sh"
+        "${project_directory}/scripts/train_queue.sh"
         "!${project_directory}/reports/train_queue_ALLDONE"
       ];
       # A stage that fails on every attempt must not loop forever.
@@ -42,7 +42,7 @@ in
     serviceConfig = {
       Type = "exec";
       LimitMEMLOCK = "infinity";
-      ExecStart = "${pkgs.bash}/bin/bash ${project_directory}/q35/synth/train_queue.sh";
+      ExecStart = "${pkgs.bash}/bin/bash ${project_directory}/scripts/train_queue.sh";
       WorkingDirectory = project_directory;
       User = "ethoma";
       Group = "users";
