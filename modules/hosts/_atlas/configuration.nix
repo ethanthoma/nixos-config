@@ -64,7 +64,7 @@ in
       ./minecraft-terra.nix
       "${inputs.tether}/tether.nix"
       ./codex-web.nix
-      ./q35-training.nix
+      ./training-queue.nix
       ./pueue.nix
       ./runboard.nix
       ./nix-builder.nix
@@ -119,7 +119,7 @@ in
   systemd.services.amdgpu-power-cap = {
     description = "Cap the amdgpu board power at 305 W";
     wantedBy = [ "multi-user.target" ];
-    before = [ "q35-training.service" ];
+    before = [ "training-queue.service" ];
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
