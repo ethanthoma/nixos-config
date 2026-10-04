@@ -4,7 +4,6 @@ end)
 
 hl.env("XDG_SESSION_TYPE", "wayland")
 hl.env("WLR_NO_HARDWARE_CURSORS", "1")
-hl.env("AQ_DRM_DEVICES", "/dev/dri/card1")
 
 hl.env("LIBVA_DRIVER_NAME", "nvidia")
 hl.env("__GLX_VENDOR_LIBRARY_NAME", "nvidia")
