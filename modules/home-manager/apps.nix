@@ -37,6 +37,9 @@
         })
         pkgs.vlc
 
+        # meetings
+        pkgs.zoom-us
+
         # audio
         pkgs.ardour
         pkgs.qpwgraph
