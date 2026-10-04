@@ -1,7 +1,12 @@
 { ... }:
 {
   flake.homeManagerModules.hypridle =
-    { lib, pkgs, ... }:
+    {
+      lib,
+      pkgs,
+      osConfig ? { },
+      ...
+    }:
     let
       # Long agent runs must not be cut short by the idle suspend. A logind
       # sleep inhibitor (not idle) is held while any agent process exists, so
@@ -68,7 +73,12 @@
             }
             {
               timeout = 1800;
-              on-timeout = "systemctl suspend-then-hibernate";
+              on-timeout = "${lib.getExe' pkgs.systemd "systemctl"} ${
+                if (osConfig.swapDevices or [ ]) != [ ] && (osConfig.boot.resumeDevice or "") != "" then
+                  "suspend-then-hibernate"
+                else
+                  "suspend"
+              }";
             }
           ];
         };
