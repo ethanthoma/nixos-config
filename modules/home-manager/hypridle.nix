@@ -52,19 +52,20 @@
           general = {
             # Waking with the power button left the panel black: Hyprland still
             # believed the outputs were on (nothing turned them off before the
-            # suspend), so dpms("on") after resume was a no-op and no frame was
+            # suspend), so enabling DPMS after resume was a no-op and no frame was
             # ever re-committed. Turning the outputs off before sleep keeps
             # Hyprland's state honest, so the single "on" after resume does a
             # real re-enable with no off/on flash.
-            before_sleep_cmd = "${lib.getExe' pkgs.hyprland "hyprctl"} dispatch 'hl.dsp.dpms(\"off\")'";
-            after_sleep_cmd = "${lib.getExe' pkgs.hyprland "hyprctl"} dispatch 'hl.dsp.dpms(\"on\")'";
+            before_sleep_cmd = "${lib.getExe' pkgs.hyprland "hyprctl"} dispatch 'hl.dsp.dpms({action = \"disable\"})'";
+            after_sleep_cmd = "${lib.getExe' pkgs.hyprland "hyprctl"} dispatch 'hl.dsp.dpms({action = \"enable\"})'";
             ignore_dbus_inhibit = false;
           };
           listener = [
             {
               timeout = 300;
-              on-timeout = "${lib.getExe' pkgs.hyprland "hyprctl"} dispatch 'hl.dsp.dpms(\"off\")'";
-              on-resume = "${lib.getExe' pkgs.hyprland "hyprctl"} dispatch 'hl.dsp.dpms(\"on\")'";            }
+              on-timeout = "${lib.getExe' pkgs.hyprland "hyprctl"} dispatch 'hl.dsp.dpms({action = \"disable\"})'";
+              on-resume = "${lib.getExe' pkgs.hyprland "hyprctl"} dispatch 'hl.dsp.dpms({action = \"enable\"})'";
+            }
             {
               timeout = 1800;
               on-timeout = "systemctl suspend-then-hibernate";
