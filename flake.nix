@@ -34,8 +34,12 @@
       url = "github:sadjow/codex-cli-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     codex-web = {
-      url = "git+ssh://git@github.com/gauge-numerics/codex-web";
+      url = "github:gauge-numerics/codex-web";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -53,14 +57,11 @@
       url = "github:sadjow/codex-cli-nix";
       inputs.nixpkgs.follows = "atlas-nixpkgs";
     };
-    sops-nix = {
-      url = "github:Mic92/sops-nix";
-      inputs.nixpkgs.follows = "atlas-nixpkgs";
-    };
     tether = {
       url = "git+ssh://git@github.com/ethanthoma/tether";
       flake = false;
     };
+    pi.url = "github:earendil-works/pi/71023aec1546d6d677a65669c5665c0927ce0dd0";
   };
 
   outputs =

@@ -27,7 +27,7 @@ in
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
         home-manager.users.${username} = import ./_atlas/home.nix;
-        home-manager.extraSpecialArgs = { inherit username; };
+        home-manager.extraSpecialArgs = { inherit username inputs; };
       }
     ];
   };

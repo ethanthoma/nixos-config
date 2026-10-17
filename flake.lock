@@ -143,17 +143,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1790821225,
-        "narHash": "sha256-EucAuqqC/I/UEKL20B2/4vDgSewiYe2E2VJO87w5Eow=",
-        "ref": "refs/heads/main",
-        "rev": "1b31dd7b7c5eaaddfb122ad7c9666163c32380e2",
-        "revCount": 47,
-        "type": "git",
-        "url": "ssh://git@github.com/gauge-numerics/codex-web"
+        "lastModified": 1790918496,
+        "narHash": "sha256-MhOnxMFlfL3ghJY6GNO6NI6dvfcdJJqQ5PQ1VB6cuJg=",
+        "owner": "gauge-numerics",
+        "repo": "codex-web",
+        "rev": "84786f31f0459f06a22eb3ee5ffc6d7176f85ad3",
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "ssh://git@github.com/gauge-numerics/codex-web"
+        "owner": "gauge-numerics",
+        "repo": "codex-web",
+        "type": "github"
       }
     },
     "flake-parts": {
@@ -358,6 +358,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-darwin-x64": {
+      "locked": {
+        "lastModified": 1788334797,
+        "narHash": "sha256-nskSa8kDimM7F0VFSP8IdoSNo4G0vKzOtxwvOFpoGDI=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "c19db427a1fdfc7591c0b0baeb4665dcef2c61da",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixpkgs-26.05-darwin",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs-lib": {
       "locked": {
         "lastModified": 1788057806,
@@ -402,6 +418,42 @@
         "type": "github"
       }
     },
+    "nixpkgs_4": {
+      "locked": {
+        "lastModified": 1788316716,
+        "narHash": "sha256-bc7rSpXIdn9QWGNqfWcPZWOhEVF8NoeAZkWq0XWnf/k=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "3ed67ec0a4d3c7ab4ae1f04f8ee8df07bfa506a2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "pi": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_4",
+        "nixpkgs-darwin-x64": "nixpkgs-darwin-x64"
+      },
+      "locked": {
+        "lastModified": 1792090647,
+        "narHash": "sha256-AsutbwnjiwwLkB5tqLW+1GdGZyLmXsU0W+SNdNhJu7U=",
+        "owner": "earendil-works",
+        "repo": "pi",
+        "rev": "71023aec1546d6d677a65669c5665c0927ce0dd0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "earendil-works",
+        "repo": "pi",
+        "rev": "71023aec1546d6d677a65669c5665c0927ce0dd0",
+        "type": "github"
+      }
+    },
     "r2modman": {
       "locked": {
         "lastModified": 1790652569,
@@ -435,6 +487,7 @@
         "import-tree": "import-tree",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_3",
+        "pi": "pi",
         "r2modman": "r2modman",
         "rose-pine-hyprcursor": "rose-pine-hyprcursor",
         "sops-nix": "sops-nix",
@@ -467,15 +520,15 @@
     "sops-nix": {
       "inputs": {
         "nixpkgs": [
-          "atlas-nixpkgs"
+          "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1786629091,
-        "narHash": "sha256-gkig4nPi1CWc4Z50GBsjE4ygSE7hMpl/TwID2an2Cck=",
+        "lastModified": 1790498116,
+        "narHash": "sha256-rs9meAYxW3zzrh43yaW7htrqCD+X9+pupDPHN86fumI=",
         "owner": "Mic92",
         "repo": "sops-nix",
-        "rev": "a8627b21b9107c5711c96b84f32a9a4b3d45295f",
+        "rev": "5efb5a6f4f5ab192817d28557dd4d650fa14d866",
         "type": "github"
       },
       "original": {
