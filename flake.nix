@@ -34,6 +34,10 @@
       url = "github:sadjow/codex-cli-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    pi = {
+      url = "github:earendil-works/pi/stable";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -61,7 +65,6 @@
       url = "git+ssh://git@github.com/ethanthoma/tether";
       flake = false;
     };
-    pi.url = "github:earendil-works/pi/71023aec1546d6d677a65669c5665c0927ce0dd0";
   };
 
   outputs =
