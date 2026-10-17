@@ -1,12 +1,11 @@
-{ config, inputs, pkgs, username, ... }:
+{
+  inputs,
+  pkgs,
+  username,
+  ...
+}:
 
 let
-  mcp-bridge = pkgs.buildGoModule {
-    pname = "atlas-mcp-bridge";
-    version = "0.1.0";
-    src = ./mcp-bridge;
-    vendorHash = null;
-  };
   rocm-merged = pkgs.symlinkJoin {
     name = "rocm-merged";
     paths = with pkgs.rocmPackages; [
@@ -41,35 +40,22 @@ let
       aqlprofile
     ];
   };
-  llama-cpp-rocm = (pkgs.llama-cpp.override { rocmSupport = true; }).overrideAttrs (old: {
-    version = "10419";
-    src = pkgs.fetchFromGitHub {
-      owner = "ggml-org";
-      repo = "llama.cpp";
-      tag = "b10419";
-      hash = "sha256-5ZxaSfXztj/pSSTbUhh7SG3hiQedz/cOvn9QM7dBkSs=";
-    };
-    npmDeps = old.npmDeps.overrideAttrs (_: {
-      outputHash = "sha256-2Q7XhaLAArmviOLdQsNbYTfdyDE5pW9lR26cRHEVl9k=";
-    });
-  });
 in
 {
-  imports =
-    [
-      ./hardware-configuration.nix
-      ./tailscale.nix
-      ./tailnet.nix
-      ./minecraft.nix
-      ./minecraft-terra.nix
-      "${inputs.tether}/tether.nix"
-      ./codex-web.nix
-      ./training-queue.nix
-      ./pueue.nix
-      ./runboard.nix
-      ./nix-builder.nix
-      ./home-alias.nix
-    ];
+  imports = [
+    ./hardware-configuration.nix
+    ./tailscale.nix
+    ./tailnet.nix
+    ./minecraft.nix
+    ./minecraft-terra.nix
+    "${inputs.tether}/tether.nix"
+    ./codex-web.nix
+    ./training-queue.nix
+    ./pueue.nix
+    ./runboard.nix
+    ./nix-builder.nix
+    ./home-alias.nix
+  ];
 
   nix.settings = {
     experimental-features = [
@@ -86,7 +72,11 @@ in
 
     ${username} = {
       isNormalUser = true;
-      extraGroups = [ "wheel" "render" "video" ];
+      extraGroups = [
+        "wheel"
+        "render"
+        "video"
+      ];
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHiAN7eu9G4A1OerVYGf+ixTU/gQJPtyRIBq5z/CRLex ethanthoma@gmail.com"
       ];
@@ -162,13 +152,10 @@ in
     };
   };
 
-
   networking.firewall.allowedTCPPorts = [
     22
     3000
     3001
-    8080
-    8081
   ];
 
   users.users.open-historia = {
@@ -232,49 +219,16 @@ in
     pkgs.rocmPackages.rocm-smi
   ];
 
-  boot.kernelModules = [ "ipmi_devintf" "ipmi_si" ];
+  boot.kernelModules = [
+    "ipmi_devintf"
+    "ipmi_si"
+  ];
 
   services.cloudflared = {
     enable = true;
     tunnels."93c151d8-b148-4fb8-b256-e1a67e45c601" = {
       credentialsFile = "/var/lib/cloudflared/atlas-llm.json";
       default = "http_status:404";
-      ingress."llm.gaugenumerics.com" = "http://localhost:8080";
-    };
-  };
-
-  systemd.services.llama-server = {
-    enable = false;
-    description = "llama.cpp OpenAI-compatible server (Ornith 1.0 35B MTP self-speculative on ROCm)";
-    wantedBy = [ "multi-user.target" ];
-    after = [ "network.target" ];
-    unitConfig.ConditionPathExists = "/var/lib/llama-models/ornith-1.0-35b-IQ4_XS-MTP-graft-headQ6.gguf";
-    serviceConfig = {
-      ExecStart = "${llama-cpp-rocm}/bin/llama-server --host 0.0.0.0 --port 8080 -m /var/lib/llama-models/ornith-1.0-35b-IQ4_XS-MTP-graft-headQ6.gguf -ngl 99 -c 32768 --parallel 1 --flash-attn on --jinja --temp 0.6 --top-k 20 --top-p 0.95 --spec-type draft-mtp --spec-draft-n-max 4 --reasoning-budget 1024 --no-context-shift --cache-type-k q8_0 --cache-type-v q8_0 --api-key \${LLAMA_API_KEY}";
-      EnvironmentFile = "/var/lib/llama-server.env";
-      Restart = "on-failure";
-      RestartSec = 5;
-      DynamicUser = true;
-      SupplementaryGroups = [ "video" "render" ];
-    };
-  };
-
-  systemd.services.mcp-bridge = {
-    enable = false;
-    description = "MCP HTTP bridge exposing the local LLM as a Claude Code 'delegate' tool";
-    wantedBy = [ "multi-user.target" ];
-    after = [ "network.target" "llama-server.service" ];
-    serviceConfig = {
-      ExecStart = "${mcp-bridge}/bin/atlas-mcp-bridge";
-      EnvironmentFile = "/var/lib/llama-server.env";
-      Environment = [
-        "MCP_ADDR=0.0.0.0:8081"
-        "LLAMA_URL=http://127.0.0.1:8080"
-        "LLAMA_MODEL=local"
-      ];
-      Restart = "on-failure";
-      RestartSec = 5;
-      DynamicUser = true;
     };
   };
 
