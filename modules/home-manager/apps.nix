@@ -41,6 +41,7 @@
         pkgs.zoom-us
 
         # audio
+        pkgs.spotify
         pkgs.ardour
         pkgs.qpwgraph
 
