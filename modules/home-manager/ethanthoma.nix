@@ -26,7 +26,6 @@ in
         self.homeManagerModules.neovim
         self.homeManagerModules.pi
         self.homeManagerModules.secretspec
-        self.homeManagerModules.server-monitor
         self.homeManagerModules.starship
         self.homeManagerModules.tmux
         self.homeManagerModules.waybar

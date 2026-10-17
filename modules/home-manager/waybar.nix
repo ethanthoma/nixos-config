@@ -4,10 +4,7 @@ let
 in
 {
   flake.homeManagerModules.waybar =
-    { config, pkgs, ... }:
-    let
-      llm_state_file = "${config.xdg.stateHome}/server-monitor/llm.json";
-    in
+    { pkgs, ... }:
     {
       home.packages = [
         pkgs.font-awesome
@@ -26,18 +23,10 @@ in
             ];
             modules-center = [ ];
             modules-right = [
-              "custom/llm"
               "pulseaudio"
               "network"
               "battery"
             ];
-            "custom/llm" = {
-              exec = "${pkgs.coreutils}/bin/cat ${llm_state_file} 2>/dev/null || echo '{\"text\":\"\",\"tooltip\":\"server monitor starting\"}'";
-              return-type = "json";
-              interval = 30;
-              signal = 8;
-              on-click = "${pkgs.systemd}/bin/systemctl --user start server-monitor.service";
-            };
             "custom/clock" = {
               exec = "while :; do ${pkgs.coreutils}/bin/date '+%d %b %R'; ${pkgs.coreutils}/bin/sleep $((60 - $(${pkgs.coreutils}/bin/date +%-S))); done";
               tooltip = false;
@@ -136,9 +125,6 @@ in
           }
 
           #custom-clock { margin: 0; }
-
-          #custom-llm.up   { color: @leaf; }
-          #custom-llm.down { color: @love; }
 
           *.module {
               margin-left: 20px;
