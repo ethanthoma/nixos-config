@@ -4,13 +4,14 @@
   # ed25519 SSH key, which sops-nix finds through services.openssh.hostKeys.
   # Recipients are listed in .sops.yaml at the repo root.
   flake.nixosModules.sops =
-    { config, pkgs, ... }:
+    { config, lib, pkgs, ... }:
     {
       imports = [ inputs.sops-nix.nixosModules.sops ];
 
-      sops.defaultSopsFile = ../../secrets/nix.yaml;
+      sops.defaultSopsFile = lib.mkDefault ../../secrets/nix.yaml;
 
-      sops.secrets.github-token = { };
+      # Keep this secret in the shared file even on hosts with their own default.
+      sops.secrets.github-token.sopsFile = ../../secrets/nix.yaml;
 
       # Lets nix fetch private GitHub inputs (codex-web) as root, which has no
       # SSH key. Wheel can read it so evaluating as the user works too. Nix skips
