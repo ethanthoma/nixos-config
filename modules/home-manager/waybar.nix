@@ -4,12 +4,29 @@ let
 in
 {
   flake.homeManagerModules.waybar =
-    { pkgs, ... }:
+    {
+      lib,
+      pkgs,
+      ...
+    }:
     {
       home.packages = [
         pkgs.font-awesome
         pkgs.pulseaudio
       ];
+
+      wayland.windowManager.hyprland.extraConfig = lib.mkAfter ''
+        local waybar_restart_timer
+        waybar_restart_timer = hl.timer(function()
+            waybar_restart_timer:set_enabled(false)
+            hl.exec_cmd("${pkgs.systemd}/bin/systemctl --user try-restart waybar.service")
+        end, { timeout = 1500, type = "repeat" })
+        waybar_restart_timer:set_enabled(false)
+
+        hl.on("monitor.layout_changed", function()
+            waybar_restart_timer:set_timeout(1500)
+        end)
+      '';
 
       programs.waybar = {
         enable = true;
