@@ -217,6 +217,13 @@ in
           keepAwake = true;
           codex.tokenFile = "/home/${username}/.config/codex/app-server-web.env";
           claude.tokenFile = "/home/${username}/.config/claude/shim-web.env";
+          pi = {
+            enable = true;
+            package = inputs.pi.packages.${system}.default;
+            agentDir = "/home/${username}/.config/pi";
+            tokenFile = "/home/${username}/.config/claude/shim-web.env";
+            tokenEnvironment = "CLAUDE_TOKEN";
+          };
         };
 
         powerManagement.cpuFreqGovernor = "performance";

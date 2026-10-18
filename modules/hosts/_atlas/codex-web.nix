@@ -24,6 +24,7 @@ in
     LISTEN_ADDRESS=${config.sops.placeholder.atlas_address}
     DESKTOP_CODEX_URL=ws://${config.sops.placeholder.desktop_address}:46210
     DESKTOP_CLAUDE_URL=http://${config.sops.placeholder.desktop_address}:46211
+    DESKTOP_PI_URL=http://${config.sops.placeholder.desktop_address}:46212
     WEB_HEALTH_URL=http://${config.sops.placeholder.atlas_address}:${toString web_port}/
   '';
 
@@ -77,6 +78,9 @@ in
         "ATLAS_CODEX_URL=ws://127.0.0.1:${toString codex_port}"
         "ATLAS_CODEX_PROJECTS_ROOT=${home}/projects"
         "ATLAS_CLAUDE_URL=http://127.0.0.1:${toString claude_port}"
+        "ATLAS_PI_URL=http://127.0.0.1:46212"
+        "ATLAS_PI_TOKEN_ENV=ATLAS_CLAUDE_TOKEN"
+        "DESKTOP_PI_TOKEN_ENV=DESKTOP_CLAUDE_TOKEN"
       ];
       User = "codex-web";
       Group = "codex-web";
@@ -108,6 +112,32 @@ in
       NoNewPrivileges = true;
       PrivateTmp = true;
       ProtectSystem = "strict";
+    };
+  };
+
+  systemd.services.pi-shim = {
+    description = "Pi sessions for codex-web on atlas";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "network.target" ];
+    environment.PATH = lib.mkForce config.systemd.services.claude-shim.environment.PATH;
+    serviceConfig = {
+      ExecStart = lib.getExe inputs.codex-web.packages.${system}.pi-shim;
+      EnvironmentFile = "/var/lib/claude-shim.env";
+      Environment = [
+        "LISTEN_ADDRESS=127.0.0.1"
+        "PORT=46212"
+        "TOKEN_ENV=CLAUDE_TOKEN"
+        "PI_BIN=${inputs.pi.packages.${system}.default}/bin/pi"
+        "PI_CODING_AGENT_DIR=${home}/.pi/agent"
+        "PROJECTS_ROOT=${home}/projects"
+      ];
+      User = username;
+      Group = "users";
+      WorkingDirectory = home;
+      Restart = "on-failure";
+      RestartSec = 5;
+      NoNewPrivileges = true;
+      UMask = "0077";
     };
   };
 
