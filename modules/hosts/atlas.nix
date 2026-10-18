@@ -21,7 +21,7 @@ in
     modules = [
       { networking.hostName = hostname; }
       ./_atlas/configuration.nix
-      inputs.sops-nix.nixosModules.sops
+      inputs.self.nixosModules.sops
       inputs.atlas-home-manager.nixosModules.home-manager
       {
         home-manager.useGlobalPkgs = true;

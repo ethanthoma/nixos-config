@@ -17,6 +17,7 @@ let
   system = pkgs.stdenv.hostPlatform.system;
   codex = inputs.codex-cli.packages.${system}.default;
   claude-code = inputs.claude-code.packages.${system}.default;
+  claude_host_socket = "/run/claude-host/host.sock";
 in
 {
   sops.templates."codex-web-tailnet.env".content = ''
@@ -54,10 +55,11 @@ in
       "tailscaled.service"
     ];
     wants = [ "network-online.target" ];
-    unitConfig.ConditionPathExists = "/var/lib/codex-web/server.js";
+    unitConfig.ConditionPathExists = "/var/lib/codex-web/server/bin/codex-web-server";
+    restartIfChanged = false;
     path = [ pkgs.imagemagick ];
     serviceConfig = {
-      ExecStart = "${pkgs.nodejs_22}/bin/node server.js";
+      ExecStart = "/var/lib/codex-web/server/bin/codex-web-server";
       WorkingDirectory = "/var/lib/codex-web";
       # Session history snapshots so the UI stays readable while a host is down.
       StateDirectory = "codex-web-cache";
@@ -109,12 +111,34 @@ in
     };
   };
 
+  # Keep Claude processes separate so deploying the shim does not end running turns.
+  systemd.services.claude-host = {
+    description = "Claude Code sessions for codex-web on atlas";
+    wantedBy = [ "multi-user.target" ];
+    unitConfig.ConditionPathExists = "/var/lib/claude-shim-releases/current-host/bin/codex-web-claude-host";
+    environment.PATH = lib.mkForce config.systemd.services.claude-shim.environment.PATH;
+    serviceConfig = {
+      ExecStart = "/var/lib/claude-shim-releases/current-host/bin/codex-web-claude-host";
+      WorkingDirectory = home;
+      Environment = "CLAUDE_HOST_SOCKET=${claude_host_socket}";
+      UnsetEnvironment = "ANTHROPIC_API_KEY";
+      User = username;
+      Group = "users";
+      RuntimeDirectory = "claude-host";
+      RuntimeDirectoryMode = "0700";
+      Restart = "on-failure";
+      RestartSec = 5;
+      PrivateTmp = true;
+    };
+    restartIfChanged = false;
+  };
+
   systemd.services.claude-shim = {
     description = "Claude Code shim for codex-web sessions on atlas";
     wantedBy = [ "multi-user.target" ];
-    after = [ "network.target" ];
+    after = [ "network.target" "claude-host.service" ];
     # Deployed by codex-web-deploy; absent until its first run.
-    unitConfig.ConditionPathExists = "/var/lib/claude-shim-releases/current/node_modules";
+    unitConfig.ConditionPathExists = "/var/lib/claude-shim-releases/current/bin/codex-web-claude-shim";
     # Claude's Bash tool runs commands with the service's PATH rather than a login shell (Codex uses `bash -lc`), so
     # give it the PATH a login session on atlas gets instead of the minimal systemd one.
     environment.PATH = lib.mkForce (
@@ -128,14 +152,15 @@ in
       ]
     );
     serviceConfig = {
-      ExecStart = "${pkgs.nodejs_22}/bin/node shim.js";
-      WorkingDirectory = "/var/lib/claude-shim-releases/current";
+      ExecStart = "/var/lib/claude-shim-releases/current/bin/codex-web-claude-shim";
+      WorkingDirectory = home;
       EnvironmentFile = "/var/lib/claude-shim.env";
       Environment = [
         "LISTEN_ADDRESS=127.0.0.1"
         "PORT=${toString claude_port}"
         "CLAUDE_BIN=${claude-code}/bin/claude"
         "PROJECTS_ROOT=${home}/projects"
+        "CLAUDE_HOST_SOCKET=${claude_host_socket}"
       ];
       # The shim must use the subscription login, never API billing.
       UnsetEnvironment = "ANTHROPIC_API_KEY";
@@ -143,19 +168,14 @@ in
       Group = "users";
       Restart = "on-failure";
       RestartSec = 5;
-      # Agents here administer atlas: they edit /etc/nixos and run sudo (wheel needs no password) for
-      # nixos-rebuild and systemctl. NoNewPrivileges would block sudo and ProtectSystem would mount / read-only, so
-      # both stay off; the rollback is a previous system generation.
-      NoNewPrivileges = false;
-      PrivateTmp = true;
-      ProtectSystem = false;
+      NoNewPrivileges = true;
+      # Terminal Claude sessions accept messages on sockets under /tmp/cc-socks.
     };
-    # Restarting the shim ends every running agent session, including the one that ran the switch; restart it by
-    # hand when no session is working.
+    # The deploy program restarts the shim; the host preserves running turns.
     restartIfChanged = false;
   };
 
-  # Pull deploy. Every minute this fixed bootstrap fetches main and runs deploy/deploy.sh from that commit, so the
+  # Pull deploy. Every minute this bootstrap builds and runs the Rust deploy package from main, so the
   # deploy logic ships on push like everything else. Only this file needs `nixos-rebuild switch`, and it should rarely
   # change: keep the bootstrap and the environment below stable. Nothing is exposed and GitHub holds no secrets; atlas
   # reads the repo with its own read-only deploy key.
@@ -165,7 +185,6 @@ in
   users.users.codex-web-deploy = {
     isSystemUser = true;
     group = "codex-web-deploy";
-    # npm keeps its cache under the home directory.
     home = "/var/lib/codex-web-deploy";
   };
   users.groups.codex-web-deploy = { };
@@ -192,7 +211,7 @@ in
       ExecStart = lib.getExe (
         pkgs.writeShellApplication {
           name = "codex-web-deploy";
-          # A generous toolbox, so deploy/deploy.sh can change on push without a rebuild.
+          # Build tools for the deploy package and the releases it installs.
           runtimeInputs = [
             pkgs.bash
             pkgs.coreutils
@@ -206,6 +225,7 @@ in
             pkgs.gnutar
             pkgs.gzip
             pkgs.jq
+            pkgs.nix
             pkgs.nodejs_22
             pkgs.openssh
             pkgs.systemd
@@ -232,7 +252,13 @@ in
             git --git-dir="$repository" archive "$target" | tar --extract --directory="$build"
             export BUILD_DIRECTORY=$build
             export DEPLOY_REPOSITORY_GIT_DIR=$repository
-            exec bash "$build/deploy/deploy.sh" "$target"
+            deploy_tree=$(git --git-dir="$repository" rev-parse "$target:deploy")
+            program=$STATE_DIRECTORY/deploy-''${deploy_tree:0:12}
+            if [[ ! -e "$program" ]]; then
+              XDG_CACHE_HOME=$STATE_DIRECTORY/cache nix build "path:$build#deploy" --out-link "$program"
+              find "$STATE_DIRECTORY" -maxdepth 1 -type l -name 'deploy-*' -not -path "$program" -delete
+            fi
+            exec "$program/bin/codex-web-deploy" "$target"
           '';
         }
       );
@@ -282,6 +308,7 @@ in
         if (verb !== "restart") return polkit.Result.NOT_HANDLED;
         if (unit === "codex-web.service") return polkit.Result.YES;
         if (unit === "claude-shim.service") return polkit.Result.YES;
+        if (unit === "claude-host.service") return polkit.Result.YES;
       }
       return polkit.Result.NOT_HANDLED;
     });
