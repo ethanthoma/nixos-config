@@ -16,15 +16,6 @@ let
   # Tracked flakes rather than nixpkgs, which lags upstream releases by weeks. Same sources as the surface.
   system = pkgs.stdenv.hostPlatform.system;
   codex = inputs.codex-cli.packages.${system}.default;
-  # The flake package has no standalone metadata for Codex's shared daemon mode.
-  codex_cli = pkgs.symlinkJoin {
-    name = "codex-cli-local";
-    paths = [ codex ];
-    nativeBuildInputs = [ pkgs.makeWrapper ];
-    postBuild = ''
-      wrapProgram "$out/bin/codex" --add-flags --no-daemon
-    '';
-  };
   claude-code = inputs.claude-code.packages.${system}.default;
   claude_host_socket = "/run/claude-host/host.sock";
 in
@@ -44,7 +35,7 @@ in
 
   # On PATH so the local Codex and Claude logins (`codex login`, `claude`) use the same builds as the services.
   environment.systemPackages = [
-    codex_cli
+    codex
     claude-code
   ];
 
