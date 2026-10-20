@@ -7,18 +7,19 @@ let
   port = 5000;
 in
 {
-  # runboard (gauge-numerics/runboard) renders typed-decisions' training logs and benchmark results as HTML, read
-  # straight from the project's files. It listens on the Tailscale address only. The program is a `nix build` result
-  # in the checkout: rebuild there and restart this unit to deploy a change.
   systemd.services.runboard = {
     description = "runboard: typed-decisions runs and scores";
     wantedBy = [ "multi-user.target" ];
     after = [ "tailscaled.service" ];
     unitConfig.ConditionPathExists = program;
     serviceConfig = {
-      ExecStart = "${program} --root ${project_directory} --listen ${tailscale_address}:${toString port}";
+      ExecStart = "${program} --root ${project_directory} --listen ${tailscale_address}:${toString port} --state-dir /var/lib/runboard --nats-port 4223 --pueue /etc/pueue/pueue.yml";
       User = "ethoma";
       Group = "users";
+      StateDirectory = "runboard";
+      StateDirectoryMode = "0700";
+      KillMode = "control-group";
+      TimeoutStopSec = 15;
       # Covers the window after boot where tailscaled is up but the address is not yet assigned.
       Restart = "always";
       RestartSec = 5;
