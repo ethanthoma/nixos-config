@@ -98,6 +98,7 @@ in
 
   systemd.services.codex-app-server = {
     description = "WebSocket access to the shared Codex daemon";
+    path = [ pkgs.procps ];
     wantedBy = [ "multi-user.target" ];
     after = [ "network.target" ];
     serviceConfig = {
