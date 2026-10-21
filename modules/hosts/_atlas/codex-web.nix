@@ -115,14 +115,10 @@ in
       WorkingDirectory = home;
       Restart = "on-failure";
       RestartSec = 5;
-      NoNewPrivileges = true;
+      NoNewPrivileges = false;
       KillMode = "process";
       PrivateTmp = false;
-      ProtectSystem = "strict";
-      ReadWritePaths = [
-        home
-        "/tmp"
-      ];
+      ProtectSystem = false;
     };
   };
 
