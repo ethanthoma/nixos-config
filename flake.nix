@@ -46,6 +46,7 @@
       url = "github:gauge-numerics/codex-web";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    runboard.url = "github:matterstate/runboard";
 
     # atlas (modules/hosts/atlas.nix) pins its own package set; update it with `nix flake update atlas-nixpkgs ...`.
     atlas-nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";

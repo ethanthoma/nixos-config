@@ -7,6 +7,7 @@ let
   # atlas is a headless server that tracks newer packages than the desktops (ROCm, kernel), so it pins its own
   # nixpkgs and builds everything against it. Its modules live in ./_atlas and see these under the usual names.
   atlas_inputs = {
+    runboard = inputs.runboard;
     tether = inputs.tether;
     claude-code = inputs.atlas-claude-code;
     codex-cli = inputs.atlas-codex-cli;
