@@ -55,6 +55,7 @@ in
     ./runboard.nix
     ./nix-builder.nix
     ./home-alias.nix
+    ./torrent.nix
   ];
 
   nix.settings = {

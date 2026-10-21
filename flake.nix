@@ -62,6 +62,7 @@
       url = "github:sadjow/codex-cli-nix";
       inputs.nixpkgs.follows = "atlas-nixpkgs";
     };
+    holyfurries.url = "github:holyfurries/website";
     tether = {
       url = "git+ssh://git@github.com/ethanthoma/tether";
       flake = false;
