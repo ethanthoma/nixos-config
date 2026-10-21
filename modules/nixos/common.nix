@@ -3,9 +3,24 @@
   flake.nixosModules.common =
     { pkgs, ... }:
     let
+      zen_packages = inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system};
+      zen_unwrapped = zen_packages.zen-browser-unwrapped;
       zen-browser = import ../_lib/zen-with-autoconfig.nix {
         inherit (pkgs) runCommand;
-        zen = inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default;
+        zen = zen_packages.default.override {
+          zen-browser-unwrapped =
+            if zen_unwrapped.version == "1.23.3b" then
+              zen_unwrapped.override {
+                hash =
+                  {
+                    x86_64-linux = "sha256-uyBF0+IWVNQP6EElAJLurf0sH8gx7vtQkiJ3PIvcoUk=";
+                    aarch64-linux = "sha256-EQDLPoVyVO26gzopPrUAEN5moWZGXt/NzIU23ecy36c=";
+                  }
+                  .${pkgs.stdenv.hostPlatform.system};
+              }
+            else
+              zen_unwrapped;
+        };
         inherit (inputs) fx-autoconfig;
       };
     in
@@ -61,6 +76,7 @@
       environment.systemPackages = [
         zen-browser
         pkgs.bottom
+        pkgs.tokei
         pkgs.openconnect_openssl
       ];
     };
