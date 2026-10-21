@@ -35,7 +35,10 @@
       '';
     in
     {
-      home.packages = [ codex_package ];
+      home.packages = [
+        codex_package
+        pkgs.chatgpt
+      ];
 
       home.sessionVariables = {
         CODEX_HOME = "${config.xdg.configHome}/codex";
