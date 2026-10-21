@@ -23,6 +23,7 @@ in
     };
     modules = [
       { networking.hostName = hostname; }
+      inputs.holyfurries.nixosModules.atlas
       ./_atlas/configuration.nix
       inputs.self.nixosModules.sops
       inputs.atlas-home-manager.nixosModules.home-manager
