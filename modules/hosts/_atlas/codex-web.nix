@@ -98,6 +98,7 @@ in
 
   systemd.services.codex-app-server = {
     description = "WebSocket access to the shared Codex daemon";
+    path = [ pkgs.procps ];
     wantedBy = [ "multi-user.target" ];
     after = [ "network.target" ];
     serviceConfig = {
@@ -115,14 +116,10 @@ in
       WorkingDirectory = home;
       Restart = "on-failure";
       RestartSec = 5;
-      NoNewPrivileges = true;
+      NoNewPrivileges = false;
       KillMode = "process";
       PrivateTmp = false;
-      ProtectSystem = "strict";
-      ReadWritePaths = [
-        home
-        "/tmp"
-      ];
+      ProtectSystem = false;
     };
   };
 
