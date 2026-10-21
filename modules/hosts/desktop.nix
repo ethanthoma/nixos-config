@@ -116,7 +116,14 @@ in
               "ddcci_backlight"
               "iwlwifi"
             ];
-            extraModulePackages = [ config.boot.kernelPackages.ddcci-driver ];
+            extraModulePackages = [
+              (config.boot.kernelPackages.ddcci-driver.overrideAttrs (previous: {
+                postFixup = (previous.postFixup or "") + ''
+                  ${lib.getExe pkgs.buildPackages.kmodigest} "$out/lib/modules/${config.boot.kernelPackages.kernel.modDirVersion}/extra/ddcci.ko"
+                  ${lib.getExe pkgs.buildPackages.kmodigest} "$out/lib/modules/${config.boot.kernelPackages.kernel.modDirVersion}/extra/ddcci-backlight.ko"
+                '';
+              }))
+            ];
             kernelPackages = pkgs.linuxPackages;
           };
 
