@@ -25,15 +25,7 @@
             echo "OpenRouter credential unavailable; the glm profile will not work." >&2
           fi
 
-          codex_args=()
-          for var in WAYLAND_DISPLAY XDG_RUNTIME_DIR; do
-            value="''${!var:-}"
-            if [ -n "$value" ]; then
-              codex_args+=(-c "shell_environment_policy.set.$var=\"$value\"")
-            fi
-          done
-
-          exec ${codex}/bin/codex "''${codex_args[@]}" "$@"
+          exec ${codex}/bin/codex "$@"
         '';
       };
       codex_package = pkgs.runCommand "codex" { } ''
