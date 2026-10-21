@@ -43,6 +43,9 @@ in
   # The app-server refuses to start when CODEX_HOME is missing, which it is until the first `codex login`.
   systemd.tmpfiles.rules = [
     "d ${home}/.codex 0700 ${username} users -"
+    "d ${home}/.codex/packages 0700 ${username} users -"
+    "d ${home}/.codex/packages/app-server-daemon 0700 ${username} users -"
+    "L+ ${home}/.codex/packages/app-server-daemon/current - - - - ${codex}/lib/codex"
     # Release directories belong to the deploy user. Z also hands over releases created by earlier root deploys.
     "Z /var/lib/codex-web-releases - codex-web-deploy codex-web-deploy -"
     "d /var/lib/claude-shim-releases 0755 codex-web-deploy codex-web-deploy -"
@@ -94,24 +97,32 @@ in
   };
 
   systemd.services.codex-app-server = {
-    description = "Codex app-server for codex-web sessions on atlas";
+    description = "WebSocket access to the shared Codex daemon";
     wantedBy = [ "multi-user.target" ];
     after = [ "network.target" ];
     serviceConfig = {
-      ExecStartPre = "${pkgs.bash}/bin/bash -c 'umask 077; printf %%s \"$CODEX_TOKEN\" > /run/codex-app-server/token'";
-      ExecStart = "${codex}/bin/codex app-server --listen ws://127.0.0.1:${toString codex_port} --ws-auth capability-token --ws-token-file /run/codex-app-server/token";
+      ExecStart = "${inputs.codex-web.packages.${system}.server}/bin/codex-web-codex-proxy";
       EnvironmentFile = "/var/lib/codex-app-server.env";
-      Environment = "CODEX_HOME=${home}/.codex";
+      Environment = [
+        "CODEX_HOME=${home}/.codex"
+        "CODEX_BINARY=${codex}/bin/codex"
+        "DISABLE_AUTOUPDATER=1"
+        "LISTEN_ADDRESS=127.0.0.1"
+        "PORT=${toString codex_port}"
+      ];
       User = username;
       Group = "users";
       WorkingDirectory = home;
-      RuntimeDirectory = "codex-app-server";
-      RuntimeDirectoryMode = "0700";
       Restart = "on-failure";
       RestartSec = 5;
       NoNewPrivileges = true;
-      PrivateTmp = true;
+      KillMode = "process";
+      PrivateTmp = false;
       ProtectSystem = "strict";
+      ReadWritePaths = [
+        home
+        "/tmp"
+      ];
     };
   };
 
@@ -166,7 +177,10 @@ in
   systemd.services.claude-shim = {
     description = "Claude Code shim for codex-web sessions on atlas";
     wantedBy = [ "multi-user.target" ];
-    after = [ "network.target" "claude-host.service" ];
+    after = [
+      "network.target"
+      "claude-host.service"
+    ];
     # Deployed by codex-web-deploy; absent until its first run.
     unitConfig.ConditionPathExists = "/var/lib/claude-shim-releases/current/bin/codex-web-claude-shim";
     # Claude's Bash tool runs commands with the service's PATH rather than a login shell (Codex uses `bash -lc`), so
