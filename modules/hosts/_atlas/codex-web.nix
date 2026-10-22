@@ -20,6 +20,29 @@ let
   claude_host_socket = "/run/claude-host/host.sock";
 in
 {
+  imports = [ inputs.codex-web.nixosModules.codex-accounts ];
+
+  services.codex-web-accounts = {
+    enable = true;
+    user = username;
+    host = "atlas";
+    package = codex;
+    attachToWeb = true;
+    accounts.team = {
+      label = "Team";
+      port = 46220;
+    };
+    remoteProfiles = [
+      {
+        id = "desktop-account-team";
+        host = "desktop";
+        label = "Team";
+        url = "ws://100.119.138.102:46220";
+        tokenEnvironment = "DESKTOP_CODEX_TOKEN";
+        projectsRoot = "/home/ethanthoma/projects";
+      }
+    ];
+  };
   sops.templates."codex-web-tailnet.env".content = ''
     LISTEN_ADDRESS=${config.sops.placeholder.atlas_address}
     DESKTOP_CODEX_URL=ws://${config.sops.placeholder.desktop_address}:46210

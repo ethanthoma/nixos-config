@@ -12,7 +12,15 @@
       system = pkgs.stdenv.hostPlatform.system;
     in
     {
-      imports = [ inputs.codex-web.nixosModules.session-host ];
+      imports = [
+        inputs.codex-web.nixosModules.session-host
+        inputs.codex-web.nixosModules.codex-accounts
+      ];
+
+      services.codex-web-accounts = {
+        user = username;
+        package = inputs.codex-cli.packages.${system}.default;
+      };
 
       services.codex-web-host = {
         enable = true;
