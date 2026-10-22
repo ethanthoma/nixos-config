@@ -214,6 +214,7 @@ in
       self.nixosModules.sops
       self.nixosModules.user
       self.nixosModules.codex-web
+      (import ./_desktop/relay-worker.nix { inherit inputs username; })
       {
         networking.hostName = hostname;
 
@@ -230,6 +231,15 @@ in
             agentDir = "/home/${username}/.config/pi";
             tokenFile = "/home/${username}/.config/claude/shim-web.env";
             tokenEnvironment = "CLAUDE_TOKEN";
+          };
+        };
+
+        services.relay-local = {
+          enable = true;
+          address = "100.119.138.102";
+          apps.cad-viewer = {
+            localPort = 8767;
+            port = 48767;
           };
         };
 

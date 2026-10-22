@@ -1,7 +1,7 @@
 { inputs, ... }:
 {
   # Serves this machine's Codex and Claude sessions to codex-web on atlas
-  # (github.com/gauge-numerics/codex-web): the Codex app-server and the Claude
+  # (github.com/matterstate/relay): the Codex app-server and the Claude
   # shim, from the store, listening only on the host's Tailscale address, which
   # each host sets along with anything else host-specific.
   flake.nixosModules.codex-web =

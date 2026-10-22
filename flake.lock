@@ -143,16 +143,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1792603060,
-        "narHash": "sha256-RqS8LJ2RoDUmsxMhidoQMFe9/Qnyudao6c7L5li8xro=",
-        "owner": "gauge-numerics",
-        "repo": "codex-web",
-        "rev": "a598a4e2487e4cd1450ed894855acb5b0466d3fb",
+        "lastModified": 1793220877,
+        "narHash": "sha256-2Hg4/nd0IgBgNd4e05IRSiTSFjddKlPeqr8LNmYQS9I=",
+        "owner": "matterstate",
+        "repo": "relay",
+        "rev": "35b2e383b5483053faf5dc0efb42be142fc64baa",
         "type": "github"
       },
       "original": {
-        "owner": "gauge-numerics",
-        "repo": "codex-web",
+        "owner": "matterstate",
+        "repo": "relay",
         "type": "github"
       }
     },

@@ -20,6 +20,17 @@ let
   claude_host_socket = "/run/claude-host/host.sock";
 in
 {
+  imports = [ inputs.codex-web.nixosModules.coordination ];
+  services.codex-web-coordination = {
+    enable = true;
+    port = 46213;
+    gpuWatcher = {
+      enable = true;
+      user = username;
+      repository = "${home}/projects/typed-decisions-baseline";
+      configFile = "${home}/.config/typed-decisions/gpu-coordination.json";
+    };
+  };
   sops.templates."codex-web-tailnet.env".content = ''
     LISTEN_ADDRESS=${config.sops.placeholder.atlas_address}
     DESKTOP_CODEX_URL=ws://${config.sops.placeholder.desktop_address}:46210
@@ -52,6 +63,10 @@ in
   ];
 
   systemd.services.codex-web = {
+    environment = {
+      ATLAS_LOCAL_SERVICES = builtins.toJSON { "5000" = "http://100.105.130.102:5000"; };
+      DESKTOP_LOCAL_SERVICES = builtins.toJSON { "8767" = "http://100.119.138.102:48767"; };
+    };
     description = "Mobile web client for Codex and Claude sessions on the desktop and atlas";
     wantedBy = [ "multi-user.target" ];
     after = [
@@ -235,7 +250,7 @@ in
     after = [ "network-online.target" ];
     wants = [ "network-online.target" ];
     environment = {
-      DEPLOY_REPOSITORY = "git@github.com:gauge-numerics/codex-web.git";
+      DEPLOY_REPOSITORY = "git@github.com:matterstate/relay.git";
       DEPLOY_BRANCH = "main";
       # Pinned rather than trusted on first use. From https://api.github.com/meta.
       DEPLOY_KNOWN_HOSTS = "${pkgs.writeText "github-known-hosts" ''

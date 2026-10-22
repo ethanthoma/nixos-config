@@ -43,7 +43,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     codex-web = {
-      url = "github:gauge-numerics/codex-web";
+      url = "github:matterstate/relay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     runboard.url = "github:matterstate/runboard";
