@@ -214,7 +214,7 @@ in
       self.nixosModules.sops
       self.nixosModules.user
       self.nixosModules.codex-web
-      ({ config, ... }: {
+      {
         networking.hostName = hostname;
 
         # Root is wiped every boot, so the backend tokens stay in /home, where
@@ -232,16 +232,6 @@ in
             tokenEnvironment = "CLAUDE_TOKEN";
           };
         };
-        services.codex-web-accounts = {
-          enable = true;
-          address = config.services.codex-web-host.address;
-          tokenFile = config.services.codex-web-host.codex.tokenFile;
-          accounts.team = {
-            label = "Team";
-            port = 46220;
-          };
-        };
-        networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ 46220 ];
 
         powerManagement.cpuFreqGovernor = "performance";
 
@@ -255,7 +245,7 @@ in
           ];
           hashedPasswordFile = "/persist/passwords/${username}";
         };
-      })
+      }
     ];
   };
 }
