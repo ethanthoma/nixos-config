@@ -23,6 +23,7 @@ in
   imports = [ inputs.codex-web.nixosModules.coordination ];
   services.codex-web-coordination = {
     enable = true;
+    port = 46213;
     gpuWatcher = {
       enable = true;
       user = username;
