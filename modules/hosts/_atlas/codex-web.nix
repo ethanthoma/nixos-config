@@ -20,6 +20,16 @@ let
   claude_host_socket = "/run/claude-host/host.sock";
 in
 {
+  imports = [ inputs.codex-web.nixosModules.coordination ];
+  services.codex-web-coordination = {
+    enable = true;
+    gpuWatcher = {
+      enable = true;
+      user = username;
+      repository = "${home}/projects/typed-decisions-baseline";
+      configFile = "${home}/.config/typed-decisions/gpu-coordination.json";
+    };
+  };
   sops.templates."codex-web-tailnet.env".content = ''
     LISTEN_ADDRESS=${config.sops.placeholder.atlas_address}
     DESKTOP_CODEX_URL=ws://${config.sops.placeholder.desktop_address}:46210
