@@ -1,7 +1,12 @@
 { inputs, ... }:
 {
   flake.homeManagerModules.apps =
-    { config, pkgs, ... }:
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
     {
       home.packages = [
         pkgs.gh
@@ -35,7 +40,8 @@
             wrapProgram $out/bin/obs --prefix LD_LIBRARY_PATH : /run/opengl-driver/lib
           '';
         })
-        pkgs.vlc
+        pkgs.mpv
+        pkgs.kdePackages.dolphin
 
         # meetings
         pkgs.zoom-us
@@ -52,6 +58,78 @@
         # backup
         pkgs.rclone
       ];
+
+      xdg.portal = {
+        enable = lib.mkForce true;
+        extraPortals = [
+          pkgs.xdg-desktop-portal-hyprland
+          pkgs.xdg-desktop-portal-gtk
+          pkgs.kdePackages.xdg-desktop-portal-kde
+        ];
+        config.common = {
+          default = [
+            "hyprland"
+            "gtk"
+          ];
+          "org.freedesktop.impl.portal.AppChooser" = [ "gtk" ];
+          "org.freedesktop.impl.portal.FileChooser" = [ "kde" ];
+        };
+      };
+
+      xdg.mimeApps = {
+        enable = true;
+        defaultApplications = {
+          "inode/directory" = [ "org.kde.dolphin.desktop" ];
+          "application/x-extension-htm" = [ "zen.desktop" ];
+          "application/x-extension-html" = [ "zen.desktop" ];
+          "application/x-extension-shtml" = [ "zen.desktop" ];
+          "application/x-extension-xht" = [ "zen.desktop" ];
+          "application/x-extension-xhtml" = [ "zen.desktop" ];
+          "application/xhtml+xml" = [ "zen.desktop" ];
+          "text/html" = [ "zen.desktop" ];
+          "x-scheme-handler/about" = [ "helium.desktop" ];
+          "x-scheme-handler/chrome" = [ "zen.desktop" ];
+          "x-scheme-handler/claude-cli" = [ "claude-code-url-handler.desktop" ];
+          "x-scheme-handler/codex" = [ "chatgpt.desktop" ];
+          "x-scheme-handler/http" = [ "zen.desktop" ];
+          "x-scheme-handler/https" = [ "zen.desktop" ];
+          "x-scheme-handler/ror2mm" = [ "r2modman.desktop" ];
+          "x-scheme-handler/unknown" = [ "helium.desktop" ];
+          "video/mp4" = [ "mpv.desktop" ];
+          "video/mpeg" = [ "mpv.desktop" ];
+          "video/ogg" = [ "mpv.desktop" ];
+          "video/quicktime" = [ "mpv.desktop" ];
+          "video/webm" = [ "mpv.desktop" ];
+          "video/x-flv" = [ "mpv.desktop" ];
+          "video/x-matroska" = [ "mpv.desktop" ];
+          "video/x-msvideo" = [ "mpv.desktop" ];
+          "video/x-ms-wmv" = [ "mpv.desktop" ];
+        };
+        associations.added = {
+          "application/x-extension-htm" = [ "userapp-Zen-FHKEL3.desktop" ];
+          "application/x-extension-html" = [ "userapp-Zen-FHKEL3.desktop" ];
+          "application/x-extension-shtml" = [ "userapp-Zen-FHKEL3.desktop" ];
+          "application/x-extension-xht" = [ "userapp-Zen-FHKEL3.desktop" ];
+          "application/x-extension-xhtml" = [ "userapp-Zen-FHKEL3.desktop" ];
+          "application/xhtml+xml" = [ "userapp-Zen-FHKEL3.desktop" ];
+          "text/html" = [
+            "userapp-Zen-FHKEL3.desktop"
+            "zen.desktop"
+          ];
+          "x-scheme-handler/chrome" = [
+            "zen.desktop"
+            "userapp-Zen-FHKEL3.desktop"
+          ];
+          "x-scheme-handler/http" = [
+            "zen.desktop"
+            "userapp-Zen-FHKEL3.desktop"
+          ];
+          "x-scheme-handler/https" = [
+            "zen.desktop"
+            "userapp-Zen-FHKEL3.desktop"
+          ];
+        };
+      };
 
       programs.bash = {
         enable = true;
