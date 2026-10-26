@@ -246,7 +246,7 @@ in
     after = [ "network-online.target" ];
     wants = [ "network-online.target" ];
     environment = {
-      DEPLOY_REPOSITORY = "git@github.com:gauge-numerics/codex-web.git";
+      DEPLOY_REPOSITORY = "git@github.com:matterstate/relay.git";
       DEPLOY_BRANCH = "main";
       # Pinned rather than trusted on first use. From https://api.github.com/meta.
       DEPLOY_KNOWN_HOSTS = "${pkgs.writeText "github-known-hosts" ''
