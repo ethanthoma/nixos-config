@@ -16,6 +16,7 @@
 
       environment.systemPackages = [
         pkgs.grim
+        pkgs.grimblast
         pkgs.slurp
         pkgs.imagemagick
 
