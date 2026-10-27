@@ -12,7 +12,7 @@
       gtk = {
         enable = true;
         cursorTheme = {
-          name = "rose-pine-cursor";
+          name = "BreezeX-RosePine-Linux";
           package = pkgs.rose-pine-cursor;
         };
         gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;

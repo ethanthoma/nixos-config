@@ -10,7 +10,7 @@ hl.env("__GLX_VENDOR_LIBRARY_NAME", "nvidia")
 
 hl.env("HYPRCURSOR_THEME", "rose-pine-hyprcursor")
 hl.env("HYPRCURSOR_SIZE", "24")
-hl.env("XCURSOR_THEME", "rose-pine")
+hl.env("XCURSOR_THEME", "BreezeX-RosePine-Linux")
 hl.env("XCURSOR_SIZE", "24")
 
 hl.monitor({
@@ -89,6 +89,8 @@ hl.animation({ leaf = "windowsOut",  enabled = true, speed = 7,  bezier = "defau
 hl.animation({ leaf = "fade",        enabled = true, speed = 7,  bezier = "default" })
 hl.animation({ leaf = "workspaces",  enabled = true, speed = 6,  bezier = "default" })
 
+hl.layer_rule({ match = { namespace = "^hyprpicker$" }, no_anim = true })
+
 hl.bind("XF86AudioRaiseVolume",  hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"),  { locked = true, repeating = true })
 hl.bind("XF86AudioLowerVolume",  hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"),  { locked = true, repeating = true })
 hl.bind("XF86AudioMute",         hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"), { locked = true })
@@ -100,7 +102,7 @@ local mainMod = "SUPER"
 hl.bind(mainMod .. " + Q", hl.dsp.exec_cmd("ghostty"))
 hl.bind(mainMod .. " + C", hl.dsp.window.close())
 hl.bind(mainMod .. " + R", hl.dsp.exec_cmd("fuzzel"))
-hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("grimblast --freeze copy area"))
+hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("env SLURP_RECTS= grimblast --freeze copy area"))
 hl.bind("Print", hl.dsp.exec_cmd([[grim -o "$(hyprctl monitors -j | jq -r '.[] | select(.focused) | .name')" - | wl-copy -t image/png]]))
 hl.bind(mainMod .. " + T", hl.dsp.exec_cmd("zen"))
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ action = "toggle" }))
