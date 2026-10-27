@@ -16,7 +16,11 @@
 
       environment.systemPackages = [
         pkgs.grim
-        pkgs.grimblast
+        (pkgs.grimblast.overrideAttrs {
+          postPatch = ''
+            substituteInPlace grimblast --replace-fail 'slurp -o ' 'slurp '
+          '';
+        })
         pkgs.slurp
         pkgs.imagemagick
 
