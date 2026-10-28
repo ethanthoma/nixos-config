@@ -25,4 +25,9 @@ in
     workersMax = 4;
     sessionProfiles.bodycam.project = "/home/${username}/projects/bodycam-lab";
   };
+  services.codex-web-host.team = {
+    enable = true;
+    url = "http://atlas:8090";
+    tokenFile = config.sops.secrets.relay-native-worker-token.path;
+  };
 }
