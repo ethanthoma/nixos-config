@@ -233,6 +233,15 @@ in
           };
         };
 
+        services.relay-local = {
+          enable = true;
+          address = "100.119.138.102";
+          apps.cad-viewer = {
+            localPort = 8767;
+            port = 48767;
+          };
+        };
+
         powerManagement.cpuFreqGovernor = "performance";
 
         users.mutableUsers = false;
