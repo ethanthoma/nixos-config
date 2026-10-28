@@ -23,7 +23,10 @@ in
     tokenFile = config.sops.secrets.relay-native-worker-token.path;
     directory = "/home/${username}/.local/share/relay-native-worker";
     workersMax = 4;
-    sessionProfiles.bodycam.project = "/home/${username}/projects/bodycam-lab";
+    sessionProfiles.bodycam = {
+      project = "/home/${username}/projects/bodycam-lab";
+      baselineStore = "/home/${username}/.local/share/relay/baselines";
+    };
   };
   services.codex-web-host.team = {
     enable = true;
