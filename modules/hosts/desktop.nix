@@ -214,6 +214,7 @@ in
       self.nixosModules.sops
       self.nixosModules.user
       self.nixosModules.codex-web
+      (import ./_desktop/relay-worker.nix { inherit inputs username; })
       {
         networking.hostName = hostname;
 

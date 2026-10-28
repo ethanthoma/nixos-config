@@ -13,7 +13,7 @@ in
 {
   imports = [ inputs.codex-web.nixosModules.native-worker ];
   sops.secrets.relay-native-worker-token = {
-    sopsFile = ./secrets/relay-worker-token.json;
+    sopsFile = ../../../secrets/relay-worker-token.json;
     format = "binary";
     key = "";
     owner = username;
