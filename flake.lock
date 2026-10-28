@@ -143,11 +143,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793220877,
-        "narHash": "sha256-2Hg4/nd0IgBgNd4e05IRSiTSFjddKlPeqr8LNmYQS9I=",
+        "lastModified": 1793228065,
+        "narHash": "sha256-F9qxXhEKGSHOAshws6ipKnYDvhDKSBeZVsssFAxyK04=",
         "owner": "matterstate",
         "repo": "relay",
-        "rev": "35b2e383b5483053faf5dc0efb42be142fc64baa",
+        "rev": "d2bf337f5f6ae50aefe67da856845027a36321f3",
         "type": "github"
       },
       "original": {
