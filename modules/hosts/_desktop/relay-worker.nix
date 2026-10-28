@@ -26,6 +26,8 @@ in
     sessionProfiles.bodycam = {
       project = "/home/${username}/projects/bodycam-lab";
       baselineStore = "/home/${username}/.local/share/relay/baselines";
+      model = "gpt-6.1-terra";
+      effort = "low";
     };
   };
   services.relay-team = {

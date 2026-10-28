@@ -33,7 +33,11 @@ in
     url = "http://atlas:8090";
     tokenFile = config.sops.secrets.relay-native-worker-token.path;
     workersMax = 4;
-    sessionProfiles.relay.project = "/home/${username}/projects/codex-web";
+    sessionProfiles.relay = {
+      project = "/home/${username}/projects/codex-web";
+      model = "gpt-6.1-terra";
+      effort = "low";
+    };
   };
   services.relay-team = {
     enable = true;
