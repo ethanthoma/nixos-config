@@ -28,7 +28,7 @@ in
       baselineStore = "/home/${username}/.local/share/relay/baselines";
     };
   };
-  services.codex-web-host.team = {
+  services.relay-team = {
     enable = true;
     url = "http://atlas:8090";
     tokenFile = config.sops.secrets.relay-native-worker-token.path;

@@ -11,7 +11,10 @@ let
   );
 in
 {
-  imports = [ inputs.codex-web.nixosModules.native-worker ];
+  imports = [
+    inputs.codex-web.nixosModules.native-worker
+    inputs.codex-web.nixosModules.team
+  ];
   sops.secrets.relay-native-worker-token = {
     sopsFile = ../../../secrets/relay-worker-token.json;
     format = "binary";
@@ -31,6 +34,11 @@ in
     tokenFile = config.sops.secrets.relay-native-worker-token.path;
     workersMax = 4;
     sessionProfiles.relay.project = "/home/${username}/projects/codex-web";
+  };
+  services.relay-team = {
+    enable = true;
+    url = "http://atlas:8090";
+    tokenFile = config.sops.secrets.relay-native-worker-token.path;
   };
   systemd.services = lib.genAttrs workers (_: {
     serviceConfig.EnvironmentFile = config.sops.templates."relay-worker-url.env".path;
