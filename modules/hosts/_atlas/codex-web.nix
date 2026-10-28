@@ -63,6 +63,10 @@ in
   ];
 
   systemd.services.codex-web = {
+    environment = {
+      ATLAS_LOCAL_SERVICES = builtins.toJSON { "5000" = "http://100.105.130.102:5000"; };
+      DESKTOP_LOCAL_SERVICES = builtins.toJSON { "8767" = "http://100.119.138.102:48767"; };
+    };
     description = "Mobile web client for Codex and Claude sessions on the desktop and atlas";
     wantedBy = [ "multi-user.target" ];
     after = [
@@ -88,8 +92,6 @@ in
         "PORT=${toString web_port}"
         "HISTORY_CACHE_DIRECTORY=/var/lib/codex-web-cache"
         "HOSTS=desktop:Desktop,atlas:Atlas"
-        ''ATLAS_LOCAL_SERVICES={"5000":"http://100.105.130.102:5000"}''
-        ''DESKTOP_LOCAL_SERVICES={"8767":"http://100.119.138.102:48767"}''
         "DESKTOP_CODEX_PROJECTS_ROOT=/home/ethanthoma/projects"
         "ATLAS_CODEX_URL=ws://127.0.0.1:${toString codex_port}"
         "ATLAS_CODEX_PROJECTS_ROOT=${home}/projects"
