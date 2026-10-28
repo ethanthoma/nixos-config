@@ -20,29 +20,7 @@ let
   claude_host_socket = "/run/claude-host/host.sock";
 in
 {
-  imports = [
-    inputs.codex-web.nixosModules.coordination
-    inputs.codex-web.nixosModules.native-worker
-  ];
-  sops.secrets.relay-native-worker-token = {
-    sopsFile = ./secrets/relay-worker-token.json;
-    format = "binary";
-    key = "";
-    owner = username;
-    mode = "0400";
-    restartUnits = map (slot: "relay-native-worker-${toString slot}.service") (
-      lib.range 1 config.services.relay-native-worker.workersMax
-    );
-  };
-  services.relay-native-worker = {
-    enable = true;
-    user = username;
-    name = "atlas.relay";
-    url = "http://atlas:${toString web_port}";
-    tokenFile = config.sops.secrets.relay-native-worker-token.path;
-    workersMax = 4;
-    sessionProfiles.relay.project = "${home}/projects/codex-web";
-  };
+  imports = [ inputs.codex-web.nixosModules.coordination ];
   services.codex-web-coordination = {
     enable = true;
     port = 46213;
