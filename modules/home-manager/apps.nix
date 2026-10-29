@@ -7,8 +7,28 @@
       pkgs,
       ...
     }:
+    let
+      hatchzip = pkgs.appimageTools.wrapType2 rec {
+        pname = "hatchzip";
+        version = "0.1.8";
+        src = pkgs.fetchurl {
+          url = "https://github.com/xevrion/hatchzip/releases/download/v${version}/HatchZip-x86_64.AppImage";
+          hash = "sha256-OgbZLcGg+kt+mIbKLup7j+GKXshrCDY567YLespJfy0=";
+        };
+        extraInstallCommands =
+          let
+            contents = pkgs.appimageTools.extract { inherit pname version src; };
+          in
+          ''
+            install -Dm644 ${contents}/io.github.xevrion.hatchzip.desktop $out/share/applications/io.github.xevrion.hatchzip.desktop
+            substituteInPlace $out/share/applications/io.github.xevrion.hatchzip.desktop --replace-fail 'Exec=hatchzip-gui' 'Exec=hatchzip'
+            cp -r ${contents}/usr/share/icons $out/share/
+          '';
+      };
+    in
     {
       home.packages = [
+        hatchzip
         pkgs.gh
         pkgs.tre
         pkgs.wget
@@ -59,6 +79,16 @@
         pkgs.rclone
       ];
 
+      home.activation.hatchzipSettings = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        if [ ! -e "$HOME/.config/hatchzip/settings.json" ]; then
+          run mkdir -p "$HOME/.config/hatchzip"
+          run cp ${
+            pkgs.writeText "hatchzip-settings.json" (builtins.toJSON { keep_archive = true; })
+          } "$HOME/.config/hatchzip/settings.json"
+          run chmod u+w "$HOME/.config/hatchzip/settings.json"
+        fi
+      '';
+
       xdg.portal = {
         enable = lib.mkForce true;
         extraPortals = [
@@ -79,6 +109,14 @@
       xdg.mimeApps = {
         enable = true;
         defaultApplications = {
+          "application/zip" = [ "io.github.xevrion.hatchzip.desktop" ];
+          "application/x-zip-compressed" = [ "io.github.xevrion.hatchzip.desktop" ];
+          "application/x-7z-compressed" = [ "io.github.xevrion.hatchzip.desktop" ];
+          "application/x-tar" = [ "io.github.xevrion.hatchzip.desktop" ];
+          "application/x-compressed-tar" = [ "io.github.xevrion.hatchzip.desktop" ];
+          "application/vnd.rar" = [ "io.github.xevrion.hatchzip.desktop" ];
+          "application/x-rar" = [ "io.github.xevrion.hatchzip.desktop" ];
+          "application/x-rar-compressed" = [ "io.github.xevrion.hatchzip.desktop" ];
           "inode/directory" = [ "org.kde.dolphin.desktop" ];
           "application/x-extension-htm" = [ "zen.desktop" ];
           "application/x-extension-html" = [ "zen.desktop" ];
