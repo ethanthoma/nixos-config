@@ -5,7 +5,7 @@
   ...
 }:
 {
-  imports = [ inputs.codex-web.nixosModules.team ];
+  imports = [ inputs.relay.nixosModules.team ];
   sops.secrets.relay-native-worker-token = {
     sopsFile = ../../../secrets/relay-worker-token.json;
     format = "binary";

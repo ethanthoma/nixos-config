@@ -8,7 +8,7 @@
       system = pkgs.stdenv.hostPlatform.system;
     in
     {
-      imports = [ inputs.codex-web.nixosModules.session-host ];
+      imports = [ inputs.relay.nixosModules.session-host ];
 
       services.codex-web-host = {
         enable = true;

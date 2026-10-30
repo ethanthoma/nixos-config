@@ -10,7 +10,7 @@ let
     runboard = inputs.runboard;
     tether = inputs.tether;
     codex-cli = inputs.atlas-codex-cli;
-    codex-web = inputs.codex-web;
+    relay = inputs.relay;
     pi = inputs.pi;
   };
 in

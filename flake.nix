@@ -38,7 +38,7 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    codex-web = {
+    relay = {
       url = "github:matterstate/relay";
       inputs.nixpkgs.follows = "nixpkgs";
     };

@@ -94,26 +94,6 @@
         "type": "github"
       }
     },
-    "codex-web": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 946684800,
-        "narHash": "sha256-RPpBn0bbEoE5eXhUiTF88mqrD48PbbJTp0uFrWWTIaQ=",
-        "owner": "matterstate",
-        "repo": "relay",
-        "rev": "1820be3195bb801fe246d5df16dc03577cc62aad",
-        "type": "github"
-      },
-      "original": {
-        "owner": "matterstate",
-        "repo": "relay",
-        "type": "github"
-      }
-    },
     "crane": {
       "locked": {
         "lastModified": 1792350552,
@@ -594,6 +574,26 @@
         "type": "github"
       }
     },
+    "relay": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1793510668,
+        "narHash": "sha256-I0E+dZtgkVhUwyJ/ByUxbDS/mNcNadBJT4W9ISH6mGU=",
+        "owner": "matterstate",
+        "repo": "relay",
+        "rev": "a764443405092295d302e3257ab9521590cc7061",
+        "type": "github"
+      },
+      "original": {
+        "owner": "matterstate",
+        "repo": "relay",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "advanced-tab-groups": "advanced-tab-groups",
@@ -601,7 +601,6 @@
         "atlas-home-manager": "atlas-home-manager",
         "atlas-nixpkgs": "atlas-nixpkgs",
         "codex-cli": "codex-cli",
-        "codex-web": "codex-web",
         "flake-parts": "flake-parts",
         "fx-autoconfig": "fx-autoconfig",
         "holyfurries": "holyfurries",
@@ -612,6 +611,7 @@
         "nixpkgs": "nixpkgs_4",
         "pi": "pi",
         "r2modman": "r2modman",
+        "relay": "relay",
         "rose-pine-hyprcursor": "rose-pine-hyprcursor",
         "runboard": "runboard",
         "sops-nix": "sops-nix",
