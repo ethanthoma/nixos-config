@@ -26,10 +26,6 @@
       url = "github:Vertex-Mods/Advanced-Tab-Groups";
       flake = false;
     };
-    claude-code = {
-      url = "github:sadjow/claude-code-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     codex-cli = {
       url = "github:sadjow/codex-cli-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -52,10 +48,6 @@
     atlas-nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     atlas-home-manager = {
       url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "atlas-nixpkgs";
-    };
-    atlas-claude-code = {
-      url = "github:sadjow/claude-code-nix";
       inputs.nixpkgs.follows = "atlas-nixpkgs";
     };
     atlas-codex-cli = {

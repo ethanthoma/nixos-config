@@ -224,7 +224,6 @@ in
           address = "100.119.138.102";
           keepAwake = true;
           codex.tokenFile = "/home/${username}/.config/codex/app-server-web.env";
-          claude.tokenFile = "/home/${username}/.config/claude/shim-web.env";
           pi = {
             enable = true;
             package = inputs.pi.packages.${system}.default;

@@ -27,7 +27,20 @@
 
           nvidiaSettings = true;
 
-          package = config.boot.kernelPackages.nvidiaPackages.stable;
+          package = config.boot.kernelPackages.nvidiaPackages.stable.overrideAttrs {
+            postInstall = ''
+              for executable in "$bin"/origBin/*; do
+                name=$(basename "$executable")
+                target="$bin/bin/$name"
+                rpath=$(patchelf --print-rpath "$target")
+                interpreter=$(patchelf --print-interpreter "$target")
+                cp "$executable" "$target"
+                chmod u+w "$target"
+                patchelf --set-rpath "$rpath" "$target"
+                patchelf --set-interpreter "$interpreter" "$target"
+              done
+            '';
+          };
         };
       };
 
