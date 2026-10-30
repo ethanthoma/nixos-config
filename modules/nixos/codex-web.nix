@@ -17,7 +17,6 @@
         # the app-server needs no provider keys to read and run sessions.
         codex.package = inputs.codex-cli.packages.${system}.default;
         codex.home = "${home}/.config/codex";
-        claude.enable = false;
       };
     };
 }

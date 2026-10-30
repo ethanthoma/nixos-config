@@ -44,7 +44,6 @@
         CODEX_HOME = "${config.xdg.configHome}/codex";
       };
 
-      # Same file Claude reads as CLAUDE.md; see ./AGENTS.md.
       xdg.configFile."codex/AGENTS.md".source = ./AGENTS.md;
     };
 }

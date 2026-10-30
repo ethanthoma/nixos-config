@@ -24,8 +24,7 @@
           pkgs.systemd
         ];
         text = ''
-          # comm is truncated to 15 chars; the nix-wrapped claude shows up as ".claude-unwrapp".
-          agent_pattern='^\.?(claude|codex)'
+          agent_pattern='^\.?codex'
           poll_seconds=30
 
           while true; do
@@ -35,7 +34,7 @@
               systemd-inhibit \
                 --what=sleep \
                 --who=agent-idle-inhibit \
-                --why="claude or codex is running" \
+                --why="codex is running" \
                 --mode=block \
                 bash -c 'while pgrep --uid "$UID" "$1" > /dev/null; do sleep "$2"; done' \
                 _ "$agent_pattern" "$poll_seconds"
@@ -86,7 +85,7 @@
 
       systemd.user.services.agent-idle-inhibit = {
         Unit = {
-          Description = "Block suspend while claude or codex is running";
+          Description = "Block suspend while codex is running";
           PartOf = [ "graphical-session.target" ];
           After = [ "graphical-session.target" ];
         };

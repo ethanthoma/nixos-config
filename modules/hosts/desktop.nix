@@ -228,8 +228,8 @@ in
             enable = true;
             package = inputs.pi.packages.${system}.default;
             agentDir = "/home/${username}/.config/pi";
-            tokenFile = "/home/${username}/.config/claude/shim-web.env";
-            tokenEnvironment = "CLAUDE_TOKEN";
+            tokenFile = "/home/${username}/.config/pi/shim-web.env";
+            tokenEnvironment = "PI_TOKEN";
           };
         };
 

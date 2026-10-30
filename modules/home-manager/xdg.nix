@@ -48,9 +48,6 @@
         # Android
         ANDROID_USER_HOME = "${dataHome}/android";
 
-        # Claude Code home (config, sessions, memory)
-        CLAUDE_CONFIG_DIR = "${configHome}/claude";
-
         # wget
         WGETRC = "${configHome}/wget/wgetrc";
 
@@ -158,24 +155,6 @@
         move "${home}/.triton"            "${cacheHome}/triton"
         move "${home}/.nv"                "${cacheHome}/nv"
         move "${home}/.imageio"           "${dataHome}/imageio"
-
-        # merge rather than move since claude pre-creates the dir
-        if [ -e "${home}/.claude" ]; then
-          $DRY_RUN_CMD mkdir -p "${configHome}/claude"
-          if $DRY_RUN_CMD cp -a --update=none-fail "${home}/.claude/." "${configHome}/claude/"; then
-            $DRY_RUN_CMD rm -rf "${home}/.claude"
-          else
-            echo "xdg: Claude migration incomplete; original files retained" >&2
-          fi
-        fi
-        if [ -e "${home}/.claude.json" ]; then
-          $DRY_RUN_CMD mkdir -p "${configHome}/claude"
-          if $DRY_RUN_CMD cp -a --update=none-fail "${home}/.claude.json" "${configHome}/claude/.claude.json"; then
-            $DRY_RUN_CMD rm -f "${home}/.claude.json"
-          else
-            echo "xdg: Claude settings migration incomplete; original file retained" >&2
-          fi
-        fi
 
         $DRY_RUN_CMD mkdir -p "${cacheHome}/terraform/plugins"
         $DRY_RUN_CMD mkdir -p "${stateHome}/psql"
