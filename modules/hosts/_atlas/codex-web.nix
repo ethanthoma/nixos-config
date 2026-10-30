@@ -16,7 +16,17 @@ let
   codex = inputs.codex-cli.packages.${system}.default;
 in
 {
-  imports = [ inputs.codex-web.nixosModules.coordination ];
+  imports = [
+    inputs.codex-web.nixosModules.coordination
+    inputs.codex-web.nixosModules.foundation-progress
+  ];
+  services.foundation-progress = {
+    enable = true;
+    controllerUser = username;
+    bridgeExecutable = "/var/lib/codex-web/server/bin/foundation-bridge";
+    mcpExecutable = "${home}/.local/state/relay-foundation/current/bin/relay-mcp";
+    database = "${home}/.local/state/relay-foundation/relay/authority.sqlite";
+  };
   services.codex-web-coordination = {
     enable = true;
     port = 46213;
