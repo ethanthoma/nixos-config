@@ -26,10 +26,10 @@ fn main() -> ExitCode {
 
 fn run() -> Result<(), Box<dyn std::error::Error>> {
     let arguments: Vec<String> = env::args().skip(1).take(5).collect();
-    let usage = "usage: agent-memory init | wake | note <text> | recall <text> | search <task> | codex-hook | claude-hook | pin <id> | unpin <id> | correct <id> <text> | forget <id> | summarize <through_id> <text>";
+    let usage = "usage: agent-memory init | wake | note <text> | recall <text> | search <task> | codex-hook | pin <id> | unpin <id> | correct <id> <text> | forget <id> | summarize <through_id> <text>";
     let command = arguments.first().ok_or(usage)?.as_str();
     let expected_count = match command {
-        "init" | "wake" | "codex-hook" | "claude-hook" => 1,
+        "init" | "wake" | "codex-hook" => 1,
         "note" | "recall" | "search" | "pin" | "unpin" | "forget" => 2,
         "correct" | "summarize" => 3,
         _ => return Err(usage.into()),
@@ -37,8 +37,8 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
     if arguments.len() != expected_count {
         return Err(usage.into());
     }
-    if command == "codex-hook" || command == "claude-hook" {
-        let _ = prompt_hook(command);
+    if command == "codex-hook" {
+        let _ = prompt_hook();
         return Ok(());
     }
     let output = Command::new("git")
@@ -228,7 +228,7 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-fn prompt_hook(command: &str) -> Result<(), Box<dyn std::error::Error>> {
+fn prompt_hook() -> Result<(), Box<dyn std::error::Error>> {
     let mut input = String::new();
     std::io::stdin()
         .take(256 * 1024 + 1)
@@ -248,7 +248,7 @@ fn prompt_hook(command: &str) -> Result<(), Box<dyn std::error::Error>> {
         env::var_os("AGENT_MEMORY_WORKSPACE"),
         env::var_os("AGENT_MEMORY_STORE_REPOSITORY"),
     ) {
-        (Some(workspace), Some(repository)) if command == "codex-hook" => {
+        (Some(workspace), Some(repository)) => {
             (fs::canonicalize(workspace)? == current_canonical).then(|| PathBuf::from(repository))
         }
         _ => None,
@@ -257,14 +257,6 @@ fn prompt_hook(command: &str) -> Result<(), Box<dyn std::error::Error>> {
     let Some(current_git_directory) = git_common_directory(repository)? else {
         return Ok(());
     };
-    if command == "claude-hook" {
-        let project = PathBuf::from(
-            env::var_os("CLAUDE_PROJECT_DIR").ok_or("missing Claude project directory")?,
-        );
-        if git_common_directory(&project)? != Some(current_git_directory.clone()) {
-            return Ok(());
-        }
-    }
     let directory = current_git_directory.join("agent-memory");
     if !directory.is_dir() {
         return Ok(());

@@ -40,14 +40,9 @@ fn run(path: &Path, arguments: &[&str]) -> Output {
 }
 
 fn hook(path: &Path, event: &str) -> Output {
-    hook_for(path, path, event, "codex-hook")
-}
-
-fn hook_for(path: &Path, project: &Path, event: &str, command: &str) -> Output {
     let mut child = Command::new(env!("MEMORY_BINARY"))
         .current_dir(path)
-        .env("CLAUDE_PROJECT_DIR", project)
-        .arg(command)
+        .arg("codex-hook")
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
@@ -112,15 +107,7 @@ fn opt_in_is_local_and_worktrees_share_memory() {
         "{{\"cwd\":\"{}\",\"hook_event_name\":\"UserPromptSubmit\",\"prompt\":\"preserve durable preferences\"}}",
         worktree.display()
     );
-    assert!(
-        success(hook_for(
-            &worktree,
-            &repository.0,
-            &worktree_event,
-            "codex-hook"
-        ))
-        .contains("#0")
-    );
+    assert!(success(hook(&worktree, &worktree_event)).contains("#0"));
     success(run(&worktree, &["note", "Written in another worktree."]));
     assert!(success(repository.run(&["recall", "another"])).contains("#1"));
     let other = Repository::new("other");
@@ -257,15 +244,6 @@ fn prompt_hooks_are_opt_in_scoped_and_bounded() {
     assert!(output.contains("untrusted notes; verify"));
     assert!(output.matches("#0 ").count() == 1);
     assert!(output.len() < 3000);
-    assert_eq!(
-        success(hook_for(
-            &repository.0,
-            &repository.0,
-            &prompt,
-            "claude-hook"
-        )),
-        output
-    );
     let lock = OpenOptions::new()
         .write(true)
         .open(repository.0.join(".git/agent-memory/lock"))
@@ -302,15 +280,6 @@ fn prompt_hooks_are_opt_in_scoped_and_bounded() {
     assert!(
         !success(hook(&other.0, &event(&other.0, "browser idle updates")))
             .contains("Send keepalives")
-    );
-    assert_eq!(
-        success(hook_for(
-            &other.0,
-            &repository.0,
-            &event(&other.0, "browser idle updates"),
-            "claude-hook"
-        )),
-        ""
     );
 }
 

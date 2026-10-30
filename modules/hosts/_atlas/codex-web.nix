@@ -80,6 +80,7 @@ in
       # Holds WEB_TOKEN and the <HOST>_<BACKEND>_TOKEN secrets.
       EnvironmentFile = [
         "/var/lib/codex-web.env"
+        "/var/lib/relay-pi.env"
         config.sops.templates."codex-web-tailnet.env".path
       ];
       Environment = [
@@ -90,8 +91,6 @@ in
         "ATLAS_CODEX_URL=ws://127.0.0.1:${toString codex_port}"
         "ATLAS_CODEX_PROJECTS_ROOT=${home}/projects"
         "ATLAS_PI_URL=http://127.0.0.1:46212"
-        "ATLAS_PI_TOKEN_ENV=ATLAS_CLAUDE_TOKEN"
-        "DESKTOP_PI_TOKEN_ENV=DESKTOP_CLAUDE_TOKEN"
       ];
       User = "codex-web";
       Group = "codex-web";
@@ -106,6 +105,7 @@ in
 
   systemd.services.codex-app-server = {
     description = "WebSocket access to the shared Codex daemon";
+    restartIfChanged = false;
     path = [ pkgs.procps ];
     wantedBy = [ "multi-user.target" ];
     after = [ "network.target" ];
@@ -147,11 +147,11 @@ in
     );
     serviceConfig = {
       ExecStart = lib.getExe inputs.codex-web.packages.${system}.pi-shim;
-      EnvironmentFile = "/var/lib/claude-shim.env";
+      EnvironmentFile = "/var/lib/relay-pi.env";
       Environment = [
         "LISTEN_ADDRESS=127.0.0.1"
         "PORT=46212"
-        "TOKEN_ENV=CLAUDE_TOKEN"
+        "TOKEN_ENV=PI_TOKEN"
         "PI_BIN=${inputs.pi.packages.${system}.default}/bin/pi"
         "PI_CODING_AGENT_DIR=${home}/.pi/agent"
         "PROJECTS_ROOT=${home}/projects"

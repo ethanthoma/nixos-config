@@ -24,8 +24,6 @@ in
 
   programs.home-manager.enable = true;
 
-  # One instruction file for Claude and Codex, shared with the surface.
-  home.file.".claude/CLAUDE.md".source = ../../home-manager/AGENTS.md;
   home.file.".codex/AGENTS.md".source = ../../home-manager/AGENTS.md;
   home.file.".local/bin/agent-memory" = {
     source = "${agent_memory}/bin/agent-memory";

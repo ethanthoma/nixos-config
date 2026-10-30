@@ -14,7 +14,17 @@ let
   # the webhook in ${notify_file}, so a failure is known without a session open.
   callback = pkgs.writeShellScript "pueue-callback" ''
     set -u
-    export PATH=${lib.makeBinPath [ pkgs.pueue pkgs.jq pkgs.coreutils pkgs.gnugrep pkgs.gawk pkgs.util-linux pkgs.curl ]}:/run/wrappers/bin
+    export PATH=${
+      lib.makeBinPath [
+        pkgs.pueue
+        pkgs.jq
+        pkgs.coreutils
+        pkgs.gnugrep
+        pkgs.gawk
+        pkgs.util-linux
+        pkgs.curl
+      ]
+    }:/run/wrappers/bin
     id=$1
     task=$(pueue -c ${config_file} status --json | jq -c --arg id "$id" '.tasks[$id]')
     output=$(pueue -c ${config_file} log "$id" --full 2>/dev/null)
@@ -86,18 +96,30 @@ in
     "L+ ${home}/.config/pueue/pueue.yml - - - - ${config_file}"
   ];
 
-  # The job queue for atlas: tasks are children of this daemon, so they outlive agent sessions (claude-shim's cgroup
-  # is killed on restart) without a systemd unit per run. Group `gpu` runs one task at a time.
+  # Tasks outlive agent sessions. Group `gpu` runs one task at a time.
   systemd.services.pueued = {
     description = "Pueue task queue daemon";
     wantedBy = [ "multi-user.target" ];
-    after = [ "network-online.target" "mlflow.service" ];
+    after = [
+      "network-online.target"
+      "mlflow.service"
+    ];
     wants = [ "network-online.target" ];
     # A rebuild must never kill hours of training.
     restartIfChanged = false;
     path = [
-      pkgs.bash pkgs.coreutils pkgs.findutils pkgs.gawk pkgs.gnugrep pkgs.gnused pkgs.nix pkgs.procps pkgs.git
-      pkgs.jq pkgs.pueue pkgs.util-linux
+      pkgs.bash
+      pkgs.coreutils
+      pkgs.findutils
+      pkgs.gawk
+      pkgs.gnugrep
+      pkgs.gnused
+      pkgs.nix
+      pkgs.procps
+      pkgs.git
+      pkgs.jq
+      pkgs.pueue
+      pkgs.util-linux
     ];
     environment = {
       HOME = home;
