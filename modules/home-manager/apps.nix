@@ -127,7 +127,6 @@
           "text/html" = [ "zen.desktop" ];
           "x-scheme-handler/about" = [ "helium.desktop" ];
           "x-scheme-handler/chrome" = [ "zen.desktop" ];
-          "x-scheme-handler/claude-cli" = [ "claude-code-url-handler.desktop" ];
           "x-scheme-handler/codex" = [ "chatgpt.desktop" ];
           "x-scheme-handler/http" = [ "zen.desktop" ];
           "x-scheme-handler/https" = [ "zen.desktop" ];

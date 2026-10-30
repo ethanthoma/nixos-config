@@ -9,7 +9,6 @@ let
   atlas_inputs = {
     runboard = inputs.runboard;
     tether = inputs.tether;
-    claude-code = inputs.atlas-claude-code;
     codex-cli = inputs.atlas-codex-cli;
     codex-web = inputs.codex-web;
     pi = inputs.pi;
