@@ -56,7 +56,6 @@ in
 
             supportedFilesystems = [ "bcachefs" ];
 
-            initrd.systemd.enable = true;
             initrd.luks.devices.cryptpool1 = {
               device = "/dev/disk/by-uuid/8856c898-8dbd-46d9-9001-616d11a3b601";
               crypttabExtraOpts = [ "fido2-device=auto" ];
