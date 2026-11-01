@@ -15,7 +15,7 @@
   };
   services.relay-team = {
     enable = true;
-    url = "http://atlas:8090";
+    url = "http://100.105.130.102:8090";
     tokenFile = config.sops.secrets.relay-native-worker-token.path;
   };
 }

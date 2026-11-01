@@ -45,6 +45,8 @@ in
   ];
   systemd.services.relay-runtime.serviceConfig.Environment = lib.mkAfter [
     "ATLAS_PI_URL=http://127.0.0.1:46212"
+    "ATLAS_AGENT_MEMORY_BINARY=${home}/.local/bin/agent-memory"
+    "DESKTOP_AGENT_MEMORY_BINARY=/home/ethanthoma/.local/bin/agent-memory"
   ];
 
   systemd.services.pi-shim = {

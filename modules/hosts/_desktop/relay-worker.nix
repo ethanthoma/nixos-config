@@ -19,20 +19,20 @@ in
     enable = true;
     user = username;
     name = "desktop.bodycam";
-    url = "http://atlas:8090";
+    url = "http://100.105.130.102:8090";
     tokenFile = config.sops.secrets.relay-native-worker-token.path;
     directory = "/home/${username}/.local/share/relay-native-worker";
     workersMax = 4;
     sessionProfiles.bodycam = {
       project = "/home/${username}/projects/bodycam-lab";
       baselineStore = "/home/${username}/.local/share/relay/baselines";
-      model = "gpt-6.1-terra";
+      model = "deepseek-flash";
       effort = "low";
     };
   };
   services.relay-team = {
     enable = true;
-    url = "http://atlas:8090";
+    url = "http://100.105.130.102:8090";
     tokenFile = config.sops.secrets.relay-native-worker-token.path;
   };
 }
