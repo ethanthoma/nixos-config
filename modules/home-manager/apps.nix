@@ -68,7 +68,7 @@
 
         # audio
         pkgs.spotify
-        pkgs.ardour
+        pkgs.audacity
         pkgs.qpwgraph
 
         # games
