@@ -6,6 +6,8 @@
       system = pkgs.stdenv.hostPlatform.system;
       piPackage = inputs.pi.packages.${system}.default.overrideAttrs (old: {
         postInstall = (old.postInstall or "") + ''
+          patch -p1 -d "$out/lib/pi/node_modules" < ${./patches/pi-ui.patch}
+
           substituteInPlace \
             "$out/lib/pi/node_modules/@earendil-works/pi-coding-agent/dist/modes/interactive/components/model-selector.js" \
             --replace-fail \

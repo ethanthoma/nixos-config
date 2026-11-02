@@ -1,0 +1,172 @@
+diff -ruN a/@earendil-works/pi-coding-agent/dist/modes/interactive/tui-renderer.js b/@earendil-works/pi-coding-agent/dist/modes/interactive/tui-renderer.js
+--- a/@earendil-works/pi-coding-agent/dist/modes/interactive/tui-renderer.js	2026-11-01 18:30:16.628677515 -0700
++++ b/@earendil-works/pi-coding-agent/dist/modes/interactive/tui-renderer.js	2026-11-01 18:31:31.719124996 -0700
+@@ -11,6 +11,11 @@
+             searchMatchStyle: (text) => theme.underline(styleSearchMatch(text)),
+             searchCurrentMatchStyle: (text) => theme.bold(theme.inverse(styleSearchMatch(text))),
+             searchNavigationButtonStyle: (text, hovered) => (hovered ? theme.underline(text) : text),
++            scrollToPromptIndicator: () => {
++                const shortcut = keyDisplayText("tui.altScreen.previousPrompt");
++                const label = ` ↑ Last prompt${shortcut ? ` · ${shortcut}` : ""} `;
++                return theme.bg("selectedBg", theme.fg("text", label));
++            },
+             scrollToEndIndicator: () => {
+                 const shortcut = keyDisplayText("tui.altScreen.bottom");
+                 const label = ` ↓ Jump to latest message${shortcut ? ` · ${shortcut}` : ""} `;
+diff -ruN a/@earendil-works/pi-tui/dist/components/editor.js b/@earendil-works/pi-tui/dist/components/editor.js
+--- a/@earendil-works/pi-tui/dist/components/editor.js	2026-11-01 18:30:16.623677552 -0700
++++ b/@earendil-works/pi-tui/dist/components/editor.js	2026-11-01 18:31:31.711125054 -0700
+@@ -447,18 +447,20 @@
+                     const afterGraphemes = [...this.segment(after, "grapheme")];
+                     const firstGrapheme = afterGraphemes[0]?.segment || "";
+                     const restAfter = after.slice(firstGrapheme.length);
+-                    const cursor = renderFakeCursor(firstGrapheme);
++                    const cursor = this.focused ? renderFakeCursor(firstGrapheme) : firstGrapheme;
+                     displayText = before + marker + cursor + restAfter;
+                     // lineVisibleWidth stays the same - we're replacing, not adding
+                 }
+                 else {
+                     // Cursor is at the end - add highlighted space
+-                    const cursor = renderFakeCursor(" ");
++                    const cursor = this.focused ? renderFakeCursor(" ") : "";
+                     displayText = before + marker + cursor;
+-                    lineVisibleWidth = lineVisibleWidth + 1;
+-                    // If cursor overflows content width into the padding, flag it
+-                    if (lineVisibleWidth > contentWidth && paddingX > 0) {
+-                        cursorInPadding = true;
++                    if (this.focused) {
++                        lineVisibleWidth = lineVisibleWidth + 1;
++                        // If cursor overflows content width into the padding, flag it
++                        if (lineVisibleWidth > contentWidth && paddingX > 0) {
++                            cursorInPadding = true;
++                        }
+                     }
+                 }
+             }
+diff -ruN a/@earendil-works/pi-tui/dist/components/input.js b/@earendil-works/pi-tui/dist/components/input.js
+--- a/@earendil-works/pi-tui/dist/components/input.js	2026-11-01 18:30:16.625677537 -0700
++++ b/@earendil-works/pi-tui/dist/components/input.js	2026-11-01 18:31:31.714125032 -0700
+@@ -352,7 +352,9 @@
+             const atCursor = graphemes[0]?.segment ?? " ";
+             const afterCursor = placeholder.slice(atCursor.length);
+             const marker = this.focused ? CURSOR_MARKER : "";
+-            const cursorChar = renderFakeCursor(this.placeholderStyle(atCursor));
++            const cursorChar = this.focused
++                ? renderFakeCursor(this.placeholderStyle(atCursor))
++                : this.placeholderStyle(atCursor);
+             const textWithCursor = marker + cursorChar + this.placeholderStyle(afterCursor);
+             const padding = " ".repeat(Math.max(0, availableWidth - visibleWidth(textWithCursor)));
+             return [this.prompt + textWithCursor + padding];
+@@ -405,7 +407,7 @@
+         // Hardware cursor marker (zero-width, emitted before fake cursor for IME positioning)
+         const marker = this.focused ? CURSOR_MARKER : "";
+         // TUI draws the fake cursor in reverse video, or omits it when the hardware cursor is shown
+-        const cursorChar = renderFakeCursor(atCursor);
++        const cursorChar = this.focused ? renderFakeCursor(atCursor) : atCursor;
+         const textWithCursor = beforeCursor + marker + cursorChar + afterCursor;
+         // Calculate visual width
+         const visualLength = visibleWidth(textWithCursor);
+diff -ruN a/@earendil-works/pi-tui/dist/tui-alt-screen.js b/@earendil-works/pi-tui/dist/tui-alt-screen.js
+--- a/@earendil-works/pi-tui/dist/tui-alt-screen.js	2026-11-01 18:30:16.627677523 -0700
++++ b/@earendil-works/pi-tui/dist/tui-alt-screen.js	2026-11-01 18:31:31.716125018 -0700
+@@ -62,6 +62,7 @@
+     scrollbarDrag;
+     scrollbarHover;
+     scrollToEndIndicatorRect;
++    scrollToPromptIndicatorRect;
+     activeSearch;
+     pressedUrl;
+     selectionDragged = false;
+@@ -76,6 +77,7 @@
+     searchCurrentMatchStyle;
+     searchNavigationButtonStyle;
+     scrollToEndIndicator;
++    scrollToPromptIndicator;
+     openUrl;
+     onRightClickPaste;
+     copyOnSelect;
+@@ -98,6 +100,7 @@
+         this.searchCurrentMatchStyle = options.searchCurrentMatchStyle ?? ((text) => `\x1b[1;7m${text}\x1b[22;27m`);
+         this.searchNavigationButtonStyle = options.searchNavigationButtonStyle ?? ((text) => text);
+         this.scrollToEndIndicator = options.scrollToEndIndicator;
++        this.scrollToPromptIndicator = options.scrollToPromptIndicator;
+         this.openUrl = options.openUrl;
+         this.onRightClickPaste = options.onRightClickPaste;
+         this.copyOnSelect = options.copyOnSelect ?? true;
+@@ -743,6 +746,8 @@
+             return;
+         const overlay = this.dispatchMouseToOverlay(event);
+         if (!overlay.hit) {
++            if (this.handleScrollToPromptIndicatorMouseEvent(raw))
++                return;
+             if (this.handleScrollToEndIndicatorMouseEvent(raw))
+                 return;
+             const scrollbarHandled = this.handleScrollbarMouseEvent(raw);
+@@ -854,6 +859,15 @@
+         this.scrollToBottom();
+         return true;
+     }
++    handleScrollToPromptIndicatorMouseEvent(event) {
++        const rect = this.scrollToPromptIndicatorRect;
++        if (!rect || event.release || (event.button & 32) !== 0 || (event.button & 3) !== 0)
++            return false;
++        if (event.y !== rect.row || event.x < rect.column || event.x >= rect.column + rect.width)
++            return false;
++        this.scrollToPrompt(-1);
++        return true;
++    }
+     getScrollbarTargetAt(x, y, includeHiddenAuto = false) {
+         if (this.hasOverlay() || !this.currentLayout)
+             return undefined;
+@@ -1403,6 +1417,43 @@
+     isMouseSequence(data) {
+         return /^\x1b\[<\d+;\d+;\d+[Mm]$/.test(data) || (data.length === 6 && data.startsWith("\x1b[M"));
+     }
++    compositeScrollToPromptIndicator(screen, layout, width) {
++        this.scrollToPromptIndicatorRect = undefined;
++        const scrollView = layout.primaryScrollView ?? this.implicitScrollView;
++        if (!this.scrollToPromptIndicator || scrollView.scrollTop <= 0)
++            return screen;
++        const box = getScrollViewBox(layout, scrollView);
++        const clip = box?.clip;
++        const lines = box?.scrollContentLines;
++        if (!clip || !lines || clip.width <= 0 || clip.height <= 0)
++            return screen;
++        let previousPrompt = false;
++        for (let row = scrollView.scrollTop - 1; row >= 0; row--) {
++            if (OSC133_PROMPT_START.test(lines[row] ?? "")) {
++                previousPrompt = true;
++                break;
++            }
++        }
++        if (!previousPrompt)
++            return screen;
++        const row = clip.y;
++        if (row >= screen.length || isImageLine(screen[row] ?? ""))
++            return screen;
++        const scrollbarColumn = getScrollbarGeometry(box)?.column;
++        const label = truncateToWidth(this.scrollToPromptIndicator(), clip.width, "");
++        const labelWidth = visibleWidth(label);
++        const column = clip.x + Math.floor((clip.width - labelWidth) / 2);
++        const rightEdge = scrollbarColumn ?? clip.x + clip.width;
++        const availableWidth = Math.max(0, rightEdge - column);
++        const text = truncateToWidth(label, availableWidth, "");
++        const textWidth = visibleWidth(text);
++        if (textWidth === 0)
++            return screen;
++        const result = [...screen];
++        result[row] = compositeTuiLine(result[row] ?? "", text, column, textWidth, width);
++        this.scrollToPromptIndicatorRect = { row, column, width: textWidth };
++        return result;
++    }
+     compositeScrollToEndIndicator(screen, layout, width) {
+         this.scrollToEndIndicatorRect = undefined;
+         const scrollView = layout.primaryScrollView ?? this.implicitScrollView;
+@@ -1459,6 +1510,7 @@
+         // Resolve fake cursors before highlighting and compositing, which only track SGR codes
+         let screen = this.resolveFakeCursors(nextLayout.lines.map((line) => line.replace(OSC133_ZONE_PREFIX, "")));
+         screen = this.applySearchHighlights(screen, nextLayout);
++        screen = this.compositeScrollToPromptIndicator(screen, nextLayout, width);
+         screen = this.compositeScrollToEndIndicator(screen, nextLayout, width);
+         screen = this.compositeOverlays(screen, width, height);
+         if (screen.length > height)
