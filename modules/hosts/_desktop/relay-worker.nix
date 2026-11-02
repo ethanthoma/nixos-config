@@ -1,6 +1,12 @@
 { inputs, username }:
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
+  system = pkgs.stdenv.hostPlatform.system;
   workers = map (slot: "relay-native-worker-${toString slot}") (
     lib.range 1 config.services.relay-native-worker.workersMax
   );
@@ -15,6 +21,13 @@ in
     mode = "0400";
     restartUnits = map (worker: "${worker}.service") workers;
   };
+  sops.secrets.relay-pi-token = {
+    sopsFile = ../../../secrets/nix.yaml;
+    owner = username;
+    mode = "0400";
+    restartUnits = [ "pi-shim.service" ];
+  };
+  sops.templates."relay-pi.env".content = "PI_TOKEN=${config.sops.placeholder.relay-pi-token}";
   services.relay-native-worker = {
     enable = true;
     user = username;
@@ -23,6 +36,19 @@ in
     tokenFile = config.sops.secrets.relay-native-worker-token.path;
     directory = "/home/${username}/.local/share/relay-native-worker";
     workersMax = 4;
+    packages = with pkgs; [
+      bash
+      fd
+      git
+      ripgrep
+    ];
+    profiles.bodycam-pi = [
+      "${inputs.relay.packages.${system}.team}/bin/codex-web-team"
+      "pi-task"
+      "${inputs.pi.packages.${system}.default}/bin/pi"
+      "morph/morph-dsv41flash"
+      "low"
+    ];
     sessionProfiles.bodycam = {
       project = "/home/${username}/projects/bodycam-lab";
       baselineStore = "/home/${username}/.local/share/relay/baselines";
@@ -30,6 +56,15 @@ in
       effort = "low";
     };
   };
+  systemd.services = lib.listToAttrs (
+    map (worker: {
+      name = worker;
+      value.environment = {
+        PI_CODING_AGENT_DIR = "/home/${username}/.config/pi";
+        SHELL = "${pkgs.bash}/bin/bash";
+      };
+    }) workers
+  );
   services.relay-team = {
     enable = true;
     url = "http://100.105.130.102:8090";

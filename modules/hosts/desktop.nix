@@ -207,7 +207,7 @@ in
       self.nixosModules.user
       self.nixosModules.codex-web
       (import ./_desktop/relay-worker.nix { inherit inputs username; })
-      {
+      ({ config, ... }: {
         networking.hostName = hostname;
 
         # Root is wiped every boot, so the backend tokens stay in /home, where
@@ -220,7 +220,7 @@ in
             enable = true;
             package = inputs.pi.packages.${system}.default;
             agentDir = "/home/${username}/.config/pi";
-            tokenFile = "/home/${username}/.config/pi/shim-web.env";
+            tokenFile = config.sops.templates."relay-pi.env".path;
             tokenEnvironment = "PI_TOKEN";
           };
         };
@@ -246,7 +246,7 @@ in
           ];
           hashedPasswordFile = "/persist/passwords/${username}";
         };
-      }
+      })
     ];
   };
 }

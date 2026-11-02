@@ -34,13 +34,25 @@ in
       configFile = "${home}/.config/typed-decisions/gpu-coordination.json";
     };
   };
+  sops.secrets.relay-pi-token = {
+    sopsFile = ../../../secrets/nix.yaml;
+    restartUnits = [
+      "pi-shim.service"
+      "relay-runtime.service"
+    ];
+  };
+  sops.templates."relay-pi.env".content = ''
+    PI_TOKEN=${config.sops.placeholder.relay-pi-token}
+    ATLAS_PI_TOKEN=${config.sops.placeholder.relay-pi-token}
+    DESKTOP_PI_TOKEN=${config.sops.placeholder.relay-pi-token}
+  '';
   sops.templates."codex-web-tailnet.env".content = ''
     DESKTOP_PI_URL=http://${config.sops.placeholder.desktop_address}:46212
   '';
 
   systemd.services.relay-runtime.serviceConfig.EnvironmentFile = lib.mkForce [
     "/var/lib/codex-web.env"
-    "/var/lib/relay-pi.env"
+    config.sops.templates."relay-pi.env".path
     config.sops.templates."codex-web-tailnet.env".path
   ];
   systemd.services.relay-runtime.serviceConfig.Environment = lib.mkAfter [
@@ -65,7 +77,7 @@ in
     );
     serviceConfig = {
       ExecStart = lib.getExe inputs.relay.packages.${system}.pi-shim;
-      EnvironmentFile = "/var/lib/relay-pi.env";
+      EnvironmentFile = config.sops.templates."relay-pi.env".path;
       Environment = [
         "LISTEN_ADDRESS=127.0.0.1"
         "PORT=46212"
