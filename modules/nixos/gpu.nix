@@ -5,6 +5,11 @@
     {
       environment.systemPackages = [ pkgs.vulkan-tools ];
 
+      system.switch.inhibitors = {
+        kernel = config.boot.kernelPackages.kernel.outPath;
+        nvidia-driver = config.hardware.nvidia.package.outPath;
+      };
+
       services.xserver.videoDrivers = [ "nvidia" ];
 
       hardware = {
