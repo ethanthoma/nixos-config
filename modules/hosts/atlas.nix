@@ -11,6 +11,7 @@ let
     tether = inputs.tether;
     codex-cli = inputs.atlas-codex-cli;
     relay = inputs.relay;
+    relay-worker = inputs.relay-worker;
     pi = inputs.pi;
   };
 in

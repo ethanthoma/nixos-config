@@ -10,20 +10,48 @@
 let
   home = "/home/${username}";
   system = pkgs.stdenv.hostPlatform.system;
+  foundation = inputs.relay-worker.packages.${system}.foundation;
 in
 {
   imports = [
     inputs.relay.nixosModules.atlas
     inputs.relay.nixosModules.coordination
-    inputs.relay.nixosModules.foundation-progress
+    inputs.relay-worker.nixosModules.foundation-progress
+    inputs.relay-worker.nixosModules.fixed-controller
   ];
+  services.relay-bounded-storage = {
+    enable = true;
+    resolverConfiguration = "nameserver 192.168.1.1\n";
+  };
+  services.relay-fixed-controller = {
+    enable = true;
+    package = foundation;
+    configFile = "/var/lib/relay-volumes/authority/controller-atlas-live-db7f2f0.json";
+    tokenFile = "/run/secrets/relay-native-worker-token";
+    natsUrl = "nats://127.0.0.1:46213";
+    brokerService = "codex-web-nats";
+  };
   services.foundation-progress = {
     enable = true;
     controllerUser = username;
-    bridgeExecutable = "/var/lib/codex-web/server/bin/foundation-bridge";
-    mcpExecutable = "${home}/.local/state/relay-foundation/current/bin/relay-mcp";
-    database = "${home}/.local/state/relay-foundation/relay/authority.sqlite";
+    webUser = "codex-web";
+    rootAuthority = true;
+    storageAuthorityService = "relay-storage-verify-authority";
+    storageMount = "/var/lib/relay-volumes/authority";
+    bridgeExecutable = "/var/lib/codex-web-releases/current/server/bin/foundation-bridge";
+    mcpExecutable = "${foundation}/bin/relay-mcp";
+    coordinatorConfig = "/var/lib/relay-volumes/authority/coordinator-atlas-live-db7f2f0.json";
+    database = "/var/lib/relay-volumes/authority/atlas.sqlite";
   };
+  systemd.services.relay-foundation-read = {
+    partOf = [ "relay-runtime.service" ];
+    before = [ "relay-runtime.service" ];
+    environment = {
+      FOUNDATION_PEER_USERS = "${username},codex-web";
+      FOUNDATION_ROOT_AUTHORITY = "1";
+    };
+  };
+  systemd.services.relay-runtime.wants = [ "relay-foundation-read.service" ];
   services.codex-web-coordination = {
     enable = true;
     port = 46213;

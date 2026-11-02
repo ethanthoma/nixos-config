@@ -42,6 +42,9 @@
       url = "github:matterstate/relay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    relay-worker = {
+      url = "github:matterstate/relay/c550fda3793467c8cd4f625b92b1d52e1cc7dc1a";
+    };
     runboard.url = "github:matterstate/runboard";
 
     # atlas (modules/hosts/atlas.nix) pins its own package set; update it with `nix flake update atlas-nixpkgs ...`.

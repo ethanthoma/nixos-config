@@ -49,6 +49,38 @@ in
       "morph/morph-dsv41flash"
       "low"
     ];
+    profiles.bodycam-openpbr-worktree = [
+      "${inputs.relay.packages.${system}.team}/bin/codex-web-team"
+      "worktree-pi-task"
+      "/home/${username}/projects/bevy_openpbr"
+      "HEAD"
+      "/home/${username}/.local/share/relay-worktrees/bodycam-openpbr"
+      "${inputs.pi.packages.${system}.default}/bin/pi"
+      "morph/morph-dsv41flash"
+      "low"
+    ];
+    profiles.bodycam-openpbr-check = [
+      "${inputs.relay.packages.${system}.team}/bin/codex-web-team"
+      "worktree-pi-task-check"
+      "/home/${username}/projects/bevy_openpbr"
+      "HEAD"
+      "/home/${username}/.local/share/relay-worktrees/bodycam-openpbr"
+      "${inputs.pi.packages.${system}.default}/bin/pi"
+      "morph/morph-dsv41flash"
+      "low"
+      "1800"
+      "--"
+      "${pkgs.coreutils}/bin/env"
+      "CARGO_TARGET_DIR=target"
+      "nix"
+      "develop"
+      "--command"
+      "cargo"
+      "test"
+      "--workspace"
+      "--all-targets"
+      "--locked"
+    ];
     sessionProfiles.bodycam = {
       project = "/home/${username}/projects/bodycam-lab";
       baselineStore = "/home/${username}/.local/share/relay/baselines";
