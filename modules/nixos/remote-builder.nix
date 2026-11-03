@@ -26,9 +26,10 @@
     };
 
   flake.nixosModules.remote-builder-client =
-    { ... }:
+    { lib, ... }:
     {
       nix.distributedBuilds = true;
+      nix.settings.max-jobs = lib.mkForce 0;
 
       # Builders fetch substitutes themselves instead of pulling them
       # through the surface.

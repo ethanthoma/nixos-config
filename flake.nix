@@ -46,6 +46,10 @@
       url = "github:matterstate/relay/c550fda3793467c8cd4f625b92b1d52e1cc7dc1a";
     };
     runboard.url = "github:matterstate/runboard";
+    battery-trend = {
+      url = "path:/home/ethanthoma/projects/battery";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # atlas (modules/hosts/atlas.nix) pins its own package set; update it with `nix flake update atlas-nixpkgs ...`.
     atlas-nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";

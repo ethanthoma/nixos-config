@@ -55,6 +55,16 @@ in
             ];
             extraModulePackages = [ ];
             blacklistedKernelModules = [ "surfacepro3_button" ];
+            kernelParams = [ "pci=hpiosize=0" ];
+            kernelPatches = [
+              {
+                name = "rust-x86-softfloat";
+                patch = pkgs.fetchurl {
+                  url = "https://github.com/torvalds/linux/commit/905b06d32a52afe32fcf5f30cf298c9ea6359f11.patch";
+                  sha256 = "04wf43sjijh2sq99b9vyf4q4jsjjybby26kfs5c9rv85b0za700y";
+                };
+              }
+            ];
           };
 
           hardware.microsoft-surface.kernelVersion = "stable";
@@ -102,6 +112,7 @@ in
       self.nixosModules.ccache
       self.nixosModules.keyd
       self.nixosModules.power
+      self.nixosModules.battery-trend
       self.nixosModules.remote-builder-client
       self.nixosModules.sigrok
       self.nixosModules.steam
