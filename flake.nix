@@ -46,8 +46,9 @@
       url = "github:matterstate/relay/c550fda3793467c8cd4f625b92b1d52e1cc7dc1a";
     };
     runboard.url = "github:matterstate/runboard";
-    battery-trend = {
-      url = "path:/home/ethanthoma/projects/battery";
+    jlsblk.url = "github:ethanthoma/jlsblk";
+    wattkit = {
+      url = "github:ethanthoma/wattkit";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

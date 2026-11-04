@@ -112,7 +112,7 @@ in
       self.nixosModules.ccache
       self.nixosModules.keyd
       self.nixosModules.power
-      self.nixosModules.battery-trend
+      inputs.wattkit.nixosModules.default
       self.nixosModules.remote-builder-client
       self.nixosModules.sigrok
       self.nixosModules.steam
@@ -125,6 +125,7 @@ in
       inputs.nixos-hardware.nixosModules.microsoft-surface-pro-9
       {
         networking.hostName = hostname;
+        services.wattkit.enable = true;
 
         # No keepAwake: a laptop should sleep, and atlas shows it offline meanwhile.
         # Its tokens are created in /var/lib/codex-web on first start.

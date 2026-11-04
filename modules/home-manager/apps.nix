@@ -8,6 +8,7 @@
       ...
     }:
     let
+      jlsblk = inputs.jlsblk.packages.${pkgs.stdenv.hostPlatform.system}.default;
       hatchzip = pkgs.appimageTools.wrapType2 rec {
         pname = "hatchzip";
         version = "0.1.8";
@@ -29,6 +30,7 @@
     {
       home.packages = [
         hatchzip
+        jlsblk
         pkgs.gh
         pkgs.tre
         pkgs.wget
@@ -171,6 +173,7 @@
       programs.bash = {
         enable = true;
         enableCompletion = true;
+        shellAliases.lsblk = lib.getExe jlsblk;
         bashrcExtra = ''
           mkdir -p ${config.home.homeDirectory}/.config
 
