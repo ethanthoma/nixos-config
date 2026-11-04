@@ -766,16 +766,16 @@
         "nixpkgs": "nixpkgs_6"
       },
       "locked": {
-        "lastModified": 1793828431,
-        "narHash": "sha256-czfiQ4rZqoK7+f4yubdgHBDkx6hfdTbeaE/SZUosz2I=",
+        "lastModified": 1793828544,
+        "narHash": "sha256-ri1P0ui9F2kjfaunHiujNSdwN8lMuBsOMX9vHGi3/Bk=",
         "owner": "matterstate",
         "repo": "relay",
-        "rev": "020301f4070b4f986f85f72b3633f5dab92c83f3",
+        "rev": "efa407345817e5c0a5fec6de50807e2efd46866b",
         "type": "github"
       },
       "original": {
         "owner": "matterstate",
-        "ref": "020301f",
+        "ref": "efa4073",
         "repo": "relay",
         "type": "github"
       }
