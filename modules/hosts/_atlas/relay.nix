@@ -108,7 +108,7 @@ in
     };
   };
   systemd.services.relay-runtime.wants = [ "relay-foundation-read.service" ];
-  services.codex-web-coordination = {
+  services.relay-coordination = {
     enable = true;
     accountsFile = "/var/lib/relay-host/broker-accounts/current.json";
     port = 46213;
@@ -131,14 +131,14 @@ in
     ATLAS_PI_TOKEN=${config.sops.placeholder.relay-pi-token}
     DESKTOP_PI_TOKEN=${config.sops.placeholder.relay-pi-token}
   '';
-  sops.templates."codex-web-tailnet.env".content = ''
+  sops.templates."relay-tailnet.env".content = ''
     DESKTOP_PI_URL=http://${config.sops.placeholder.desktop_address}:46212
   '';
 
   systemd.services.relay-runtime.serviceConfig.EnvironmentFile = lib.mkForce [
     "/var/lib/codex-web.env"
     config.sops.templates."relay-pi.env".path
-    config.sops.templates."codex-web-tailnet.env".path
+    config.sops.templates."relay-tailnet.env".path
   ];
   systemd.services.relay-runtime.serviceConfig.Environment = lib.mkAfter [
     "ATLAS_PI_URL=http://127.0.0.1:46212"
@@ -147,7 +147,7 @@ in
   ];
 
   systemd.services.pi-shim = {
-    description = "Pi sessions for codex-web on atlas";
+    description = "Pi sessions for Relay on Atlas";
     wantedBy = [ "multi-user.target" ];
     after = [ "network.target" ];
     environment.PATH = lib.mkForce (

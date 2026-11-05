@@ -49,7 +49,7 @@ in
     ./minecraft.nix
     ./minecraft-terra.nix
     "${inputs.tether}/tether.nix"
-    ./codex-web.nix
+    ./relay.nix
     ./relay-worker.nix
     ./training-queue.nix
     ./pueue.nix

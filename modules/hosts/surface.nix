@@ -121,7 +121,7 @@ in
       self.nixosModules.syncthing
       self.nixosModules.sops
       self.nixosModules.user
-      self.nixosModules.codex-web
+      self.nixosModules.relay
       inputs.nixos-hardware.nixosModules.microsoft-surface-pro-9
       {
         networking.hostName = hostname;
@@ -129,7 +129,7 @@ in
 
         # No keepAwake: a laptop should sleep, and atlas shows it offline meanwhile.
         # Its tokens are created in /var/lib/codex-web on first start.
-        services.codex-web-host.address = "100.111.116.43";
+        services.relay-host.address = "100.111.116.43";
       }
     ];
   };

@@ -5,7 +5,7 @@ let
   home = "/home/${username}";
   records = "${home}/projects/typed-decisions-baseline/reports/jobs.jsonl";
   config_file = "/etc/pueue/pueue.yml";
-  # Optional, mode 600, owned by the user: NOTIFY_WEBHOOK_URL=<Discord-style webhook>, the convention codex-web uses.
+  # Optional, mode 600, owned by the user: NOTIFY_WEBHOOK_URL=<Discord-style webhook>, the convention Relay uses.
   notify_file = "/var/lib/pueue/notify.env";
 
   # Runs after every task: one JSON line with the outcome, exit code, duration, GPU resets seen in the kernel log

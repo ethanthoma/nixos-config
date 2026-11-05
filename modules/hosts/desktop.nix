@@ -205,14 +205,14 @@ in
       self.nixosModules.sigrok
       self.nixosModules.sops
       self.nixosModules.user
-      self.nixosModules.codex-web
+      self.nixosModules.relay
       (import ./_desktop/relay-worker.nix { inherit inputs username; })
       ({ config, ... }: {
         networking.hostName = hostname;
 
         # Root is wiped every boot, so the backend tokens stay in /home, where
         # atlas's copies of them were first created.
-        services.codex-web-host = {
+        services.relay-host = {
           address = "100.119.138.102";
           keepAwake = true;
           codex.tokenFile = "/home/${username}/.config/codex/app-server-web.env";

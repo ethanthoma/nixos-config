@@ -1,6 +1,6 @@
 { inputs, ... }:
 {
-  flake.nixosModules.codex-web =
+  flake.nixosModules.relay =
     { pkgs, ... }:
     let
       username = "ethanthoma";
@@ -10,7 +10,7 @@
     {
       imports = [ inputs.relay.nixosModules.session-host ];
 
-      services.codex-web-host = {
+      services.relay-host = {
         enable = true;
         user = username;
         # The plain CLI, not the codex-atlas-wrapper home-manager puts on PATH:
