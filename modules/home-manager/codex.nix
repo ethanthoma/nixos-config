@@ -35,6 +35,8 @@
       '';
     in
     {
+      imports = [ ./_codex-skills ];
+
       home.packages = [
         codex_package
         pkgs.chatgpt

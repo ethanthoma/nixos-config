@@ -10,6 +10,8 @@ let
   pi = inputs.pi.packages.${pkgs.stdenv.hostPlatform.system}.default;
 in
 {
+  imports = [ ../../home-manager/_codex-skills ];
+
   home.username = username;
   home.homeDirectory = "/home/${username}";
 
