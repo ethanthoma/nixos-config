@@ -803,16 +803,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1793908939,
-        "narHash": "sha256-9YhEaGeMnC9M+msFgFQjW1onMnsmtz/e3n8I8Fo2OuM=",
+        "lastModified": 1793910972,
+        "narHash": "sha256-9XwyEpuvMKDTjpgGmyXqC8HIoGGYmrXyQL7waU9AJA4=",
         "owner": "matterstate",
         "repo": "relay",
-        "rev": "f0cd8a1ae538ff01e24a562229a859ae02f90813",
+        "rev": "ea7b9f0559556036101260bec26519b2f85a1a93",
         "type": "github"
       },
       "original": {
         "owner": "matterstate",
-        "ref": "f0cd8a1",
+        "ref": "ea7b9f0",
         "repo": "relay",
         "type": "github"
       }
