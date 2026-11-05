@@ -824,16 +824,16 @@
         "nixpkgs": "nixpkgs_6"
       },
       "locked": {
-        "lastModified": 1793915889,
-        "narHash": "sha256-J562d/hQO3P4s1xH9SXGDHC6qVDlhijAfLnW+7FxgLI=",
+        "lastModified": 1793918636,
+        "narHash": "sha256-0/wh6t+DiNPUY/010t70nEifMr165nF0wT5sRecypcc=",
         "owner": "matterstate",
         "repo": "relay",
-        "rev": "05514ba88c6c893d5aec73d110ad05e1f6d4f51a",
+        "rev": "b98d44846450ae026ac079182df21dceaba61719",
         "type": "github"
       },
       "original": {
         "owner": "matterstate",
-        "ref": "05514ba",
+        "ref": "b98d448",
         "repo": "relay",
         "type": "github"
       }
