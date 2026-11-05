@@ -17,19 +17,72 @@ in
     inputs.relay.nixosModules.atlas
     inputs.relay.nixosModules.coordination
     inputs.relay-worker.nixosModules.foundation-progress
-    inputs.relay-worker.nixosModules.fixed-controller
+    inputs.relay-worker.nixosModules.host-controller
   ];
   services.relay-bounded-storage = {
     enable = true;
     resolverConfiguration = "nameserver 192.168.1.1\n";
   };
   services.relay-fixed-controller = {
-    enable = true;
+    enable = false;
     package = foundation;
     configFile = "/var/lib/relay-volumes/authority/controller-atlas-live-db7f2f0.json";
     tokenFile = "/run/secrets/relay-native-worker-token";
     natsUrl = "nats://127.0.0.1:46213";
     brokerService = "codex-web-nats";
+  };
+  services.relay-host-controller = {
+    enable = true;
+    package = foundation;
+    stateDirectory = "/var/lib/relay-host";
+    hostConfigurationFile = "${inputs.relay-worker}/host/atlas.cue";
+    credentials = {
+      morph = "/var/lib/relay-volumes/authority/morph-auth.json";
+      relay-queue = "/var/lib/relay-host/queue-password";
+    };
+    checkProfiles = lib.genAttrs [ "affected" "integration" ] (_: {
+      adapter = "cargo";
+      policy = "/nix/store/hgkyl615b6ccbck7p8pjr6bwbrfsaxkh-relay-fixed-controller-policy.cue";
+    });
+    brokerService = "codex-web-nats";
+    legacyBrokerCredentialFile = "/var/lib/relay-host/events-password";
+    legacyBrokerStorageBytesMax = 268435456;
+    writablePaths = [
+      "/var/lib/relay-volumes"
+      "/var/lib/relay-storage-sandbox"
+    ];
+    verificationUnits = map (name: "relay-storage-verify-${name}.service") [
+      "worker-a"
+      "worker-b"
+      "check"
+      "artifacts"
+      "deps"
+      "mirror"
+      "authority"
+      "logs"
+    ];
+    projects.relay = {
+      controllerConfig = "/var/lib/relay-host/controller-template.json";
+      authorityProject = "project://7101a33a-9b09-4bda-85d5-8b2f7da6668b";
+      queueCredential = "relay-queue";
+      resources = {
+        worker = {
+          cpu = 2;
+          memory_bytes = 2147483648;
+          storage_bytes = 17179869184;
+        };
+        check = {
+          cpu = 4;
+          memory_bytes = 4294967296;
+          storage_bytes = 17179869184;
+        };
+      };
+      limits = {
+        cpu = 8;
+        memory_bytes = 12884901888;
+        tasks_max = 1024;
+      };
+    };
   };
   services.foundation-progress = {
     enable = true;
@@ -40,8 +93,8 @@ in
     storageMount = "/var/lib/relay-volumes/authority";
     bridgeExecutable = "/var/lib/codex-web-releases/current/server/bin/foundation-bridge";
     mcpExecutable = "${foundation}/bin/relay-mcp";
-    coordinatorConfig = "/var/lib/relay-volumes/authority/coordinator-atlas-live-db7f2f0.json";
-    database = "/var/lib/relay-volumes/authority/atlas.sqlite";
+    coordinatorConfig = "/var/lib/relay-host/coordinator.json";
+    database = "/var/lib/relay-volumes/authority/atlas-shared.sqlite";
   };
   systemd.services.relay-foundation-read = {
     requires = [ "relay-foundation-read.socket" ];
@@ -56,6 +109,7 @@ in
   systemd.services.relay-runtime.wants = [ "relay-foundation-read.service" ];
   services.codex-web-coordination = {
     enable = true;
+    accountsFile = "/var/lib/relay-host/broker-accounts/current.json";
     port = 46213;
     gpuWatcher = {
       enable = true;
