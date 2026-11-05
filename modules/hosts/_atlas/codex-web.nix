@@ -44,6 +44,8 @@ in
     database = "/var/lib/relay-volumes/authority/atlas.sqlite";
   };
   systemd.services.relay-foundation-read = {
+    requires = [ "relay-foundation-read.socket" ];
+    after = [ "relay-foundation-read.socket" ];
     partOf = [ "relay-runtime.service" ];
     before = [ "relay-runtime.service" ];
     environment = {
