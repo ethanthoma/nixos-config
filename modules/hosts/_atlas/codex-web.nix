@@ -23,6 +23,7 @@ in
     enable = true;
     resolverConfiguration = "nameserver 192.168.1.1\n";
   };
+  systemd.tmpfiles.rules = [ "z /var/lib/relay-volumes/authority 0700 root root -" ];
   services.relay-fixed-controller = {
     enable = false;
     package = foundation;
