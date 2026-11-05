@@ -133,6 +133,22 @@
     },
     "crane_2": {
       "locked": {
+        "lastModified": 1793669695,
+        "narHash": "sha256-9EtV4I6Ohw0tjidL31TMOKHhW/QGVG8NuGiemzIaNCs=",
+        "owner": "ipetkov",
+        "repo": "crane",
+        "rev": "788369ed71ed9d84ef72cb056e4d920050d5b32c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ipetkov",
+        "repo": "crane",
+        "rev": "788369ed71ed9d84ef72cb056e4d920050d5b32c",
+        "type": "github"
+      }
+    },
+    "crane_3": {
+      "locked": {
         "lastModified": 1792350552,
         "narHash": "sha256-292lvpvxTGKryKxh3/3tcIVi85CwYGdl4oOi113Sob8=",
         "owner": "ipetkov",
@@ -763,19 +779,20 @@
     "relay-worker": {
       "inputs": {
         "bend": "bend",
+        "crane": "crane_2",
         "nixpkgs": "nixpkgs_6"
       },
       "locked": {
-        "lastModified": 1793828544,
-        "narHash": "sha256-ri1P0ui9F2kjfaunHiujNSdwN8lMuBsOMX9vHGi3/Bk=",
+        "lastModified": 1793851115,
+        "narHash": "sha256-eryBNHDW06o8+vziBp+oVHoJVWiuJbhNEOCw0F4RTC0=",
         "owner": "matterstate",
         "repo": "relay",
-        "rev": "efa407345817e5c0a5fec6de50807e2efd46866b",
+        "rev": "cc684faeb11a0d99d7f2334dbed9b2863fc95f26",
         "type": "github"
       },
       "original": {
         "owner": "matterstate",
-        "ref": "efa4073",
+        "ref": "cc684fa",
         "repo": "relay",
         "type": "github"
       }
@@ -832,7 +849,7 @@
     },
     "runboard": {
       "inputs": {
-        "crane": "crane_2",
+        "crane": "crane_3",
         "devshell": "devshell_3",
         "flake-parts": "flake-parts_4",
         "nixpkgs": "nixpkgs_7",
