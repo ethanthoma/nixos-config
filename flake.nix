@@ -39,7 +39,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     relay = {
-      url = "github:matterstate/relay/ea7b9f0";
+      url = "github:matterstate/relay/73cce54";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     relay-worker = {
