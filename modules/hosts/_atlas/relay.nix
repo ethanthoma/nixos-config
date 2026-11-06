@@ -11,6 +11,16 @@ let
   home = "/home/${username}";
   system = pkgs.stdenv.hostPlatform.system;
   foundation = inputs.relay-worker.packages.${system}.foundation;
+  desktopAuthorities = pkgs.writeText "relay-foundation-authorities.json" (
+    builtins.toJSON [
+      {
+        project = "project://9137bb3a-518c-440d-a63c-ab649e4a2551";
+        source = "desktop/codex";
+        url = "http://100.119.138.102:46214";
+        token_file = "/run/credentials/relay-runtime.service/desktop-foundation-token";
+      }
+    ]
+  );
 in
 {
   imports = [
@@ -87,6 +97,7 @@ in
   };
   services.foundation-progress = {
     enable = true;
+    authoritiesFile = toString desktopAuthorities;
     controllerUser = username;
     webUser = "codex-web";
     rootAuthority = true;
@@ -139,6 +150,9 @@ in
     "/var/lib/codex-web.env"
     config.sops.templates."relay-pi.env".path
     config.sops.templates."relay-tailnet.env".path
+  ];
+  systemd.services.relay-runtime.serviceConfig.LoadCredential = [
+    "desktop-foundation-token:${config.sops.secrets.relay-pi-token.path}"
   ];
   systemd.services.relay-runtime.serviceConfig.Environment = lib.mkAfter [
     "ATLAS_PI_URL=http://127.0.0.1:46212"

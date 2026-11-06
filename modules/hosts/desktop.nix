@@ -207,6 +207,7 @@ in
       self.nixosModules.user
       self.nixosModules.relay
       (import ./_desktop/relay-worker.nix { inherit inputs username; })
+      (import ./_desktop/relay-project.nix { inherit inputs username; })
       ({ config, ... }: {
         networking.hostName = hostname;
 
