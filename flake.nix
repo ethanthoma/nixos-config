@@ -39,11 +39,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     relay = {
-      url = "github:matterstate/relay/b2d5dad";
+      url = "github:matterstate/relay/98ba803";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     relay-worker = {
-      url = "github:matterstate/relay/b2d5dad";
+      url = "github:matterstate/relay/98ba803";
     };
     runboard.url = "github:matterstate/runboard";
     jlsblk.url = "github:ethanthoma/jlsblk";
