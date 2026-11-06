@@ -24,6 +24,9 @@ let
 in
 {
   imports = [
+    (import ../_shared/relay-morph.nix {
+      credentialPath = "/var/lib/relay-volumes/authority/morph-auth.json";
+    })
     inputs.relay.nixosModules.atlas
     inputs.relay.nixosModules.coordination
     inputs.relay-worker.nixosModules.foundation-progress

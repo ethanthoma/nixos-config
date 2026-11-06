@@ -249,7 +249,7 @@ in
   imports = [
     inputs.relay-worker.nixosModules.project-host
     inputs.relay.nixosModules.foundation-progress
-    (import ./relay-foundation.nix { inherit inputs username; })
+    (import ../_shared/relay-morph.nix { credentialPath = "/run/relay-foundation/morph-auth.json"; })
   ];
   services.relay-project-host = {
     enable = true;
@@ -301,7 +301,11 @@ in
     requires = [ "relay-project-bootstrap.service" ];
     after = [ "relay-project-bootstrap.service" ];
   };
-  systemd.services.relay-project-bootstrap.unitConfig.RequiresMountsFor = [ state ];
+  systemd.services.relay-project-bootstrap = {
+    unitConfig.RequiresMountsFor = [ state ];
+    requires = [ "relay-morph-secret.service" ];
+    after = [ "relay-morph-secret.service" ];
+  };
   systemd.services.relay-storage-provision.unitConfig.RequiresMountsFor = [
     config.services.relay-bounded-storage.backingDirectory
   ];
