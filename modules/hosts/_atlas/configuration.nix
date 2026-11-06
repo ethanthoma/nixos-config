@@ -57,6 +57,7 @@ in
     ./nix-builder.nix
     ./home-alias.nix
     ./torrent.nix
+    ./kernel-cve-2026-98432.nix
   ];
 
   nix.settings = {
