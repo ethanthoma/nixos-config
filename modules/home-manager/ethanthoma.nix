@@ -7,6 +7,8 @@ in
     { lib, ... }:
     {
       imports = [
+        ./_agent-cache
+        ./_agent-skills
         self.homeManagerModules.cli
         self.homeManagerModules.apps
         self.homeManagerModules.codex
