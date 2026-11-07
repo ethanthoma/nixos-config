@@ -861,7 +861,6 @@
         "rose-pine-hyprcursor": "rose-pine-hyprcursor",
         "runboard": "runboard",
         "sops-nix": "sops-nix",
-        "tether": "tether",
         "wattkit": "wattkit",
         "zen-browser": "zen-browser"
       }
@@ -1030,22 +1029,6 @@
         "owner": "nix-systems",
         "repo": "default",
         "type": "github"
-      }
-    },
-    "tether": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1790635898,
-        "narHash": "sha256-R4FHUH0e5F8/XpeijTpSVP6sUkItFbQW+7204HztIdc=",
-        "ref": "refs/heads/main",
-        "rev": "7d184a774ae8fca74fa2611cb045c94797878fd9",
-        "revCount": 59,
-        "type": "git",
-        "url": "ssh://git@github.com/ethanthoma/tether"
-      },
-      "original": {
-        "type": "git",
-        "url": "ssh://git@github.com/ethanthoma/tether"
       }
     },
     "utils": {

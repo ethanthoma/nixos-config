@@ -8,7 +8,6 @@ let
   # nixpkgs and builds everything against it. Its modules live in ./_atlas and see these under the usual names.
   atlas_inputs = {
     runboard = inputs.runboard;
-    tether = inputs.tether;
     codex-cli = inputs.atlas-codex-cli;
     relay = inputs.relay;
     relay-worker = inputs.relay-worker;

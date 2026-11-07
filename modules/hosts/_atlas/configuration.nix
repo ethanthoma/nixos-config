@@ -1,5 +1,4 @@
 {
-  inputs,
   pkgs,
   username,
   ...
@@ -48,7 +47,6 @@ in
     ./tailnet.nix
     ./minecraft.nix
     ./minecraft-terra.nix
-    "${inputs.tether}/tether.nix"
     ./relay.nix
     ./relay-worker.nix
     ./training-queue.nix
