@@ -2,7 +2,9 @@
 
 ## Git
 
-- Don't commit unless asked.
+- Commit completed changes by default; stage only your own work.
+- Amend your own commits to correct mistakes. Never amend unrelated work or
+  force-push published history without explicit approval.
 - Conventional commits, lowercase `type: summary` (`feat:`, `fix:`, `ci:`).
   Keep titles concise and lowercase.
 - No body unless the title genuinely can't carry it.
