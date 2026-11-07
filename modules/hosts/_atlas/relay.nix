@@ -154,6 +154,12 @@ in
     config.sops.templates."relay-pi.env".path
     config.sops.templates."relay-tailnet.env".path
   ];
+  systemd.services.relay-runtime.environment.DESKTOP_LOCAL_SERVICES = lib.mkForce (
+    builtins.toJSON {
+      "4242" = "http://100.119.138.102:44242";
+      "8767" = "http://100.119.138.102:48767";
+    }
+  );
   systemd.services.relay-runtime.serviceConfig.LoadCredential = [
     "desktop-foundation-token:${config.sops.secrets.relay-pi-token.path}"
   ];

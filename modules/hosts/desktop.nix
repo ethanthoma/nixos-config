@@ -233,6 +233,10 @@ in
             localPort = 8767;
             port = 48767;
           };
+          apps.dev-preview = {
+            localPort = 4242;
+            port = 44242;
+          };
         };
 
         powerManagement.cpuFreqGovernor = "performance";
