@@ -8,6 +8,9 @@
         postInstall = (old.postInstall or "") + ''
           patch -p1 -d "$out/lib/pi/node_modules" < ${./patches/pi-ui.patch}
 
+          substituteInPlace "$out/bin/pi" \
+            --replace-fail '/dist/bundle/cli.js' '/dist/cli.js'
+
           substituteInPlace \
             "$out/lib/pi/node_modules/@earendil-works/pi-coding-agent/dist/modes/interactive/components/model-selector.js" \
             --replace-fail \
