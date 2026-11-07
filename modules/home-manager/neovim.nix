@@ -70,7 +70,7 @@
         {
           nvim-config = mkMutableConfig {
             name = "nvim-config";
-            repoUrl = "git@github.com:ethanthoma/neovim-config.git";
+            repoUrl = "https://github.com/ethanthoma/neovim-config.git";
             configPath = ".config/nvim";
           };
         };
