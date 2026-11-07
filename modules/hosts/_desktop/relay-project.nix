@@ -85,6 +85,10 @@ let
   };
   token = config.sops.secrets.relay-pi-token.path;
   broker_token = config.sops.templates."relay-foundation-broker".path;
+  broker_project_storage_mib = 256;
+  broker_storage_bytes_max =
+    config.services.relay-host-controller.legacyBrokerStorageBytesMax
+    + broker_project_storage_mib * 1024 * 1024;
   paths = with pkgs; [
     coreutils
     bash
@@ -127,7 +131,7 @@ let
     broker = {
       url = "nats://127.0.0.1:46213";
       credential = "desktop-broker";
-      storage_max = "256MiB";
+      storage_max = "${toString broker_project_storage_mib}MiB";
     };
     profile = {
       name = "flash";
@@ -225,8 +229,8 @@ let
   broker = pkgs.writeText "relay-desktop-nats.conf" ''
     listen: "127.0.0.1:46213"
     max_payload: 32768
-    include "/run/credentials/nats.service/project-accounts"
-    jetstream { store_dir: "/var/lib/nats", max_memory_store: 64MB, max_file_store: 512MB }
+    include "project-accounts"
+    jetstream { store_dir: "/var/lib/nats", max_memory_store: 64MB, max_file_store: ${toString broker_storage_bytes_max} }
   '';
 in
 {
@@ -247,6 +251,25 @@ in
     }
   ];
   imports = [
+    {
+      options.systemd.mounts = lib.mkOption {
+        apply = map (
+          mount:
+          if lib.hasPrefix "${config.services.relay-bounded-storage.mountDirectory}/" mount.where then
+            mount
+            // {
+              unitConfig = mount.unitConfig // {
+                DefaultDependencies = false;
+              };
+              after = mount.after ++ [ "local-fs.target" ];
+              before = mount.before ++ [ "umount.target" ];
+              conflicts = mount.conflicts ++ [ "umount.target" ];
+            }
+          else
+            mount
+        );
+      };
+    }
     inputs.relay-worker.nixosModules.project-host
     inputs.relay.nixosModules.foundation-progress
     (import ../_shared/relay-morph.nix { credentialPath = "/run/relay-foundation/morph-auth.json"; })
@@ -269,8 +292,11 @@ in
     requires = [ "relay-host-prepare.service" ];
     after = [ "relay-host-prepare.service" ];
     serviceConfig = {
-      ExecStart = lib.mkForce "${pkgs.nats-server}/bin/nats-server --config ${broker}";
-      LoadCredential = [ "project-accounts:${state}/broker-accounts/current.json" ];
+      ExecStart = lib.mkForce "${pkgs.nats-server}/bin/nats-server --config %d/config";
+      LoadCredential = [
+        "config:${broker}"
+        "project-accounts:${state}/broker-accounts/current.json"
+      ];
     };
   };
   services.foundation-progress = {
@@ -297,6 +323,12 @@ in
     localPort = 46214;
     port = 46214;
   };
+  systemd.sockets.relay-foundation-read = {
+    wantedBy = lib.mkForce [ "multi-user.target" ];
+    before = [ "shutdown.target" ];
+    conflicts = [ "shutdown.target" ];
+    unitConfig.DefaultDependencies = false;
+  };
   systemd.services.relay-foundation-read = {
     requires = [ "relay-project-bootstrap.service" ];
     after = [ "relay-project-bootstrap.service" ];
@@ -305,6 +337,9 @@ in
     unitConfig.RequiresMountsFor = [ state ];
     requires = [ "relay-morph-secret.service" ];
     after = [ "relay-morph-secret.service" ];
+    serviceConfig.ExecStartPre = lib.mkBefore [
+      "${pkgs.coreutils}/bin/chmod 0700 ${(mount "authority").path}"
+    ];
   };
   systemd.services.relay-storage-provision.unitConfig.RequiresMountsFor = [
     config.services.relay-bounded-storage.backingDirectory
