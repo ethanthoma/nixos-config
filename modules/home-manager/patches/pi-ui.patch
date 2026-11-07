@@ -133,13 +133,13 @@ diff -ruN a/@earendil-works/pi-tui/dist/tui-alt-screen.js b/@earendil-works/pi-t
 +        if (!clip || !lines || clip.width <= 0 || clip.height <= 0)
 +            return screen;
 +        let promptRow = -1;
-+        for (let row = lines.length - 1; row >= 0; row--) {
++        for (let row = Math.min(scrollView.scrollTop, lines.length - 1); row >= 0; row--) {
 +            if (OSC133_PROMPT_START.test(lines[row] ?? "")) {
 +                promptRow = row;
 +                break;
 +            }
 +        }
-+        if (promptRow < 0 || (promptRow >= scrollView.scrollTop && promptRow < scrollView.scrollTop + clip.height))
++        if (promptRow < 0 || promptRow >= scrollView.scrollTop)
 +            return screen;
 +        let preview = "";
 +        for (let row = promptRow; row < Math.min(lines.length, promptRow + 8); row++) {
