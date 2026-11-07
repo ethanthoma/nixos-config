@@ -12,6 +12,11 @@ in
     }:
     let
       logDir = "${config.home.homeDirectory}/.local/state/atuin";
+      historyFile =
+        if config.programs.bash.historyFile == null then
+          "${config.home.homeDirectory}/.bash_history"
+        else
+          config.programs.bash.historyFile;
     in
     {
       programs.atuin = {
@@ -60,7 +65,7 @@ in
       };
 
       home.activation.atuinImport = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        histfile="${config.programs.bash.historyFile}"
+        histfile="${historyFile}"
         db="${config.home.homeDirectory}/.local/share/atuin/history.db"
         if [ ! -e "$db" ] && [ -s "$histfile" ]; then
           HISTFILE="$histfile" $DRY_RUN_CMD ${config.programs.atuin.package}/bin/atuin import bash
@@ -77,7 +82,12 @@ in
       home.activation.atuinLegacyDir = lib.hm.dag.entryBefore [ "checkLinkTargets" ] ''
         legacy="${config.home.homeDirectory}/.atuin"
         if [ -d "$legacy" ] && [ ! -L "$legacy" ]; then
-          $DRY_RUN_CMD rm -rf "$legacy"
+          backup="${config.home.homeDirectory}/.atuin.backup"
+          if [ -e "$backup" ] || [ -L "$backup" ]; then
+            echo "Cannot preserve $legacy: $backup already exists." >&2
+            exit 1
+          fi
+          $DRY_RUN_CMD mv -T "$legacy" "$backup"
         fi
       '';
     };

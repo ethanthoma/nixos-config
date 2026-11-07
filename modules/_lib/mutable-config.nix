@@ -14,7 +14,7 @@
 let
   dependencies = [ pkgs.git ];
   src = ''
-    if [ ! -d "${homeDirectory}/${configPath}" ]; then
+    if [ ! -e "${homeDirectory}/${configPath}/.git" ]; then
         git clone ${
           if submodules then "--recurse-submodules " else ""
         }${repoUrl} ${homeDirectory}/${configPath}
@@ -34,6 +34,6 @@ let
     buildInputs = [ pkgs.makeWrapper ];
     postBuild = "wrapProgram $out/bin/${name} --prefix PATH : $out/bin";
   };
-  data = ''${build.outPath}/bin/${name}'';
+  data = "${build.outPath}/bin/${name}";
 in
 lib.hm.dag.entryAfter [ "writeBoundary" ] data

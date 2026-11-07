@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, self, ... }:
 
 let
   hostname = "atlas";
@@ -29,7 +29,10 @@ in
       {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
-        home-manager.users.${username} = import ./_atlas/home.nix;
+        home-manager.users.${username}.imports = [
+          self.homeManagerModules.cli
+          ./_atlas/home.nix
+        ];
         home-manager.extraSpecialArgs = { inherit username inputs; };
       }
     ];

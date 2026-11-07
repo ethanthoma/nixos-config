@@ -7,14 +7,12 @@ in
     { lib, ... }:
     {
       imports = [
+        self.homeManagerModules.cli
         self.homeManagerModules.apps
-        self.homeManagerModules.atuin
         self.homeManagerModules.codex
-        self.homeManagerModules.direnv
         self.homeManagerModules.eza
         self.homeManagerModules.fizzy
         self.homeManagerModules.fuzzel
-        self.homeManagerModules.fzf
         self.homeManagerModules.ghostty
         self.homeManagerModules.git
         self.homeManagerModules.gpg
@@ -22,14 +20,10 @@ in
         self.homeManagerModules.keepassxc
         self.homeManagerModules.mako
         self.homeManagerModules.zen-mods
-        self.homeManagerModules.neovim
         self.homeManagerModules.pi
         self.homeManagerModules.secretspec
-        self.homeManagerModules.starship
-        self.homeManagerModules.tmux
         self.homeManagerModules.waybar
         self.homeManagerModules.yubikey-touch-detector
-        self.homeManagerModules.zoxide
         self.homeManagerModules.theme
         self.homeManagerModules.font
         self.homeManagerModules.xdg

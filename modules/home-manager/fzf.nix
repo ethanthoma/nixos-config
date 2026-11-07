@@ -11,7 +11,9 @@ in
       programs = {
         fzf = {
           enable = true;
-          enableBashIntegration = false;
+          enableBashIntegration = true;
+          historyWidget.command = "";
+          tmux.enableShellIntegration = true;
         };
 
         bash.bashrcExtra = ''
