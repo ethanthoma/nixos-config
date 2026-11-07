@@ -72,6 +72,10 @@
             format = "\\[[$symbol$context]($style)\\]";
             symbol = "󰡨";
           };
+          dotnet = {
+            format = "\\[[$symbol($version)(\\($tfm\\))]($style)\\]";
+            symbol = "";
+          };
           elixir = {
             format = "\\[[$symbol($version \(OTP $otp_version\))]($style)\\]";
             symbol = "";
