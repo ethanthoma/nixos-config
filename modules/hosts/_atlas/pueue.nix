@@ -1,7 +1,11 @@
-{ pkgs, lib, ... }:
+{
+  pkgs,
+  lib,
+  username,
+  ...
+}:
 
 let
-  username = "ethoma";
   home = "/home/${username}";
   records = "${home}/projects/typed-decisions-baseline/reports/jobs.jsonl";
   config_file = "/etc/pueue/pueue.yml";

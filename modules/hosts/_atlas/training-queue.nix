@@ -1,7 +1,7 @@
-{ pkgs, ... }:
+{ pkgs, username, ... }:
 
 let
-  project_directory = "/home/ethoma/projects/typed-decisions-baseline";
+  project_directory = "/home/${username}/projects/typed-decisions-baseline";
 in
 {
   # Runs scripts/train_queue.sh so Qwen training survives crashes and reboots: the trainer checkpoints every
@@ -44,7 +44,7 @@ in
       LimitMEMLOCK = "infinity";
       ExecStart = "${pkgs.bash}/bin/bash ${project_directory}/scripts/train_queue.sh";
       WorkingDirectory = project_directory;
-      User = "ethoma";
+      User = username;
       Group = "users";
       Restart = "on-failure";
       RestartSec = 60;
@@ -60,6 +60,11 @@ in
   # the user who starts it needs an unlimited locked-memory limit.
   boot.kernel.sysctl."vm.compact_unevictable_allowed" = 0;
   security.pam.loginLimits = [
-    { domain = "ethoma"; type = "-"; item = "memlock"; value = "unlimited"; }
+    {
+      domain = username;
+      type = "-";
+      item = "memlock";
+      value = "unlimited";
+    }
   ];
 }

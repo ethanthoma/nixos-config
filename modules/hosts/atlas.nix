@@ -2,7 +2,7 @@
 
 let
   hostname = "atlas";
-  username = "ethoma";
+  username = "ethanthoma";
 
   # atlas is a headless server that tracks newer packages than the desktops (ROCm, kernel), so it pins its own
   # nixpkgs and builds everything against it. Its modules live in ./_atlas and see these under the usual names.

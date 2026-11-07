@@ -54,7 +54,6 @@ in
     ./pueue.nix
     ./runboard.nix
     ./nix-builder.nix
-    ./home-alias.nix
     ./torrent.nix
     ./kernel-cve-2026-98432.nix
   ];
@@ -73,6 +72,7 @@ in
     root.hashedPassword = "!";
 
     ${username} = {
+      uid = 1001;
       isNormalUser = true;
       extraGroups = [
         "wheel"

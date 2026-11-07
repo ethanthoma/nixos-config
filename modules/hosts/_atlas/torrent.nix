@@ -2,6 +2,7 @@
   config,
   pkgs,
   lib,
+  username,
   ...
 }:
 let
@@ -50,7 +51,7 @@ in
   };
 
   users.groups.torrents.members = [
-    "ethoma"
+    username
     "qbittorrent"
   ];
   systemd.tmpfiles.rules = [

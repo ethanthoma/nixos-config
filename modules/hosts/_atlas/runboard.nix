@@ -1,13 +1,13 @@
-{ inputs, ... }:
+{ inputs, username, ... }:
 
 {
   imports = [ inputs.runboard.nixosModules.default ];
 
   services.runboard = {
     enable = true;
-    roots = [ "/home/ethoma/projects/typed-decisions-baseline" ];
+    roots = [ "/home/${username}/projects/typed-decisions-baseline" ];
     listen = "100.105.130.102:5000";
-    user = "ethoma";
+    user = username;
     pueueConfig = "/etc/pueue/pueue.yml";
     deploy.enable = true;
   };
