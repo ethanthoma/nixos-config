@@ -11,7 +11,8 @@ in
       ...
     }:
     let
-      logDir = "${config.home.homeDirectory}/.local/state/atuin";
+      logDir = "${config.xdg.stateHome}/atuin";
+      databasePath = "${config.xdg.dataHome}/atuin/history.db";
       historyFile =
         if config.programs.bash.historyFile == null then
           "${config.home.homeDirectory}/.bash_history"
@@ -28,6 +29,7 @@ in
         forceOverwriteSettings = true;
 
         settings = {
+          db_path = databasePath;
           search_mode = "fuzzy";
           filter_mode = "global";
           style = "compact";
@@ -64,31 +66,25 @@ in
         };
       };
 
+      home.sessionVariables = {
+        ATUIN_HOME = "${config.xdg.dataHome}/atuin";
+        ATUIN_CONFIG_DIR = "${config.xdg.configHome}/atuin";
+      };
+
       home.activation.atuinImport = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         histfile="${historyFile}"
-        db="${config.home.homeDirectory}/.local/share/atuin/history.db"
+        db="${databasePath}"
         if [ ! -e "$db" ] && [ -s "$histfile" ]; then
-          HISTFILE="$histfile" $DRY_RUN_CMD ${config.programs.atuin.package}/bin/atuin import bash
+          ATUIN_HOME="${config.xdg.dataHome}/atuin" \
+            ATUIN_CONFIG_DIR="${config.xdg.configHome}/atuin" \
+            ATUIN_DB_PATH="$db" HISTFILE="$histfile" \
+            $DRY_RUN_CMD ${config.programs.atuin.package}/bin/atuin import bash
           $DRY_RUN_CMD ${pkgs.sqlite}/bin/sqlite3 "$db" "UPDATE history SET command = trim(command);"
         fi
       '';
 
       home.activation.atuinLogDir = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         $DRY_RUN_CMD mkdir -p "${logDir}"
-      '';
-
-      home.file.".atuin".source = config.lib.file.mkOutOfStoreSymlink logDir;
-
-      home.activation.atuinLegacyDir = lib.hm.dag.entryBefore [ "checkLinkTargets" ] ''
-        legacy="${config.home.homeDirectory}/.atuin"
-        if [ -d "$legacy" ] && [ ! -L "$legacy" ]; then
-          backup="${config.home.homeDirectory}/.atuin.backup"
-          if [ -e "$backup" ] || [ -L "$backup" ]; then
-            echo "Cannot preserve $legacy: $backup already exists." >&2
-            exit 1
-          fi
-          $DRY_RUN_CMD mv -T "$legacy" "$backup"
-        fi
       '';
     };
 }
