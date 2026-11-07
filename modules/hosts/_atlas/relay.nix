@@ -27,7 +27,25 @@ in
     (import ../_shared/relay-morph.nix {
       credentialPath = "/var/lib/relay-volumes/authority/morph-auth.json";
     })
-    inputs.relay.nixosModules.atlas
+    (
+      args@{
+        inputs,
+        lib,
+        pkgs,
+        username,
+        ...
+      }:
+      let
+        atlas = inputs.relay.nixosModules.atlas args;
+        xdg_path = lib.replaceStrings [ "${home}/.codex" ] [ "${home}/.config/codex" ];
+      in
+      lib.recursiveUpdate atlas {
+        systemd.tmpfiles.rules = map xdg_path atlas.systemd.tmpfiles.rules;
+        systemd.services.codex-app-server.serviceConfig.Environment = map xdg_path (
+          atlas.systemd.services.codex-app-server.serviceConfig.Environment
+        );
+      }
+    )
     inputs.relay.nixosModules.coordination
     inputs.relay-worker.nixosModules.foundation-progress
     inputs.relay-worker.nixosModules.host-controller
@@ -191,7 +209,7 @@ in
         "PORT=46212"
         "TOKEN_ENV=PI_TOKEN"
         "PI_BIN=${inputs.pi.packages.${system}.default}/bin/pi"
-        "PI_CODING_AGENT_DIR=${home}/.pi/agent"
+        "PI_CODING_AGENT_DIR=${home}/.config/pi"
         "PROJECTS_ROOT=${home}/projects"
       ];
       User = username;
