@@ -6,6 +6,7 @@ let
     "invariant-driven-testing"
     "minimize-complexity"
     "performance-engineering"
+    "plain-technical-prose"
     "webgpu-rendering"
   ];
 in
