@@ -1,6 +1,7 @@
 { lib, ... }:
 let
   skill_names = [
+    "bend-development"
     "caveman-commit"
     "context-efficient-development"
     "invariant-driven-testing"

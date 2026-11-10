@@ -41,3 +41,15 @@ State baseline, modified variable, after result, measurement conditions, correct
 ## References
 
 Read `references/gpu-profiling.md` for rendering-specific measurements and pitfalls when relevant.
+
+## Design-time cost model
+
+- Estimate workload sizes, operation counts, data movement, bandwidth, and latency
+  before implementation. Label estimates as hypotheses until measured.
+- Consider network, disk, memory, and CPU costs for the actual workload; do not assume
+  a universal ordering or equate ordinary cache misses with disk access.
+- Amortize overhead through batching; separate control-plane work from data-plane work.
+- Isolate hot loops over primitive data when it improves measurement or optimization.
+- Choose recursion or iteration based on algorithm structure and resource bounds.
+  Prefer vectorizable loops when profiling and compiler evidence support the choice.
+- Do not claim a fixed efficiency percentage without a defined baseline and measurements.

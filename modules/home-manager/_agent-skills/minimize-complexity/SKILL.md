@@ -64,3 +64,24 @@ For substantial design decisions or refactors, briefly state:
 3. **Verification:** tests or checks performed, and anything not verified.
 
 For routine small changes, apply these principles silently; do not add ceremony.
+
+## Component and function design
+
+- Favor small, self-contained, swappable components; use tinygrad as a style reference.
+- Minimize dependencies and their supply-chain and maintenance costs.
+- Compose independent capabilities instead of multiplying special cases across features.
+- Keep related behaviour together, including HTML, CSS, and JavaScript for browser pages.
+- Keep functions as long as needed for one coherent responsibility; prefer purity when practical.
+- Extract for genuine reuse, commonly three real cases, not a line-count target.
+- Prefer clear local duplication over abstractions coupling unrelated behaviour.
+- Pass dependencies from general to specific, callbacks last, where API conventions permit.
+- Use roughly 120 columns as a readability guide, subject to the project formatter.
+- Avoid deep inheritance, speculative frameworks, and components requiring excessive setup.
+
+## Comments and readability
+
+Prefer names and types that express intent. Do not narrate obvious operations or
+add section comments merely to divide a function. Extract a named operation only
+when it improves cohesion; a comment alone is not a reason to fragment code.
+Document non-obvious external constraints and failure modes near the relevant code.
+Put historical rationale in commit messages when it is not needed to use code safely.

@@ -41,31 +41,6 @@ No new JavaScript, TypeScript, Go, or bash beyond a throwaway script. A browser
 page is the one place JavaScript may stay. Port existing code in other
 languages, smallest and most stable piece first.
 
-### Bend 2
-
-A dependently typed, affine language with a proof checker; compiles to C,
-CUDA, Metal, and JavaScript. Source and docs: https://github.com/bendlang/bend
-(2.0.34 as of 2026-10-01; Bend 1 and HVM do not carry over).
-
-- Install from its flake: `inputs.bend.url = "github:bendlang/bend"`, then
-  `inputs.bend.packages.${system}.default`. It is not in nixpkgs yet.
-- Run `bend guide` before writing any; `bend base` prints the base library.
-- State rules that must never break in `LAWS.bend`, prove them in
-  `PROOF.bend`, and run `bend PROOF.bend` before committing. `--verdict`
-  checks with the formally verified kernel.
-- Parallelize with balanced divide-and-conquer calls; `f!(x)` runs on the GPU.
-- Know the limits before choosing it:
-  - Numbers are Nat, U32, and F32 only. Strings are linked lists, so text
-    processing is slow.
-  - Effects are print, env, time, sleep, spawn, channels, files, TCP, UDP.
-    No TLS, HTTP library, JSON, or regex; those need foreign C or JS.
-  - Everything is annotated, nothing inferred. Values are affine. Recursion
-    must terminate unless marked `@unsafe`.
-  - No test framework, debugger, or REPL. Native builds are slow; develop on
-    the JavaScript target.
-- So: put the law-bearing core (state machines, protocol rules, numerics) in
-  Bend, and keep IO, JSON, and process handling in a Rust shell around it.
-
 ## Formatting
 
 Run the project's formatter on changed code before finishing (gofmt, biome,
@@ -75,8 +50,8 @@ yamlfmt). Match the repo; never hand-format against what the formatter does.
 
 - No backward compatibility. Update all callers to the new approach.
 - Delete unused code fully. No dead signatures, no deprecation shims.
-- Zero tech debt: fix problems when found, not later. Ship solid code, even if
-  incomplete.
+- Leave changed code coherent and correct. Report unrelated defects rather than
+  expanding scope without approval.
 - Refactors must improve readability. Whitespace-only diffs are rejected.
 
 ## Design Goals (in order)
@@ -85,53 +60,28 @@ yamlfmt). Match the repo; never hand-format against what the formatter does.
 2. **Performance** - efficient use of resources
 3. **Developer Experience** - readable, maintainable
 
-## Philosophy: Bacterial Code
+## Engineering Defaults
 
-Small, modular, self-contained pieces that thrive through horizontal gene
-transfer. Base style on tinygrad (https://github.com/tinygrad/tinygrad).
-
-Simplicity is discipline, and it emerges through iteration. Invest the mental
-energy at design time. No code golf: three clear lines beat one clever line.
-Reducing complexity is not reducing line count.
-
-- **Small.** Each line has a cost. If you can't say what a line does in one
-  sentence, simplify it. ~120 cols as a guide.
-- **Self-contained.** Swappable, independent units. Ask: could someone yoink
-  this into another project as-is? Zero external deps when possible; each one
-  adds supply-chain, safety, and performance risk.
-- **Additive, not multiplicative.** Components combine with `+` not `*`. Adding
-  a feature shouldn't require touching N files. `dtype + ops`, not `dtype * ops`.
-- **Inline over abstraction.** Explicit beats clever. Copy-paste is fine when it
-  clarifies at the point of use. Don't abstract until 3+ real cases.
-- **Locality of behaviour.** Related code lives together. Co-locate HTML + JS +
-  CSS. You should understand what code does without opening other files.
-
-## Functions
-
-- As long as they need to be to stay coherent. No dogmatic line counts.
-- One logical thing (which may have several steps). Pure when possible.
-- Extract only for genuine reuse or 3+ duplicates, never to hit a line target.
-- Don't fragment coherent logic into tiny pieces that force jumping around.
-- Pass dependencies positionally, general to specific. Callbacks go last.
+Prefer small, self-contained components, explicit local behaviour, and minimal
+dependencies. Keep coherent functions together; avoid speculative abstractions.
+Use `minimize-complexity` for detailed design and refactoring guidance,
+`invariant-driven-testing` for assertions, state modelling, and verification,
+`performance-engineering` for optimization, and `bend-development` for Bend work.
 
 ## Safety
 
 **Control flow:**
 
-- Simple, explicit only. No recursion; use bounded iteration.
+- Choose iteration or recursion to fit the problem. Ensure termination and bound
+  resource use, including recursion depth. Prefer vectorizable loops in hot paths
+  when measurements justify them.
 - Bound everything: loops, queues, allocations have fixed upper limits.
 - Handle every error. Bad error handling is where catastrophes come from.
 - Braces on `if` unless it fits one line. Split compound conditions into nested
   `if`s.
 
-**Assertions:**
-
-- Assert args, returns, pre/postconditions. Target 2+ per function.
-- Split them: `assert(a); assert(b);` not `assert(a && b)`.
-- Assert both what you expect and what you don't. Pair across code paths
-  (before write, after read).
-- Assert relationships between constants to document invariants.
-- Assertions catch programmer errors; exceptions handle operational ones.
+Assertions enforce internal invariants; validate external input and handle
+operational failures explicitly. Make illegal states unrepresentable where practical.
 
 **Memory & scope:**
 
@@ -145,7 +95,7 @@ Reducing complexity is not reducing line count.
   architecture-dependent ones.
 - Options structs when multiple params share a type:
   `resize(img, width=800, height=600)` not `resize(img, 800, 600)`.
-- Make illegal states unrepresentable (see State).
+- Make illegal states unrepresentable where practical.
 
 ## Naming
 
@@ -163,16 +113,8 @@ Reducing complexity is not reducing line count.
 
 ## Comments
 
-Default to zero. Prefer long descriptive names and types that model reality.
-A comment is usually a smell that the name or type isn't pulling its weight.
-
-- Section comments (`// validate input`) mean "extract a named function." The
-  name is the comment.
-- Don't narrate workarounds or rationale inline. If a "why" truly has nowhere to
-  live, put it in the commit message.
-- Rare exceptions: a non-obvious external constraint or documented failure mode
-  the code can't express. Proper prose, capitalized.
-- `TODO: description` for incomplete work, with enough context to act on.
+Prefer descriptive names and types over narration. Keep comments sparse and useful;
+document non-obvious constraints. Use actionable `TODO: description` notes.
 
 ## File Organization
 
@@ -185,16 +127,6 @@ A comment is usually a smell that the name or type isn't pulling its weight.
 Minimal and purposeful. `log.debug()` for detail, `log.info()` for events.
 Context prefixes (`Data:`, `Train:`). No "Starting.../Finished..." pairs.
 
-## State
-
-Prefer state machines for complex behaviour; be event-driven.
-
-- Make illegal states unrepresentable. A type should admit only states that can
-  actually occur.
-- Watch async code: awaits and scattered booleans implicitly model state. Lift
-  it into an explicit, named representation.
-- Model transitions as events on explicit state, not side effects on loose vars.
-
 ## Web & Hypermedia
 
 REST means hypermedia (HATEOAS, per Fielding). The server drives state
@@ -202,24 +134,6 @@ transitions by sending links/controls; the client follows them.
 
 - A JSON-over-HTTP RPC endpoint is not REST. Don't call it REST.
 - Binary protocols are fine where they fit; just don't confuse them for REST.
-
-## Performance
-
-Optimization begins at design, where 1000x wins live. Do back-of-envelope math
-before implementing; target 90% efficiency when you can't measure.
-
-- Four resources, slowest first: network > disk > memory > CPU. Each has
-  bandwidth and latency. Frequent cache misses can cost as much as disk.
-- Amortize through batching. Separate control plane from data plane.
-- Extract hot loops into standalone functions taking primitives (no `self`).
-
-## Anti-Patterns
-
-Deep inheritance. Premature abstraction ("we might need this"). "Framework"
-code predicting future needs. Layers of indirection. Components that only work
-once N other things are configured. DRY taken to the point of coupling.
-Duplicated state. Over-fragmentation into tiny functions. Verbose comments and
-logging. Code golf disguised as simplification.
 
 ## When to Break These Rules
 

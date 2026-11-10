@@ -262,3 +262,15 @@ Explore the executions that might violate those assertions.
 
 Write example tests when they add information that the other
 mechanisms do not.
+
+## Preconditions, transitions, and bounds
+
+- Assert meaningful argument, result, and pre/postconditions; do not use an assertion quota.
+- Split independent assertions so failures identify the violated property.
+- Check valid-state expectations and forbidden-state exclusions, including before writes
+  and after reads where those checks establish distinct guarantees.
+- Assert relationships between constants, preferably at compile time.
+- Represent complex behaviour as explicit states and event-driven transitions.
+- Watch for async control flow and scattered booleans hiding an implicit state machine.
+- Choose recursion or iteration to fit the structure. Establish termination and resource
+  bounds, including stack depth, queue capacity, and allocation limits.
