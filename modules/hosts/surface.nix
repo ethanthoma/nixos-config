@@ -113,6 +113,7 @@ in
       self.nixosModules.keyd
       self.nixosModules.power
       inputs.wattkit.nixosModules.default
+      inputs.bootvine.nixosModules.default
       self.nixosModules.remote-builder-client
       self.nixosModules.sigrok
       self.nixosModules.steam
@@ -126,6 +127,7 @@ in
       {
         networking.hostName = hostname;
         services.wattkit.enable = true;
+        services.bootvine.enable = true;
 
         # No keepAwake: a laptop should sleep, and atlas shows it offline meanwhile.
         # Its tokens are created in /var/lib/codex-web on first start.

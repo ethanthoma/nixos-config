@@ -9,6 +9,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    bootvine = {
+      url = "git+https://codeberg.org/wvhulle/bootvine";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     impermanence.url = "github:nix-community/impermanence";
     rose-pine-hyprcursor = {
       url = "github:ndom91/rose-pine-hyprcursor";

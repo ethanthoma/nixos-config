@@ -13,6 +13,8 @@ in
     specialArgs = { inherit hostname; };
     modules = [
       self.nixosModules.common
+      inputs.bootvine.nixosModules.default
+      { services.bootvine.enable = true; }
       self.nixosModules.bluetooth
       self.nixosModules.hyprland
       self.nixosModules.networking

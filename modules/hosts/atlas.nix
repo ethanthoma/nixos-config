@@ -21,7 +21,11 @@ in
       inputs = atlas_inputs;
     };
     modules = [
-      { networking.hostName = hostname; }
+      {
+        networking.hostName = hostname;
+        services.bootvine.enable = true;
+      }
+      inputs.bootvine.nixosModules.default
       inputs.holyfurries.nixosModules.atlas
       ./_atlas/configuration.nix
       inputs.self.nixosModules.sops
