@@ -8,6 +8,7 @@ let
   skill_names = [
     "bend-development"
     "caveman-commit"
+    "code-style"
     "context-efficient-development"
     "gitignore-allowlist"
     "invariant-driven-testing"
