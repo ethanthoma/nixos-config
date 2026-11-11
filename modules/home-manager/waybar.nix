@@ -35,34 +35,16 @@ in
           default = {
             layer = "top";
             position = "top";
+            height = 30;
             modules-left = [
               "custom/clock"
             ];
-            modules-center = [ "hyprland/workspaces" ];
-            fixed-center = true;
+            modules-center = [ ];
             modules-right = [
               "pulseaudio"
               "network"
               "battery"
             ];
-            "hyprland/workspaces" = {
-              format = "{icon}";
-              format-icons = {
-                active = "●";
-                default = "●";
-                empty = "○";
-                urgent = "●";
-              };
-              persistent-workspaces."*" = [
-                1
-                2
-                3
-                4
-                5
-              ];
-              all-outputs = true;
-              tooltip = false;
-            };
             "custom/clock" = {
               exec = "while :; do ${pkgs.coreutils}/bin/date '+%d %b %R'; ${pkgs.coreutils}/bin/sleep $((60 - $(${pkgs.coreutils}/bin/date +%-S))); done";
               tooltip = false;
@@ -161,43 +143,6 @@ in
           }
 
           #custom-clock { margin: 0; }
-
-          #workspaces {
-              margin: 0;
-              padding: 0;
-          }
-
-          #workspaces button {
-              min-width: 20px;
-              margin: 0 2px;
-              padding: 0 4px;
-              border: none;
-              border-bottom: 2px solid transparent;
-              border-radius: 0;
-              background: transparent;
-              box-shadow: none;
-              text-shadow: none;
-              color: @subtle;
-              font-size: 12px;
-          }
-
-          #workspaces button.empty {
-              color: @muted;
-          }
-
-          #workspaces button.active {
-              color: @text;
-              border-bottom-color: @text;
-          }
-
-          #workspaces button:hover {
-              background: @surface;
-          }
-
-          #workspaces button.urgent {
-              color: @love;
-              border-bottom-color: @love;
-          }
 
           *.module {
               margin-left: 20px;

@@ -1137,11 +1137,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794430745,
-        "narHash": "sha256-fjd35CwpGzLkvfX6aKBDgIRsvnVtFAZpsqtUp1xy5eA=",
+        "lastModified": 1794431517,
+        "narHash": "sha256-gq57PrQDsMJFDQQhqUDLkBNHcGD2i5tI15hWrp5d2HU=",
         "ref": "refs/heads/main",
-        "rev": "80faea67dcdd5ecd87c01c2119a2cc7b505f86eb",
-        "revCount": 4,
+        "rev": "6b92070e0633d2621b9f0b121ba511f4410fa8f1",
+        "revCount": 5,
         "type": "git",
         "url": "file:///home/ethanthoma/projects/workspace-indicator"
       },

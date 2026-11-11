@@ -4,23 +4,33 @@ let
 in
 {
   flake.homeManagerModules.workspace-indicator =
-    { pkgs, ... }:
+    {
+      config,
+      pkgs,
+      lib,
+      ...
+    }:
     let
       package = inputs.workspace-indicator.packages.${pkgs.stdenv.hostPlatform.system}.default;
       configuration = pkgs.writeText "workspace-indicator.json" (
         builtins.toJSON {
           slots = 5;
-          margin = 60;
-          display_ms = 900;
-          fade_ms = 200;
-          background = palette.base;
-          active = palette.iris;
-          occupied = palette.text;
+          margin_top = 0;
+          height = config.programs.waybar.settings.default.height;
+          animation_ms = 320;
+          background = palette.surface;
+          active = palette.text;
+          occupied = palette.subtle;
           empty = palette.muted;
+          urgent = palette.love;
         }
       );
     in
     {
+      wayland.windowManager.hyprland.extraConfig = lib.mkAfter ''
+        hl.layer_rule({ match = { namespace = "^workspace-indicator$" }, no_anim = true })
+      '';
+
       systemd.user.services.workspace-indicator = {
         Unit = {
           Description = "Hyprland workspace indicator";
