@@ -17,13 +17,23 @@ let
     if [ ! -e "${homeDirectory}/${configPath}/.git" ]; then
         git clone ${
           if submodules then "--recurse-submodules " else ""
-        }${repoUrl} ${homeDirectory}/${configPath}
-    elif cd ${homeDirectory}/${configPath} && git rev-parse --is-inside-work-tree > /dev/null; then
-        if [[ $(git ls-files --modified --other --exclude-standard --directory --no-empty-directory -o) ]] ||
-           [[ $(! git diff-index --quiet HEAD --) ]]; then
-            echo -e "\033[31mThere are uncommitted changes in your ${name}, please commit them.\033[0m"
+        }"${repoUrl}" "${homeDirectory}/${configPath}"
+    elif cd "${homeDirectory}/${configPath}" && git rev-parse --is-inside-work-tree > /dev/null; then
+        if status=$(git status --porcelain --untracked-files=normal --ignore-submodules=none); then
+            if [ -n "$status" ]; then
+                echo "${name}: local changes present; skipping update."
+            elif git pull --ff-only --no-rebase; then
+                echo "${name}: checkout is up to date."
+                ${lib.optionalString submodules ''
+                  if ! git submodule update --init --recursive; then
+                      echo "${name}: submodule update failed; inspect the checkout before retrying." >&2
+                  fi
+                ''}
+            else
+                echo "${name}: could not fast-forward; leaving the checkout unchanged." >&2
+            fi
         else
-            echo "Up to date"
+            echo "${name}: could not inspect the checkout; skipping update." >&2
         fi
     fi
   '';
