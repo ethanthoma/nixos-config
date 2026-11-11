@@ -9,6 +9,7 @@ let
     "bend-development"
     "caveman-commit"
     "context-efficient-development"
+    "gitignore-allowlist"
     "invariant-driven-testing"
     "minimize-complexity"
     "performance-engineering"
