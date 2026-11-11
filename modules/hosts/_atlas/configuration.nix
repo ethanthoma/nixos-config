@@ -44,6 +44,7 @@ in
   imports = [
     ./hardware-configuration.nix
     ./holyfurries-runner.nix
+    ./matterstate-runner.nix
     ./tailscale.nix
     ./tailnet.nix
     ./minecraft.nix
