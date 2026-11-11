@@ -900,7 +900,6 @@
         "runboard": "runboard",
         "sops-nix": "sops-nix",
         "wattkit": "wattkit",
-        "workspace-indicator": "workspace-indicator",
         "zen-browser": "zen-browser"
       }
     },
@@ -1128,26 +1127,6 @@
         "owner": "ethanthoma",
         "repo": "wattkit",
         "type": "github"
-      }
-    },
-    "workspace-indicator": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1794429544,
-        "narHash": "sha256-+6hCFtA4eAtlc2VEGDkgjjK7DxZqMbucEYDeaY37cdw=",
-        "ref": "refs/heads/main",
-        "rev": "7fb4629b419d5d1136bd73700d7cfe16333b2e3f",
-        "revCount": 1,
-        "type": "git",
-        "url": "file:///home/ethanthoma/projects/workspace-indicator"
-      },
-      "original": {
-        "type": "git",
-        "url": "file:///home/ethanthoma/projects/workspace-indicator"
       }
     },
     "zen-browser": {

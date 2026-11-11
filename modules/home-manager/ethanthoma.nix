@@ -25,7 +25,6 @@ in
         self.homeManagerModules.pi
         self.homeManagerModules.secretspec
         self.homeManagerModules.waybar
-        self.homeManagerModules.workspace-indicator
         self.homeManagerModules.yubikey-touch-detector
         self.homeManagerModules.theme
         self.homeManagerModules.font
