@@ -18,7 +18,6 @@ in
           margin_top = 0;
           height = config.programs.waybar.settings.default.height;
           animation_ms = 320;
-          background = palette.surface;
           active = palette.text;
           occupied = palette.subtle;
           empty = palette.muted;
