@@ -6,6 +6,7 @@
 }:
 let
   skill_names = [
+    "ast-grep-policy"
     "bend-development"
     "caveman-commit"
     "code-style"
