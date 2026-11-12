@@ -1137,17 +1137,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1794432891,
-        "narHash": "sha256-AQVOX8r05npwmOZG7Kk2NlLtrrwFF4h1utAbrD2ib3Y=",
-        "ref": "refs/heads/main",
-        "rev": "17e8d135556e597294f1470b3adb038141abf500",
-        "revCount": 6,
-        "type": "git",
-        "url": "file:///home/ethanthoma/projects/workspace-indicator"
+        "lastModified": 1794437378,
+        "narHash": "sha256-peZQSJnt23fcgq3hgetAAKNLn9tkJ6vlm6axLSRToBU=",
+        "owner": "ethanthoma",
+        "repo": "workspace-indicator",
+        "rev": "8ecae029229fe8d6457fd36e0c27e2253bace591",
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "file:///home/ethanthoma/projects/workspace-indicator"
+        "owner": "ethanthoma",
+        "repo": "workspace-indicator",
+        "type": "github"
       }
     },
     "zen-browser": {

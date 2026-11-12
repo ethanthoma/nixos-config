@@ -52,7 +52,7 @@
     runboard.url = "github:matterstate/runboard";
     jlsblk.url = "github:ethanthoma/jlsblk";
     workspace-indicator = {
-      url = "git+file:///home/ethanthoma/projects/workspace-indicator";
+      url = "github:ethanthoma/workspace-indicator";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     wattkit = {
