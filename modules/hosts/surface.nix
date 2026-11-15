@@ -69,6 +69,13 @@ in
 
           hardware.microsoft-surface.kernelVersion = "stable";
 
+          nix.settings = {
+            keep-derivations = lib.mkForce false;
+            keep-outputs = lib.mkForce false;
+            min-free = lib.mkForce (10 * 1024 * 1024 * 1024);
+            max-free = lib.mkForce (20 * 1024 * 1024 * 1024);
+          };
+
           systemd.services.surface-buttons = {
             description = "Rebind soc_button_array for Surface volume buttons";
             wantedBy = [ "multi-user.target" ];

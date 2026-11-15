@@ -58,11 +58,9 @@
           cores = 0;
           keep-derivations = true;
           keep-outputs = true;
+          min-free = 1024 * 1024 * 1024;
+          max-free = 1024 * 1024 * 1024;
         };
-        extraOptions = ''
-          min-free = ${toString (1024 * 1024 * 1024)}
-          max-free = ${toString (1024 * 1024 * 1024)}
-        '';
       };
 
       services.speechd.enable = false;
