@@ -69,6 +69,16 @@ in
 
           hardware.microsoft-surface.kernelVersion = "stable";
 
+          zramSwap = {
+            enable = true;
+            memoryPercent = 25;
+            priority = 100;
+          };
+
+          services.udev.extraRules = ''
+            ACTION=="add|change", SUBSYSTEM=="block", KERNEL=="nvme0n1", ATTR{queue/scheduler}="mq-deadline"
+          '';
+
           nix.settings = {
             keep-derivations = lib.mkForce false;
             keep-outputs = lib.mkForce false;
