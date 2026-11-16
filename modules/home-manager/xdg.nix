@@ -16,6 +16,13 @@
     in
     {
       xdg.enable = true;
+      xdg.userDirs = {
+        enable = true;
+        createDirectories = false;
+        # XDG uses the home directory to indicate a disabled special directory.
+        desktop = home;
+        projects = "${home}/projects";
+      };
 
       home.sessionVariables = {
         # Rust
