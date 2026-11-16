@@ -112,7 +112,12 @@
       };
 
       programs.bash.historyFile = "${stateHome}/bash/history";
-      programs.bash.initExtra = lib.mkAfter "export HISTFILE";
+      programs.bash.initExtra = lib.mkAfter ''
+        export HISTFILE
+        # Refresh relocated paths even when the terminal inherits an old session.
+        export CLAUDE_CONFIG_DIR="${configHome}/claude"
+        export PULSE_COOKIE="${configHome}/pulse/cookie"
+      '';
 
       xdg.configFile."wget/wgetrc".text = ''
         hsts-file = ${cacheHome}/wget/hsts
