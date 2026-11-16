@@ -168,6 +168,7 @@
           fi
         fi
 
+        move "${home}/.certs"             "${dataHome}/certificates"
         move "${home}/.cargo"             "${dataHome}/cargo"
         move "${home}/.rustup"            "${dataHome}/rustup"
         move "${home}/go"                 "${dataHome}/go"
