@@ -66,6 +66,9 @@
         CUDA_CACHE_PATH = "${cacheHome}/nv/ComputeCache";
         __GL_SHADER_DISK_CACHE_PATH = "${cacheHome}/nv/GLCache";
 
+        # Claude Code
+        CLAUDE_CONFIG_DIR = "${configHome}/claude";
+
         # OpenAI Codex CLI
         CODEX_HOME = "${configHome}/codex";
 
@@ -87,6 +90,7 @@
       systemd.user.sessionVariables = {
         CARGO_HOME = "${dataHome}/cargo";
         RUSTUP_HOME = "${dataHome}/rustup";
+        CLAUDE_CONFIG_DIR = "${configHome}/claude";
       };
 
       programs.bash.historyFile = "${stateHome}/bash/history";
@@ -117,13 +121,15 @@
       # Migrate existing dotfile locations on switch. Only moves when the
       # destination does not exist, so re-runs are idempotent and data is
       # never overwritten.
-      home.activation.migrateXdg = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      home.activation.migrateXdg = lib.hm.dag.entryBetween [ "linkGeneration" ] [ "writeBoundary" ] ''
         move() {
           local src="$1" dst="$2"
           if [ -e "$src" ] && [ ! -e "$dst" ]; then
             $DRY_RUN_CMD mkdir -p "$(dirname "$dst")"
             $DRY_RUN_CMD mv "$src" "$dst"
             echo "xdg: migrated $src -> $dst"
+          elif [ -e "$src" ] && [ -e "$dst" ]; then
+            echo "xdg: left $src untouched; $dst already exists (manual reconciliation needed)" >&2
           fi
         }
 
@@ -152,6 +158,8 @@
         move "${home}/.pulumi"            "${dataHome}/pulumi"
         move "${home}/.keras"             "${dataHome}/keras"
         move "${home}/.codex"             "${configHome}/codex"
+        move "${home}/.claude"            "${configHome}/claude"
+        move "${home}/.claude.json"       "${configHome}/claude/.claude.json"
         move "${home}/.triton"            "${cacheHome}/triton"
         move "${home}/.nv"                "${cacheHome}/nv"
         move "${home}/.imageio"           "${dataHome}/imageio"
