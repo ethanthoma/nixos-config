@@ -18,6 +18,7 @@
       xdg.enable = true;
       xdg.userDirs = {
         enable = true;
+        setSessionVariables = false;
         createDirectories = false;
         # XDG uses the home directory to indicate a disabled special directory.
         desktop = home;
