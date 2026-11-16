@@ -16,6 +16,7 @@ let
     "minimize-complexity"
     "performance-engineering"
     "plain-technical-prose"
+    "structural-reasoning"
     "webgpu-rendering"
   ];
 in
