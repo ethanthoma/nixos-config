@@ -77,6 +77,9 @@
         # OpenAI Codex CLI
         CODEX_HOME = "${configHome}/codex";
 
+        # libpulse clients, including applications launched outside a shell.
+        PULSE_COOKIE = "${configHome}/pulse/cookie";
+
         # libX11 compiled-compose cache (default ~/.compose-cache)
         XCOMPOSECACHE = "${cacheHome}/compose";
 
@@ -96,6 +99,7 @@
         CARGO_HOME = "${dataHome}/cargo";
         RUSTUP_HOME = "${dataHome}/rustup";
         CLAUDE_CONFIG_DIR = "${configHome}/claude";
+        PULSE_COOKIE = "${configHome}/pulse/cookie";
       };
 
       programs.bash.historyFile = "${stateHome}/bash/history";
@@ -168,6 +172,7 @@
           fi
         fi
 
+        move "${home}/.pulse-cookie"      "${configHome}/pulse/cookie"
         move "${home}/.certs"             "${dataHome}/certificates"
         move "${home}/.cargo"             "${dataHome}/cargo"
         move "${home}/.rustup"            "${dataHome}/rustup"
