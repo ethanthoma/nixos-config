@@ -32,6 +32,10 @@ in
         configPath = ".local/share/skills";
       };
 
+  home.file = lib.genAttrs (map (name: ".claude/skills/${name}") skill_names) (path: {
+    source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.local/share/skills/${builtins.baseNameOf path}";
+  });
+
   xdg.configFile = lib.mkMerge (
     map (
       name:
