@@ -194,7 +194,6 @@ in
     environment.PATH = lib.mkForce (
       lib.concatStringsSep ":" [
         "/run/wrappers/bin"
-        "${home}/.nix-profile/bin"
         "${home}/.local/state/nix/profile/bin"
         "/etc/profiles/per-user/${username}/bin"
         "/nix/var/nix/profiles/default/bin"

@@ -1,7 +1,7 @@
 { inputs, ... }:
 {
   flake.nixosModules.common =
-    { pkgs, ... }:
+    { pkgs, lib, ... }:
     let
       zen_packages = inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system};
       zen_unwrapped = zen_packages.zen-browser-unwrapped;
@@ -68,6 +68,15 @@
       documentation.nixos.enable = false;
 
       environment.defaultPackages = [ ];
+
+      # Replace the default list to omit the legacy ~/.nix-profile location.
+      environment.profiles = lib.mkForce [
+        "\${XDG_STATE_HOME}/nix/profile"
+        "$HOME/.local/state/nix/profile"
+        "/etc/profiles/per-user/$USER"
+        "/nix/var/nix/profiles/default"
+        "/run/current-system/sw"
+      ];
 
       environment.variables.QT_BEARER_POLL_TIMEOUT = "-1";
 
