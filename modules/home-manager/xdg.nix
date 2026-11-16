@@ -1,7 +1,12 @@
 { ... }:
 {
   flake.homeManagerModules.xdg =
-    { config, lib, ... }:
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
     let
       home = config.home.homeDirectory;
       dataHome = "${home}/.local/share";
@@ -133,6 +138,36 @@
           fi
         }
 
+        # Preserve both trees when reconciling a previous partial Claude migration.
+        # Never move a live session's files: it could recreate the legacy paths.
+        if ${pkgs.procps}/bin/pgrep -u "$(${pkgs.coreutils}/bin/id -u)" -x 'claude|.claude-unwrapp' >/dev/null; then
+          echo "xdg: close Claude Code and activate again to migrate its legacy files" >&2
+        else
+          if [ -d "${home}/.claude" ] && [ -d "${configHome}/claude" ]; then
+            if [ -z "''${DRY_RUN_CMD:-}" ]; then
+              mkdir -p "${stateHome}/xdg-migration"
+              backup=$(mktemp -d "${stateHome}/xdg-migration/claude.XXXXXXXX")
+              chmod 700 "$backup"
+              ${pkgs.rsync}/bin/rsync -a --update --backup \
+                --backup-dir="$backup/overwritten" \
+                "${home}/.claude/" "${configHome}/claude/"
+              mv "${home}/.claude" "$backup/legacy"
+              if [ -f "${home}/.claude.json" ]; then
+                if [ -e "${configHome}/claude/.claude.json" ]; then
+                  cp -a "${configHome}/claude/.claude.json" "$backup/config.claude.json"
+                fi
+                mv "${home}/.claude.json" "${configHome}/claude/.claude.json"
+              fi
+              echo "xdg: reconciled Claude config; originals preserved in $backup"
+            else
+              echo "xdg: would reconcile Claude config with a private backup"
+            fi
+          else
+            move "${home}/.claude" "${configHome}/claude"
+            move "${home}/.claude.json" "${configHome}/claude/.claude.json"
+          fi
+        fi
+
         move "${home}/.cargo"             "${dataHome}/cargo"
         move "${home}/.rustup"            "${dataHome}/rustup"
         move "${home}/go"                 "${dataHome}/go"
@@ -144,6 +179,7 @@
         move "${home}/.android"           "${dataHome}/android"
         move "${home}/.npm"               "${cacheHome}/npm"
 
+        move "${home}/.gmailctl"          "${configHome}/gmailctl"
         move "${home}/.aws"               "${configHome}/aws"
         move "${home}/.azure"             "${configHome}/azure"
         move "${home}/.docker"            "${configHome}/docker"
@@ -158,8 +194,6 @@
         move "${home}/.pulumi"            "${dataHome}/pulumi"
         move "${home}/.keras"             "${dataHome}/keras"
         move "${home}/.codex"             "${configHome}/codex"
-        move "${home}/.claude"            "${configHome}/claude"
-        move "${home}/.claude.json"       "${configHome}/claude/.claude.json"
         move "${home}/.triton"            "${cacheHome}/triton"
         move "${home}/.nv"                "${cacheHome}/nv"
         move "${home}/.imageio"           "${dataHome}/imageio"
