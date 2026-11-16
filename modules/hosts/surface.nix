@@ -133,7 +133,6 @@ in
       inputs.bootvine.nixosModules.default
       self.nixosModules.remote-builder-client
       self.nixosModules.sigrok
-      self.nixosModules.steam
       self.nixosModules.yubikey
       self.nixosModules.yubikey-pam
       self.nixosModules.syncthing

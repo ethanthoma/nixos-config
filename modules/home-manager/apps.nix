@@ -4,6 +4,7 @@
     {
       config,
       lib,
+      osConfig,
       pkgs,
       ...
     }:
@@ -75,10 +76,12 @@
 
         # games
         pkgs.prismlauncher
-        inputs.r2modman.legacyPackages.${pkgs.stdenv.hostPlatform.system}.r2modman
 
         # backup
         pkgs.rclone
+      ]
+      ++ lib.optionals osConfig.programs.steam.enable [
+        inputs.r2modman.legacyPackages.${pkgs.stdenv.hostPlatform.system}.r2modman
       ];
 
       home.activation.hatchzipSettings = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
@@ -132,7 +135,6 @@
           "x-scheme-handler/codex" = [ "chatgpt.desktop" ];
           "x-scheme-handler/http" = [ "zen.desktop" ];
           "x-scheme-handler/https" = [ "zen.desktop" ];
-          "x-scheme-handler/ror2mm" = [ "r2modman.desktop" ];
           "x-scheme-handler/unknown" = [ "helium.desktop" ];
           "video/mp4" = [ "mpv.desktop" ];
           "video/mpeg" = [ "mpv.desktop" ];
@@ -143,6 +145,9 @@
           "video/x-matroska" = [ "mpv.desktop" ];
           "video/x-msvideo" = [ "mpv.desktop" ];
           "video/x-ms-wmv" = [ "mpv.desktop" ];
+        }
+        // lib.optionalAttrs osConfig.programs.steam.enable {
+          "x-scheme-handler/ror2mm" = [ "r2modman.desktop" ];
         };
         associations.added = {
           "application/x-extension-htm" = [ "userapp-Zen-FHKEL3.desktop" ];
