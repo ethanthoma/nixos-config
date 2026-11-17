@@ -818,11 +818,11 @@
     "pi-goal": {
       "flake": false,
       "locked": {
-        "lastModified": 1794950518,
-        "narHash": "sha256-5m3D8o09Deah8utE7bHPooh1rAVFHVf3IewsgR/WjpI=",
+        "lastModified": 1794952089,
+        "narHash": "sha256-CQaMhzw+btYreqv+uZdXz3FHThoGOj1ztdDlAlHB8N8=",
         "owner": "ethanthoma",
         "repo": "pi-goal",
-        "rev": "12171038210c32f98f1c46b20bdbefc9809893de",
+        "rev": "820c0965836f8603843bbf303b714126d3822747",
         "type": "github"
       },
       "original": {
