@@ -27,6 +27,9 @@
       };
 
       home.sessionVariables = {
+        # Skip Bend's update check, which otherwise creates ~/.bend/check.json.
+        BEND_NO_TELEMETRY = "1";
+
         # Rust
         CARGO_HOME = "${dataHome}/cargo";
         RUSTUP_HOME = "${dataHome}/rustup";
@@ -109,6 +112,7 @@
         RUSTUP_HOME = "${dataHome}/rustup";
         CLAUDE_CONFIG_DIR = "${configHome}/claude";
         PULSE_COOKIE = "${configHome}/pulse/cookie";
+        BEND_NO_TELEMETRY = "1";
       };
 
       programs.bash.historyFile = "${stateHome}/bash/history";
@@ -117,6 +121,7 @@
         # Refresh relocated paths even when the terminal inherits an old session.
         export CLAUDE_CONFIG_DIR="${configHome}/claude"
         export PULSE_COOKIE="${configHome}/pulse/cookie"
+        export BEND_NO_TELEMETRY=1
       '';
 
       xdg.configFile."wget/wgetrc".text = ''
