@@ -1,7 +1,12 @@
 { inputs, ... }:
 {
   flake.homeManagerModules.pi =
-    { config, pkgs, ... }:
+    {
+      config,
+      pkgs,
+      lib,
+      ...
+    }:
     let
       system = pkgs.stdenv.hostPlatform.system;
       piPackage = inputs.pi.packages.${system}.default.overrideAttrs (old: {
@@ -21,6 +26,27 @@
     in
     {
       home.packages = [ piPackage ];
+
+      # Pi writes runtime state here, so merge defaults instead of linking a read-only file.
+      home.activation.piSettings = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        settings=${lib.escapeShellArg "${config.xdg.configHome}/pi/settings.json"}
+        if [ -z "''${DRY_RUN_CMD:-}" ]; then
+          mkdir -p "$(dirname "$settings")"
+          temporary=$(mktemp "$settings.XXXXXX")
+          if ${pkgs.jq}/bin/jq --slurp '
+            (.[0] // {}) + {
+              defaultProvider: "openai",
+              defaultModel: "gpt-6.2-sol",
+              defaultThinkingLevel: "low"
+            }
+          ' "$([ -f "$settings" ] && printf '%s' "$settings" || printf /dev/null)" > "$temporary"; then
+            mv "$temporary" "$settings"
+          else
+            rm -f "$temporary"
+            exit 1
+          fi
+        fi
+      '';
 
       xdg.configFile."pi/extensions/pi-goal".source = inputs.pi-goal;
 
