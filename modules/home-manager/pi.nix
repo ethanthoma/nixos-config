@@ -37,7 +37,8 @@
             (.[0] // {}) + {
               defaultProvider: "openai",
               defaultModel: "gpt-6.2-sol",
-              defaultThinkingLevel: "low"
+              defaultThinkingLevel: "low",
+              defaultTools: ["+codemode"]
             }
           ' "$([ -f "$settings" ] && printf '%s' "$settings" || printf /dev/null)" > "$temporary"; then
             mv "$temporary" "$settings"
