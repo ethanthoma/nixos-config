@@ -815,6 +815,22 @@
         "type": "github"
       }
     },
+    "pi-goal": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1794945805,
+        "narHash": "sha256-P91gLMxTYHxYz6HibDk+SK1fq0H0zcdlK0ks7mYfA1A=",
+        "owner": "ethanthoma",
+        "repo": "pi-goal",
+        "rev": "8929f859b8d07626c29c3c625bf59483181975de",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ethanthoma",
+        "repo": "pi-goal",
+        "type": "github"
+      }
+    },
     "r2modman": {
       "locked": {
         "lastModified": 1793466162,
@@ -893,6 +909,7 @@
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_5",
         "pi": "pi",
+        "pi-goal": "pi-goal",
         "r2modman": "r2modman",
         "relay": "relay",
         "relay-worker": "relay-worker",

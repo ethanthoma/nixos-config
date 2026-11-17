@@ -22,6 +22,8 @@
     {
       home.packages = [ piPackage ];
 
+      xdg.configFile."pi/extensions/pi-goal".source = inputs.pi-goal;
+
       home.sessionVariables = {
         PI_CODING_AGENT_DIR = "${config.xdg.configHome}/pi";
       };
