@@ -22,8 +22,9 @@
         createDirectories = false;
         # XDG uses the home directory to indicate a disabled special directory.
         desktop = home;
+        documents = "${home}/documents";
         projects = "${home}/projects";
-        pictures = "${home}/Documents/images";
+        pictures = "${home}/documents/images";
       };
 
       home.sessionVariables = {
