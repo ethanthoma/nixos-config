@@ -207,39 +207,8 @@ in
       self.nixosModules.sigrok
       self.nixosModules.sops
       self.nixosModules.user
-      self.nixosModules.relay
-      (import ./_desktop/relay-worker.nix { inherit inputs username; })
-      (import ./_desktop/relay-project.nix { inherit inputs username; })
-      ({ config, ... }: {
+      {
         networking.hostName = hostname;
-
-        # Root is wiped every boot, so the backend tokens stay in /home, where
-        # atlas's copies of them were first created.
-        services.relay-host = {
-          address = "100.119.138.102";
-          keepAwake = true;
-          codex.tokenFile = "/home/${username}/.config/codex/app-server-web.env";
-          pi = {
-            enable = true;
-            package = inputs.pi.packages.${system}.default;
-            agentDir = "/home/${username}/.config/pi";
-            tokenFile = config.sops.templates."relay-pi.env".path;
-            tokenEnvironment = "PI_TOKEN";
-          };
-        };
-
-        services.relay-local = {
-          enable = true;
-          address = "100.119.138.102";
-          apps.cad-viewer = {
-            localPort = 8767;
-            port = 48767;
-          };
-          apps.dev-preview = {
-            localPort = 4242;
-            port = 44242;
-          };
-        };
 
         powerManagement.cpuFreqGovernor = "performance";
 
@@ -253,7 +222,7 @@ in
           ];
           hashedPasswordFile = "/persist/passwords/${username}";
         };
-      })
+      }
     ];
   };
 }
