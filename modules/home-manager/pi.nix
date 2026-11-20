@@ -30,14 +30,9 @@
 
       xdg.configFile."pi/extensions/pi-goal".source = inputs.pi-goal;
       xdg.configFile."pi/models.json".text = builtins.toJSON {
-        providers.google-vertex.models = [
-          {
-            id = "gemini-4-neon";
-            name = "Gemini 4 Neon";
-            api = "google-vertex";
-            contextWindow = 256000;
-          }
-        ];
+        providers.google-vertex.modelOverrides."gemini-4-neon" = {
+          contextWindow = 256000;
+        };
         providers.morph = {
           name = "Morph";
           baseUrl = "https://api.morphllm.com/v1";
