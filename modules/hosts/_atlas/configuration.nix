@@ -48,8 +48,6 @@ in
     ./tailnet.nix
     ./minecraft.nix
     ./minecraft-terra.nix
-    ./relay.nix
-    ./relay-worker.nix
     ./training-queue.nix
     ./pueue.nix
     ./runboard.nix

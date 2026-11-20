@@ -138,16 +138,12 @@ in
       self.nixosModules.syncthing
       self.nixosModules.sops
       self.nixosModules.user
-      self.nixosModules.relay
       inputs.nixos-hardware.nixosModules.microsoft-surface-pro-9
       {
         networking.hostName = hostname;
         services.wattkit.enable = true;
         services.bootvine.enable = true;
 
-        # No keepAwake: a laptop should sleep, and atlas shows it offline meanwhile.
-        # Its tokens are created in /var/lib/codex-web on first start.
-        services.relay-host.address = "100.111.116.43";
       }
     ];
   };
