@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, self, ... }:
 {
   flake.homeManagerModules.pi =
     {
@@ -25,29 +25,8 @@
       });
     in
     {
+      imports = [ self.homeManagerModules.pi-settings ];
       home.packages = [ piPackage ];
-
-      # Pi writes runtime state here, so merge defaults instead of linking a read-only file.
-      home.activation.piSettings = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        settings=${lib.escapeShellArg "${config.xdg.configHome}/pi/settings.json"}
-        if [ -z "''${DRY_RUN_CMD:-}" ]; then
-          mkdir -p "$(dirname "$settings")"
-          temporary=$(mktemp "$settings.XXXXXX")
-          if ${pkgs.jq}/bin/jq --slurp '
-            (.[0] // {}) + {
-              defaultProvider: "openai",
-              defaultModel: "gpt-6.1-sol",
-              defaultThinkingLevel: "low",
-              defaultTools: ["+codemode"]
-            } | .compaction.enabled = true
-          ' "$([ -f "$settings" ] && printf '%s' "$settings" || printf /dev/null)" > "$temporary"; then
-            mv "$temporary" "$settings"
-          else
-            rm -f "$temporary"
-            exit 1
-          fi
-        fi
-      '';
 
       xdg.configFile."pi/extensions/pi-goal".source = inputs.pi-goal;
       xdg.configFile."pi/models.json".text = builtins.toJSON {
@@ -108,5 +87,36 @@
         GOOGLE_CLOUD_LOCATION = "global";
         PI_CODING_AGENT_DIR = "${config.xdg.configHome}/pi";
       };
+    };
+
+  flake.homeManagerModules.pi-settings =
+    {
+      config,
+      pkgs,
+      lib,
+      ...
+    }:
+    {
+      # Pi writes runtime state here, so merge defaults instead of linking a read-only file.
+      home.activation.piSettings = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        settings=${lib.escapeShellArg "${config.xdg.configHome}/pi/settings.json"}
+        if [ -z "''${DRY_RUN_CMD:-}" ]; then
+          mkdir -p "$(dirname "$settings")"
+          temporary=$(mktemp "$settings.XXXXXX")
+          if ${pkgs.jq}/bin/jq --slurp '
+            (.[0] // {}) + {
+              defaultProvider: "openai",
+              defaultModel: "gpt-6.1-sol",
+              defaultThinkingLevel: "low",
+              defaultTools: ["+codemode"]
+            } | .compaction.enabled = true
+          ' "$([ -f "$settings" ] && printf '%s' "$settings" || printf /dev/null)" > "$temporary"; then
+            mv "$temporary" "$settings"
+          else
+            rm -f "$temporary"
+            exit 1
+          fi
+        fi
+      '';
     };
 }

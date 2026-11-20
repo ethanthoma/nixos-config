@@ -33,6 +33,7 @@ in
         home-manager.useUserPackages = true;
         home-manager.users.${username}.imports = [
           self.homeManagerModules.cli
+          self.homeManagerModules.pi-settings
           ./_atlas/home.nix
         ];
         home-manager.extraSpecialArgs = { inherit username inputs; };
