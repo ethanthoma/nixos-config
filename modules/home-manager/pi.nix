@@ -39,7 +39,7 @@
               defaultModel: "gpt-6.2-sol",
               defaultThinkingLevel: "low",
               defaultTools: ["+codemode"]
-            }
+            } | .compaction.enabled = true
           ' "$([ -f "$settings" ] && printf '%s' "$settings" || printf /dev/null)" > "$temporary"; then
             mv "$temporary" "$settings"
           else
