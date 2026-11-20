@@ -20,6 +20,8 @@
       "matterstate"
       "nixos"
     ];
+    extraEnvironment.CARGO_INCREMENTAL = "0";
+    extraEnvironment.CARGO_TARGET_DIR = "/var/cache/matterstate-runner/cargo-target";
     extraEnvironment.NIX_PATH = "nixpkgs=${pkgs.path}";
     extraEnvironment.DOTNET_ROOT = "${pkgs.dotnet-sdk_8}/share/dotnet";
     extraEnvironment.NIX_CONFIG = ''
@@ -38,6 +40,8 @@
       gh
     ];
     serviceOverrides = {
+      CacheDirectory = "matterstate-runner";
+      CacheDirectoryMode = "0700";
       ExecStart = lib.mkForce "${pkgs.github-runner}/lib/github-runner/Runner.Listener run --startuptype service";
       CPUQuota = "200%";
       MemoryHigh = "4G";
