@@ -51,7 +51,14 @@
 
       xdg.configFile."pi/extensions/pi-goal".source = inputs.pi-goal;
       xdg.configFile."pi/models.json".text = builtins.toJSON {
-        providers.google-vertex.modelOverrides.gemini-4-neon.contextWindow = 256000;
+        providers.google-vertex.models = [
+          {
+            id = "gemini-4-neon";
+            name = "Gemini 4 Neon";
+            api = "google-vertex";
+            contextWindow = 256000;
+          }
+        ];
         providers.morph = {
           name = "Morph";
           baseUrl = "https://api.morphllm.com/v1";
@@ -97,6 +104,8 @@
       };
 
       home.sessionVariables = {
+        GOOGLE_CLOUD_PROJECT = "pi-vertex-515304";
+        GOOGLE_CLOUD_LOCATION = "global";
         PI_CODING_AGENT_DIR = "${config.xdg.configHome}/pi";
       };
     };
