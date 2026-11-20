@@ -50,6 +50,9 @@
       '';
 
       xdg.configFile."pi/extensions/pi-goal".source = inputs.pi-goal;
+      xdg.configFile."pi/models.json".text = builtins.toJSON {
+        providers.google-vertex.modelOverrides.gemini-4-neon.contextWindow = 256000;
+      };
 
       home.sessionVariables = {
         PI_CODING_AGENT_DIR = "${config.xdg.configHome}/pi";
