@@ -36,7 +36,7 @@
           if ${pkgs.jq}/bin/jq --slurp '
             (.[0] // {}) + {
               defaultProvider: "openai",
-              defaultModel: "gpt-6.2-sol",
+              defaultModel: "gpt-6.1-sol",
               defaultThinkingLevel: "low",
               defaultTools: ["+codemode"]
             } | .compaction.enabled = true
