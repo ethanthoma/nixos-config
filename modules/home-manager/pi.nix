@@ -28,6 +28,7 @@
       imports = [ self.homeManagerModules.pi-settings ];
       home.packages = [ piPackage ];
 
+      xdg.configFile."pi/AGENTS.md".source = ./AGENTS.md;
       xdg.configFile."pi/extensions/pi-goal".source = inputs.pi-goal;
       xdg.configFile."pi/models.json".text = builtins.toJSON {
         providers.google-vertex.modelOverrides."gemini-4-neon" = {

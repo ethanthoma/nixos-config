@@ -34,6 +34,7 @@ in
   programs.home-manager.enable = true;
 
   xdg.configFile."codex/AGENTS.md".source = ../../home-manager/AGENTS.md;
+  xdg.configFile."pi/AGENTS.md".source = ../../home-manager/AGENTS.md;
   home.file.".local/bin/pi" = {
     source = "${pi}/bin/pi";
     force = true;
