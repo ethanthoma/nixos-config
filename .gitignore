@@ -6,6 +6,10 @@
 !flake.lock
 !.sops.yaml
 
+# shared ADC documentation
+!docs/
+!docs/google-cloud.md
+
 # secrets
 !secrets/
 !secrets/**/*

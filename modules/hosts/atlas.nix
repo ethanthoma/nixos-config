@@ -26,7 +26,7 @@ in
       inputs.bootvine.nixosModules.default
       inputs.holyfurries.nixosModules.atlas
       ./_atlas/configuration.nix
-      inputs.self.nixosModules.sops
+      self.nixosModules.google-cloud
       inputs.atlas-home-manager.nixosModules.home-manager
       {
         home-manager.useGlobalPkgs = true;

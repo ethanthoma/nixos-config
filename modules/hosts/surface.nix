@@ -136,7 +136,7 @@ in
       self.nixosModules.yubikey
       self.nixosModules.yubikey-pam
       self.nixosModules.syncthing
-      self.nixosModules.sops
+      self.nixosModules.google-cloud
       self.nixosModules.user
       inputs.nixos-hardware.nixosModules.microsoft-surface-pro-9
       {

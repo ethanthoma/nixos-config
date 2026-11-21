@@ -205,7 +205,7 @@ in
       self.nixosModules.syncthing
       self.nixosModules.probe-rs
       self.nixosModules.sigrok
-      self.nixosModules.sops
+      self.nixosModules.google-cloud
       self.nixosModules.user
       {
         networking.hostName = hostname;
