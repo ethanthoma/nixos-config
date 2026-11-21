@@ -48,7 +48,6 @@ in
     ./tailscale.nix
     ./tailnet.nix
     ./minecraft.nix
-    ./minecraft-terra.nix
     ./training-queue.nix
     ./pueue.nix
     ./runboard.nix
@@ -57,14 +56,27 @@ in
     ./kernel-cve-2026-98432.nix
   ];
 
-  nix.settings = {
-    experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
+  nix = {
+    gc = {
+      automatic = true;
+      dates = "daily";
+      options = "--delete-older-than 7d";
+    };
+    optimise.automatic = true;
+    settings = {
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
+    };
   };
 
-  boot.loader.systemd-boot.enable = true;
+  services.journald.settings.Journal.SystemMaxUse = "500M";
+
+  boot.loader.systemd-boot = {
+    enable = true;
+    configurationLimit = 10;
+  };
   boot.loader.efi.canTouchEfiVariables = true;
 
   users.users = {
