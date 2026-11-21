@@ -66,9 +66,6 @@
         pkgs.mpv
         pkgs.kdePackages.dolphin
 
-        # meetings
-        pkgs.zoom-us
-
         # audio
         pkgs.spotify
         pkgs.audacity
@@ -80,6 +77,7 @@
         # backup
         pkgs.rclone
       ]
+      ++ lib.optional (osConfig.networking.hostName == "desktop") pkgs.zoom-us
       ++ lib.optionals osConfig.programs.steam.enable [
         inputs.r2modman.legacyPackages.${pkgs.stdenv.hostPlatform.system}.r2modman
       ];
