@@ -106,7 +106,6 @@ in
     wantedBy = [ "multi-user.target" ];
     after = [
       "network-online.target"
-      "mlflow.service"
     ];
     wants = [ "network-online.target" ];
     # A rebuild must never kill hours of training.

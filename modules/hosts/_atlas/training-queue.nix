@@ -9,14 +9,8 @@ in
   systemd.services.training-queue = {
     description = "Typed-decisions Qwen training queue";
     wantedBy = [ "multi-user.target" ];
-    after = [
-      "network-online.target"
-      "mlflow.service"
-    ];
-    wants = [
-      "network-online.target"
-      "mlflow.service"
-    ];
+    after = [ "network-online.target" ];
+    wants = [ "network-online.target" ];
     # A rebuild must never kill hours of training; restart it by hand to pick up queue changes.
     restartIfChanged = false;
     unitConfig = {
