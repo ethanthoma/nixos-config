@@ -83,8 +83,6 @@
       };
 
       home.sessionVariables = {
-        GOOGLE_CLOUD_PROJECT = "pi-vertex-515304";
-        GOOGLE_CLOUD_LOCATION = "global";
         PI_CODING_AGENT_DIR = "${config.xdg.configHome}/pi";
       };
     };
