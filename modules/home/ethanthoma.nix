@@ -10,16 +10,17 @@ let
 in
 {
   flake.homeConfigurations."${username}@${system}" =
-    inputs.home-manager.lib.homeManagerConfiguration {
-      inherit pkgs;
-      lib = inputs.nixpkgs.lib // inputs.home-manager.lib;
-      modules = [
-        self.homeManagerModules.ethanthoma
-        {
-          home.packages = [
-            inputs.rose-pine-hyprcursor.packages.${system}.default
-          ];
-        }
-      ];
-    };
+    inputs.home-manager.lib.homeManagerConfiguration
+      {
+        inherit pkgs;
+        lib = inputs.nixpkgs.lib // inputs.home-manager.lib;
+        modules = [
+          self.homeManagerModules.ethanthoma
+          {
+            home.packages = [
+              inputs.rose-pine-hyprcursor.packages.${system}.default
+            ];
+          }
+        ];
+      };
 }

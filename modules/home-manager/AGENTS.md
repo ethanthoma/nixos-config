@@ -1,5 +1,15 @@
 # Global Agent Instructions
 
+## Precedence
+
+When conventions conflict:
+
+1. Explicit instructions for the current task.
+2. Repository-specific `AGENTS.md` and established project conventions.
+3. This global `AGENTS.md`.
+4. Relevant skills.
+5. Applicable external style guides.
+
 ## Git
 
 - Commit completed changes by default; stage only your own work.
@@ -28,7 +38,7 @@ Nix system. Nothing is on `PATH` by default.
 
 ## Languages
 
-All code we write is in one of these:
+For new code and personal projects, write in one of these:
 
 - **Bend 2**: logic whose rules must hold, and parallel CPU/GPU compute.
 - **Rust**: services, CLIs, anything long-running or close to the OS.
@@ -38,20 +48,21 @@ All code we write is in one of these:
 - **Python with tinygrad (master branch)**: ML only.
 
 No new JavaScript, TypeScript, Go, or bash beyond a throwaway script. A browser
-page is the one place JavaScript may stay. Port existing code in other
-languages, smallest and most stable piece first.
+page is the one place JavaScript may stay. In existing repositories using other
+languages, follow the repository's established language unless porting is
+requested; when porting, move the smallest and most stable piece first.
 
 ## Project Tooling
 
 These defaults apply without a separate request. Skills explain how to carry
 out the work; they do not decide whether it is required.
 
-- At the start of project implementation work, check for a root `flake.nix`
-  and `flake.lock`. Create them if missing, and bring existing flakes into
-  line with the exact `nixpkgs`, `flake-parts`, and `devshell` inputs and
-  follows relationships in `ast-grep-policy/assets/project/flake.nix`. Keep
-  existing outputs and avoid unrelated lockfile churn. Do not modify files
-  during read-only tasks.
+- For new projects or when setting up project tooling, ensure a root `flake.nix`
+  and `flake.lock` exist and align their `nixpkgs`, `flake-parts`, and
+  `devshell` inputs and follows relationships with
+  `~/.local/share/skills/ast-grep-policy/assets/project/flake.nix`. Keep
+  existing outputs and avoid unrelated lockfile churn. Do not churn flakes on
+  unrelated small fixes, third-party repositories, or read-only tasks.
 - Pin formatters, native linters, and ast-grep in the dev shell. Run the same
   non-mutating checks locally and in required CI; fail on formatting drift,
   lint violations, and broken ast-grep rule fixtures. Use `ast-grep-policy`
@@ -65,11 +76,15 @@ out the work; they do not decide whether it is required.
   violations introduced by the change and verify the final diff before
   committing. Report anything you could not run and why; do not silently
   skip formatting or substitute a different formatter.
+- Use inverted, default-deny `.gitignore` files (`*` then `!*/`) with narrow
+  allowlist exceptions. Verify new tracked paths with `git check-ignore -v` and
+  `git status --short --ignored`.
 
 ## Code Changes
 
-- No backward compatibility. Update all callers to the new approach.
-- Delete unused code fully. No dead signatures, no deprecation shims.
+- No internal backward compatibility. Update all internal callers and delete
+  unused code, dead signatures, and deprecation shims. Preserve external/public
+  API contracts and serialized formats unless breaking them is requested.
 - Leave changed code coherent and correct. Report unrelated defects rather than
   expanding scope without approval.
 - Refactors must improve readability. Whitespace-only diffs are rejected.
@@ -82,6 +97,14 @@ out the work; they do not decide whether it is required.
   surprisingly large diff as a reason to simplify, not as a line-count target.
   Keep explicit error handling, resource bounds, and readable names.
 
+## Context & Verification
+
+- Locate relevant code with filename and symbol searches before reading whole
+  files; do not reread unchanged files or dump full build logs.
+- Verify against the real artifact (run the feature, check actual output,
+  inspect the diff), not proxies like "it compiles" or self-reports. Start with
+  the narrowest meaningful check, then broaden for cross-cutting changes.
+
 ## Design Goals (in order)
 
 1. **Safety** - correct code that handles errors
@@ -92,10 +115,10 @@ out the work; they do not decide whether it is required.
 
 Prefer small, self-contained components, explicit local behaviour, and minimal
 dependencies. Keep coherent functions together; avoid speculative abstractions.
-Use `minimize-complexity` for detailed design and refactoring guidance,
-`invariant-driven-testing` for assertions, state modelling, and verification,
-`performance-engineering` for optimization, and `bend-development` for Bend
-work.
+Use `structural-reasoning` for detailed design, complexity, and refactoring
+guidance, `invariant-driven-testing` for assertions, state modelling, and
+verification, `performance-engineering` for optimization, and `bend-development`
+for Bend work.
 
 Follow [TigerStyle](https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md)
 and NASA's Power of Ten for direct, bounded control flow. Compose small,
@@ -196,10 +219,3 @@ transitions by sending links/controls; the client follows them.
 
 - A JSON-over-HTTP RPC endpoint is not REST. Don't call it REST.
 - Binary protocols are fine where they fit; just don't confuse them for REST.
-
-## When to Break These Rules
-
-They optimize for prototyping, fast iteration, and horizontal reuse. Relax them
-for tightly-coupled systems, performance-critical paths where abstraction has
-real cost, or where consistency outweighs independence. Even then, maximize
-bacterial DNA inside the eukaryotic backbone.

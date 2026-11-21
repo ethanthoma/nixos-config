@@ -3,14 +3,26 @@ let
   dir = "/var/lib/minecraft-astral";
   jre = pkgs.temurin-jre-bin-17;
   aikarFlags = [
-    "-XX:+UseG1GC" "-XX:+ParallelRefProcEnabled" "-XX:MaxGCPauseMillis=200"
-    "-XX:+UnlockExperimentalVMOptions" "-XX:+DisableExplicitGC" "-XX:+AlwaysPreTouch"
-    "-XX:G1NewSizePercent=40" "-XX:G1MaxNewSizePercent=50" "-XX:G1HeapRegionSize=16M"
-    "-XX:G1ReservePercent=15" "-XX:G1HeapWastePercent=5" "-XX:G1MixedGCCountTarget=4"
-    "-XX:InitiatingHeapOccupancyPercent=20" "-XX:G1MixedGCLiveThresholdPercent=90"
-    "-XX:G1RSetUpdatingPauseTimePercent=5" "-XX:SurvivorRatio=32"
-    "-XX:+PerfDisableSharedMem" "-XX:MaxTenuringThreshold=1"
-    "-Dusing.aikars.flags=https://mcflags.emc.gs" "-Daikars.new.flags=true"
+    "-XX:+UseG1GC"
+    "-XX:+ParallelRefProcEnabled"
+    "-XX:MaxGCPauseMillis=200"
+    "-XX:+UnlockExperimentalVMOptions"
+    "-XX:+DisableExplicitGC"
+    "-XX:+AlwaysPreTouch"
+    "-XX:G1NewSizePercent=40"
+    "-XX:G1MaxNewSizePercent=50"
+    "-XX:G1HeapRegionSize=16M"
+    "-XX:G1ReservePercent=15"
+    "-XX:G1HeapWastePercent=5"
+    "-XX:G1MixedGCCountTarget=4"
+    "-XX:InitiatingHeapOccupancyPercent=20"
+    "-XX:G1MixedGCLiveThresholdPercent=90"
+    "-XX:G1RSetUpdatingPauseTimePercent=5"
+    "-XX:SurvivorRatio=32"
+    "-XX:+PerfDisableSharedMem"
+    "-XX:MaxTenuringThreshold=1"
+    "-Dusing.aikars.flags=https://mcflags.emc.gs"
+    "-Daikars.new.flags=true"
   ];
   mc = pkgs.writeShellScriptBin "mc" ''
     export MCRCON_PASS="$(sudo grep -oP '(?<=^rcon.password=).*' ${dir}/server.properties)"
@@ -25,8 +37,10 @@ in
   };
   users.groups.minecraft = { };
 
-  environment.systemPackages = [ pkgs.mcrcon mc ];
-
+  environment.systemPackages = [
+    pkgs.mcrcon
+    mc
+  ];
 
   sops.defaultSopsFile = ./secrets/secrets.yaml;
   sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
@@ -47,7 +61,10 @@ in
     wantedBy = [ "multi-user.target" ];
     after = [ "network-online.target" ];
     wants = [ "network-online.target" ];
-    path = [ pkgs.curl pkgs.jq ];
+    path = [
+      pkgs.curl
+      pkgs.jq
+    ];
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;

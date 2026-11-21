@@ -8,12 +8,8 @@ let
   skill_names = [
     "ast-grep-policy"
     "bend-development"
-    "caveman-commit"
     "code-style"
-    "context-efficient-development"
-    "gitignore-allowlist"
     "invariant-driven-testing"
-    "minimize-complexity"
     "performance-engineering"
     "plain-technical-prose"
     "structural-reasoning"
