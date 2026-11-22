@@ -23,59 +23,89 @@
               'this.listContainer.addChild(new Text(isSelected ? theme.bg("selectedBg", line) : line, 0, 0));'
         '';
       });
+      matterstateCloudConfig = "${config.xdg.configHome}/gcloud-matterstate";
+      matterstatePi = pkgs.runCommand "pi-matterstate" { nativeBuildInputs = [ pkgs.makeWrapper ]; } ''
+        mkdir -p "$out/bin"
+        makeWrapper ${piPackage}/bin/pi "$out/bin/pi-matterstate" \
+          --unset GOOGLE_CLOUD_API_KEY \
+          --unset GEMINI_API_KEY \
+          --set GOOGLE_APPLICATION_CREDENTIALS ${lib.escapeShellArg "${matterstateCloudConfig}/application_default_credentials.json"} \
+          --set CLOUDSDK_CONFIG ${lib.escapeShellArg matterstateCloudConfig} \
+          --set GOOGLE_CLOUD_PROJECT ultimate-rig-515507-e9 \
+          --set GOOGLE_CLOUD_QUOTA_PROJECT ultimate-rig-515507-e9 \
+          --set GOOGLE_CLOUD_LOCATION global \
+          --set PI_CODING_AGENT_DIR ${lib.escapeShellArg "${config.xdg.configHome}/pi-matterstate"} \
+          --add-flags '--provider google-vertex --model gemini-4-neon'
+        makeWrapper ${pkgs.google-cloud-sdk}/bin/gcloud "$out/bin/gcloud-matterstate" \
+          --unset GOOGLE_APPLICATION_CREDENTIALS \
+          --set CLOUDSDK_CONFIG ${lib.escapeShellArg matterstateCloudConfig} \
+          --set CLOUDSDK_CORE_PROJECT ultimate-rig-515507-e9
+      '';
     in
     {
       imports = [ self.homeManagerModules.pi-settings ];
-      home.packages = [ piPackage ];
+      home.packages = [
+        piPackage
+        matterstatePi
+      ];
 
-      xdg.configFile."pi/AGENTS.md".source = ./AGENTS.md;
-      xdg.configFile."pi/extensions/pi-goal".source = inputs.pi-goal;
-      xdg.configFile."pi/models.json".text = builtins.toJSON {
-        providers.google-vertex.modelOverrides."gemini-4-neon" = {
-          contextWindow = 256000;
+      xdg.configFile = {
+        "pi-matterstate/AGENTS.md".source = ./AGENTS.md;
+        "pi-matterstate/extensions/pi-goal".source = inputs.pi-goal;
+        "pi-matterstate/models.json".text = builtins.toJSON {
+          providers.google-vertex.modelOverrides."gemini-4-neon".contextWindow = 256000;
         };
-        providers.morph = {
-          name = "Morph";
-          baseUrl = "https://api.morphllm.com/v1";
-          api = "openai-completions";
-          apiKey = "!${pkgs.coreutils}/bin/cat ${lib.escapeShellArg "${config.xdg.configHome}/pi/morph-api-key"}";
-          authHeader = true;
-          compat = {
-            maxTokensField = "max_tokens";
-            supportsDeveloperRole = false;
-            supportsReasoningEffort = true;
-            supportsStore = false;
-            thinkingFormat = "openai";
+
+        "pi/AGENTS.md".source = ./AGENTS.md;
+        "pi/extensions/pi-goal".source = inputs.pi-goal;
+        "pi/models.json".text = builtins.toJSON {
+          providers.google-vertex.modelOverrides."gemini-4-neon" = {
+            contextWindow = 256000;
           };
-          models = [
-            {
-              id = "morph-dsv41flash";
-              name = "Morph DeepSeek V4.1 Flash";
-              reasoning = true;
-              input = [
-                "text"
-                "image"
-              ];
-              contextWindow = 1048576;
-              maxTokens = 131072;
-              cost = {
-                input = 0.12;
-                output = 0.8;
-                cacheRead = 0.008;
-                cacheWrite = 0;
-              };
-              thinkingLevelMap = {
-                off = "none";
-                minimal = "minimal";
-                low = "low";
-                medium = "high";
-                high = "high";
-                xhigh = "xhigh";
-                max = "max";
-              };
-            }
-          ];
+          providers.morph = {
+            name = "Morph";
+            baseUrl = "https://api.morphllm.com/v1";
+            api = "openai-completions";
+            apiKey = "!${pkgs.coreutils}/bin/cat ${lib.escapeShellArg "${config.xdg.configHome}/pi/morph-api-key"}";
+            authHeader = true;
+            compat = {
+              maxTokensField = "max_tokens";
+              supportsDeveloperRole = false;
+              supportsReasoningEffort = true;
+              supportsStore = false;
+              thinkingFormat = "openai";
+            };
+            models = [
+              {
+                id = "morph-dsv41flash";
+                name = "Morph DeepSeek V4.1 Flash";
+                reasoning = true;
+                input = [
+                  "text"
+                  "image"
+                ];
+                contextWindow = 1048576;
+                maxTokens = 131072;
+                cost = {
+                  input = 0.12;
+                  output = 0.8;
+                  cacheRead = 0.008;
+                  cacheWrite = 0;
+                };
+                thinkingLevelMap = {
+                  off = "none";
+                  minimal = "minimal";
+                  low = "low";
+                  medium = "high";
+                  high = "high";
+                  xhigh = "xhigh";
+                  max = "max";
+                };
+              }
+            ];
+          };
         };
+
       };
 
       home.sessionVariables = {

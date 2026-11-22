@@ -41,3 +41,26 @@ updating SOPS. This is one shared refresh credential: revoking it affects all
 three devices. SOPS distributes a frozen copy, not changes made by gcloud later.
 Existing unmanaged ADC files are not deleted by this module. Once each host is
 verified, they can be removed if no other workflow needs them.
+
+## Matter State Research
+
+`pi-matterstate` uses project `ultimate-rig-515507-e9`, location `global`, and
+model `gemini-4-neon`. Its Pi state lives in `~/.config/pi-matterstate` so stored
+credentials and sessions from the default Pi profile cannot override this
+company's configuration. The existing `pi` command and SOPS credential remain
+unchanged.
+
+Authenticate separately on each device using a Matter State account with access
+to the project:
+
+```console
+gcloud-matterstate auth application-default login
+gcloud-matterstate auth application-default set-quota-project ultimate-rig-515507-e9
+pi-matterstate
+```
+
+`gcloud-matterstate` stores its configuration and ADC in
+`~/.config/gcloud-matterstate`. The launcher explicitly selects that ADC file and
+clears inherited Google API keys. Missing credentials fail instead of falling
+back to the other company's credentials. These local credentials are not stored
+in Git, the Nix store, or the existing shared SOPS secret.
