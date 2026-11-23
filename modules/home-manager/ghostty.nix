@@ -47,7 +47,7 @@ in
           gtk-tabs-location = hidden
 
           keybind = unconsumed:ctrl+shift+c=copy_to_clipboard
-          keybind = unconsumed:ctrl+v=paste_from_clipboard
+          keybind = ctrl+shift+v=paste_from_clipboard
           keybind = ctrl+shift+r=reload_config
 
           font-family = MonaspiceNe Nerd Font Mono
