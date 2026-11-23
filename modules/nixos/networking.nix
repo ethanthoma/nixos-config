@@ -7,6 +7,10 @@
         networkmanager = {
           enable = true;
           wifi.backend = "iwd";
+          insertNameservers = [
+            "1.1.1.1"
+            "1.0.0.1"
+          ];
           unmanaged = [
             "wlan1"
           ];
