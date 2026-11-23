@@ -120,7 +120,21 @@
       lib,
       ...
     }:
+    let
+      keybindings = builtins.toJSON {
+        "app.message.followUp" = [ "tab" ];
+        "tui.input.submit" = [ "enter" ];
+        "tui.input.tab" = [ "ctrl+space" ];
+        "tui.altScreen.pageDown" = [ "pageDown" ];
+        "tui.altScreen.bottom" = [ "escape" ];
+        "app.interrupt" = [ "ctrl+c" ];
+        "app.clear" = [ ];
+      };
+    in
     {
+      xdg.configFile."pi/keybindings.json".text = keybindings;
+      xdg.configFile."pi-matterstate/keybindings.json".text = keybindings;
+
       # Pi writes runtime state here, so merge defaults instead of linking a read-only file.
       home.activation.piSettings = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         settings=${lib.escapeShellArg "${config.xdg.configHome}/pi/settings.json"}
